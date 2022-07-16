@@ -1,8 +1,8 @@
 name: bebe
-description: A new Flutter project.
+description: An app for tracking baby things.
 
 # Prevent accidental publishing to pub.dev.
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -14,19 +14,18 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  flutter_riverpod: ^2.0.0-dev.9
+  go_router: ^4.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true
-
   # Enable generation of localized Strings from arb files.
   generate: true
 
   assets:
-    # Add assets from the images directory to the application.
     - assets/images/
