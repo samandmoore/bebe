@@ -35,12 +35,9 @@ class _EmptyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: TextButton(
-          onPressed: () => GoRouter.of(context).push('/children/new'),
-          child: const Text('Add kid'),
-        ),
+        child: AddKidButton(),
       ),
     );
   }
@@ -58,23 +55,24 @@ class _TrackScreen extends StatelessWidget {
         child: Column(
           children: [
             Text('${kid.name} (${kid.toPrettyAge()})'),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: const Icon(Icons.baby_changing_station, size: 72),
-                onPressed: () {},
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: const Icon(Icons.baby_changing_station, size: 72),
-                onPressed: () {},
-              ),
-            )
+            AddKidButton(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class AddKidButton extends StatelessWidget {
+  const AddKidButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => GoRouter.of(context).push('/children/new'),
+      child: const Text('Add kid'),
     );
   }
 }
