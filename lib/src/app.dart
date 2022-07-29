@@ -5,20 +5,26 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'kids/new_kid_screen.dart';
+import 'settings/settings_screen.dart';
 import 'track/track_screen.dart';
 
 class App extends StatelessWidget {
   App({super.key});
 
   late final _router = GoRouter(
+    initialLocation: TrackScreen.route,
     routes: [
       GoRoute(
-        path: '/',
+        path: TrackScreen.route,
         builder: (_, __) => const TrackScreen(),
       ),
       GoRoute(
-        path: '/children/new',
+        path: NewKidScreen.route,
         builder: (_, __) => const NewKidScreen(),
+      ),
+      GoRoute(
+        path: SettingsScreen.route,
+        builder: (_, __) => const SettingsScreen(),
       ),
     ],
   );

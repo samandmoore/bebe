@@ -4,10 +4,13 @@ import 'package:go_router/go_router.dart';
 
 import '../kids/kid.dart';
 import '../kids/providers.dart';
+import '../shared/drawer.dart';
 import '../shared/error_screen.dart';
 import '../shared/loading_screen.dart';
 
 class TrackScreen extends ConsumerWidget {
+  static const route = '/';
+
   const TrackScreen({super.key});
 
   @override
@@ -51,11 +54,15 @@ class _TrackScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Track'),
+      ),
+      drawer: const NavDrawer(),
       body: SafeArea(
         child: Column(
           children: [
             Text('${kid.name} (${kid.toPrettyAge()})'),
-            AddKidButton(),
+            const AddKidButton(),
           ],
         ),
       ),
@@ -71,7 +78,7 @@ class AddKidButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => GoRouter.of(context).push('/children/new'),
+      onPressed: () => GoRouter.of(context).push('/kids/new'),
       child: const Text('Add kid'),
     );
   }

@@ -20,6 +20,8 @@ final _formProvider = Provider.autoDispose(
 );
 
 class NewKidScreen extends ConsumerWidget {
+  static const route = '/kids/new';
+
   const NewKidScreen({super.key});
 
   @override
@@ -103,7 +105,7 @@ class NewKidScreen extends ConsumerWidget {
                             ),
                           );
                           ref.invalidate(kidsProvider);
-                          context.go('/');
+                          context.pop();
                         } else {
                           form.markAllAsTouched();
                         }
