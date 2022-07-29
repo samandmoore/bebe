@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../shared/drawer.dart';
+import 'units_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   static const route = '/settings';
@@ -15,8 +17,27 @@ class SettingsScreen extends StatelessWidget {
       ),
       drawer: const NavDrawer(),
       body: SafeArea(
-        child: Center(
-          child: const Text('Settings'),
+        child: ListView(
+          children: [
+            ListTile(
+              leading: Icon(Icons.child_care),
+              title: Row(
+                children: [
+                  Text('Kids'),
+                ],
+              ),
+              onTap: () => context.push('/'),
+            ),
+            ListTile(
+              leading: Icon(Icons.science),
+              title: Row(
+                children: [
+                  Text('Units'),
+                ],
+              ),
+              onTap: () => context.push(UnitsScreen.route),
+            ),
+          ],
         ),
       ),
     );

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 
 import 'kids/new_kid_screen.dart';
 import 'settings/settings_screen.dart';
+import 'settings/units_screen.dart';
 import 'track/track_screen.dart';
 
 class App extends StatelessWidget {
@@ -25,6 +26,12 @@ class App extends StatelessWidget {
       GoRoute(
         path: SettingsScreen.route,
         builder: (_, __) => const SettingsScreen(),
+        routes: [
+          GoRoute(
+            path: UnitsScreen.route.split('/').last,
+            builder: (_, __) => const UnitsScreen(),
+          ),
+        ],
       ),
     ],
   );
