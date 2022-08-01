@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../shared/drawer.dart';
+import 'kids_screen.dart';
 import 'units_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -26,7 +27,7 @@ class SettingsScreen extends StatelessWidget {
                   Text('Kids'),
                 ],
               ),
-              onTap: () => context.push('/'),
+              onTap: () => context.push(KidsScreen.route),
             ),
             ListTile(
               leading: Icon(Icons.science),

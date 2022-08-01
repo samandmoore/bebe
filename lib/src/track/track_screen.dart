@@ -1,3 +1,4 @@
+import 'package:bebe/src/kids/new_kid_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -78,7 +79,7 @@ class AddKidButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () => GoRouter.of(context).push('/kids/new'),
+      onPressed: () => GoRouter.of(context).push(NewKidScreen.route),
       child: const Text('Add kid'),
     );
   }
