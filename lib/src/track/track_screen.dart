@@ -39,9 +39,17 @@ class _EmptyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: AddKidButton(),
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('No kids yet, add one!'),
+              AddKidButton(),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -63,7 +71,6 @@ class _TrackScreen extends StatelessWidget {
         child: Column(
           children: [
             Text('${kid.name} (${kid.toPrettyAge()})'),
-            const AddKidButton(),
           ],
         ),
       ),

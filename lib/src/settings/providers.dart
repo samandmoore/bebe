@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum LiquidUnits { ml, oz }
+enum LiquidUnit { ml, oz }
 
-final liquidUnitsProvider = StateProvider((_) => LiquidUnits.ml);
+final liquidUnitProvider = StateProvider((_) => LiquidUnit.ml);

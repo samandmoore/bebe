@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../kids/kid.dart';
+import '../kids/new_kid_screen.dart';
 import '../kids/providers.dart';
 import '../shared/error_screen.dart';
 import '../shared/loading_screen.dart';
@@ -49,11 +51,10 @@ class _KidsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            if (kids.isEmpty)
-              TextButton(
-                onPressed: () => GoRouter.of(context).push(NewKidScreen.route),
-                child: const Text('Add kid'),
-              ),
+            TextButton(
+              onPressed: () => context.push(NewKidScreen.route),
+              child: const Text('Add kid'),
+            ),
           ],
         ),
       ),
