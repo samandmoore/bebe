@@ -16,17 +16,17 @@ class TrackScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final kid = ref.watch(currentKidProvider);
+    final kids = ref.watch(kidsProvider);
 
-    return kid.when(
+    return kids.when(
       loading: () => const LoadingScreen(),
       error: (error, stackTrace) =>
           ErrorScreen(error: error, stackTrace: stackTrace),
-      data: (kid) {
-        if (kid == null) {
+      data: (kids) {
+        if (kids.isEmpty) {
           return const _EmptyScreen();
         }
-        return _TrackScreen(kid: kid);
+        return _TrackScreen(kids: kids);
       },
     );
   }
@@ -55,66 +55,103 @@ class _EmptyScreen extends StatelessWidget {
   }
 }
 
-class _TrackScreen extends StatelessWidget {
-  final Kid kid;
+class _TrackScreen extends ConsumerWidget {
+  final List<Kid> kids;
 
-  const _TrackScreen({super.key, required this.kid});
+  const _TrackScreen({super.key, required this.kids});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       drawer: const NavDrawer(),
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            pinned: true,
-            expandedHeight: 160.0,
+            expandedHeight: 200.0,
             flexibleSpace: FlexibleSpaceBar(
-              title: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(kid.name),
-                  Text(kid.toPrettyAge()),
-                ],
+              title: SizedBox(
+                height: 80,
+                child: PageView.builder(
+                  onPageChanged: (value) {
+                    final currentKidSetter =
+                        ref.read(currentKidProvider.notifier);
+                    currentKidSetter.state = value;
+                  },
+                  itemCount: kids.length,
+                  itemBuilder: (context, index) {
+                    final kid = kids[index];
+                    return Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          if (index > 0)
+                            Icon(
+                              Icons.chevron_left,
+                              color: Colors.white,
+                            ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(kid.name),
+                              Text(
+                                kid.toPrettyAge(),
+                              ),
+                            ],
+                          ),
+                          if (index < kids.length - 1)
+                            Icon(
+                              Icons.chevron_right,
+                              color: Colors.white,
+                            ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                ListTile(
-                  contentPadding: EdgeInsets.all(16),
-                  leading: Icon(Icons.baby_changing_station, size: 32),
-                  title: Row(
-                    children: [
-                      Text('Diaper', textScaleFactor: 1.3),
-                    ],
-                  ),
-                  onTap: () {},
+          SliverList(
+            delegate: SliverChildListDelegate.fixed([
+              Consumer(builder: (_, ref, __) {
+                final currentKid = ref.watch(currentKidProvider);
+                final kid = kids[currentKid];
+                return ListTile(
+                  title: Text(kid.name, textScaleFactor: 1.3),
+                );
+              }),
+              ListTile(
+                contentPadding: EdgeInsets.all(16),
+                leading: Icon(Icons.baby_changing_station, size: 32),
+                title: Row(
+                  children: [
+                    Text('Diaper', textScaleFactor: 1.3),
+                  ],
                 ),
-                ListTile(
-                  contentPadding: EdgeInsets.all(16),
-                  leading: Icon(Icons.bedtime, size: 32),
-                  title: Row(
-                    children: [
-                      Text('Sleep', textScaleFactor: 1.3),
-                    ],
-                  ),
-                  onTap: () {},
+                onTap: () {},
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(16),
+                leading: Icon(Icons.bedtime, size: 32),
+                title: Row(
+                  children: [
+                    Text('Sleep', textScaleFactor: 1.3),
+                  ],
                 ),
-                ListTile(
-                  contentPadding: EdgeInsets.all(16),
-                  leading: Icon(Icons.local_drink, size: 32),
-                  title: Row(
-                    children: [
-                      Text('Bottle', textScaleFactor: 1.3),
-                    ],
-                  ),
-                  onTap: () {},
+                onTap: () {},
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(16),
+                leading: Icon(Icons.local_drink, size: 32),
+                title: Row(
+                  children: [
+                    Text('Bottle', textScaleFactor: 1.3),
+                  ],
                 ),
-              ],
-            ),
-          )
+                onTap: () {},
+              ),
+            ]),
+          ),
         ],
       ),
     );

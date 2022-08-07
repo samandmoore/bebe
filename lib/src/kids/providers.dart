@@ -12,12 +12,4 @@ final kidsProvider = FutureProvider.autoDispose((ref) async {
   return repo.fetchAll();
 });
 
-final currentKidProvider = FutureProvider.autoDispose((ref) async {
-  final kids = await ref.watch(kidsProvider.future);
-
-  if (kids.isEmpty) {
-    return null;
-  }
-
-  return kids.first;
-});
+final currentKidProvider = StateProvider((_) => 0);
