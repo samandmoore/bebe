@@ -63,16 +63,59 @@ class _TrackScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Track'),
-      ),
       drawer: const NavDrawer(),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Text('${kid.name} (${kid.toPrettyAge()})'),
-          ],
-        ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: 160.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(kid.name),
+                  Text(kid.toPrettyAge()),
+                ],
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                ListTile(
+                  contentPadding: EdgeInsets.all(16),
+                  leading: Icon(Icons.baby_changing_station, size: 32),
+                  title: Row(
+                    children: [
+                      Text('Diaper', textScaleFactor: 1.3),
+                    ],
+                  ),
+                  onTap: () {},
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.all(16),
+                  leading: Icon(Icons.bedtime, size: 32),
+                  title: Row(
+                    children: [
+                      Text('Sleep', textScaleFactor: 1.3),
+                    ],
+                  ),
+                  onTap: () {},
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.all(16),
+                  leading: Icon(Icons.local_drink, size: 32),
+                  title: Row(
+                    children: [
+                      Text('Bottle', textScaleFactor: 1.3),
+                    ],
+                  ),
+                  onTap: () {},
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
