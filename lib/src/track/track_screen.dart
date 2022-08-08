@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../kids/edit_kid_screen.dart';
 import '../kids/kid.dart';
 import '../kids/providers.dart';
 import '../shared/drawer.dart';
@@ -92,7 +93,17 @@ class _TrackScreen extends ConsumerWidget {
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(kid.name),
+                              TextButton(
+                                onPressed: () {
+                                  ref.read(editingKidProvider.notifier).state =
+                                      kid;
+                                  context.push(EditKidScreen.route);
+                                },
+                                style: TextButton.styleFrom(
+                                  primary: Colors.white,
+                                ),
+                                child: Text(kid.name, textScaleFactor: 1.3),
+                              ),
                               Text(
                                 kid.toPrettyAge(),
                               ),
@@ -122,6 +133,16 @@ class _TrackScreen extends ConsumerWidget {
               }),
               ListTile(
                 contentPadding: EdgeInsets.all(16),
+                leading: Icon(Icons.local_drink, size: 32),
+                title: Row(
+                  children: [
+                    Text('Bottle', textScaleFactor: 1.3),
+                  ],
+                ),
+                onTap: () {},
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.all(16),
                 leading: Icon(Icons.baby_changing_station, size: 32),
                 title: Row(
                   children: [
@@ -136,16 +157,6 @@ class _TrackScreen extends ConsumerWidget {
                 title: Row(
                   children: [
                     Text('Sleep', textScaleFactor: 1.3),
-                  ],
-                ),
-                onTap: () {},
-              ),
-              ListTile(
-                contentPadding: EdgeInsets.all(16),
-                leading: Icon(Icons.local_drink, size: 32),
-                title: Row(
-                  children: [
-                    Text('Bottle', textScaleFactor: 1.3),
                   ],
                 ),
                 onTap: () {},

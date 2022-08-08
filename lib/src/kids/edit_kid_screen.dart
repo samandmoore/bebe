@@ -8,28 +8,33 @@ import 'package:reactive_forms/reactive_forms.dart';
 import '../shared/extensions.dart';
 import 'kid.dart';
 
-final _formProvider = Provider.autoDispose(
-  (_) => FormGroup({
+final _formProvider = Provider.autoDispose((ref) {
+  final selectedKid = ref.watch(editingKidProvider);
+
+  return FormGroup({
     'name': FormControl<String>(
       validators: [Validators.required],
+      value: selectedKid?.name,
     ),
     'birthDate': FormControl<DateTime>(
       validators: [Validators.required],
+      value: selectedKid?.birthDate,
     ),
-  }),
-);
+  });
+});
 
-class NewKidScreen extends ConsumerWidget {
-  static const route = '/kids/new';
+class EditKidScreen extends ConsumerWidget {
+  static const route = '/kids/edit';
 
-  const NewKidScreen({super.key});
+  const EditKidScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final kid = ref.watch(editingKidProvider);
     final form = ref.watch(_formProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('New Kid')),
+      appBar: AppBar(title: const Text('Edit Kid')),
       body: SafeArea(
         child: SingleChildScrollView(
           child: ReactiveForm(
@@ -94,11 +99,55 @@ class NewKidScreen extends ConsumerWidget {
                       child: const Text('Cancel'),
                     ),
                     ElevatedButton(
+                      onPressed: () async {
+                        showDialog<bool>(
+                          context: context,
+                          builder: (dialogContext) {
+                            return AlertDialog(
+                              content: const Text(
+                                  'Are you sure you want to remove this kid?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    dialogContext.closeDialog();
+                                  },
+                                  child: const Text('No'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    ref
+                                        .read(kidRepositoryProvider)
+                                        .delete(kid!.id);
+                                    ref.invalidate(kidsProvider);
+
+                                    ScaffoldMessenger.of(context)
+                                      ..clearSnackBars()
+                                      ..showSnackBar(
+                                        SnackBar(
+                                          content: Text('Removed ${kid.name}.'),
+                                        ),
+                                      );
+
+                                    dialogContext.closeDialog();
+                                    context.pop();
+                                  },
+                                  child: const Text('Yes'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      child: const Text('Remove'),
+                    ),
+                    ElevatedButton(
                       onPressed: () {
                         if (form.valid) {
                           final repo = ref.read(kidRepositoryProvider);
-                          repo.create(
-                            KidInput(
+                          repo.update(
+                            Kid(
+                              id: kid!.id,
                               name: form.control('name').value as String,
                               birthDate:
                                   form.control('birthDate').value as DateTime,

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'kid.dart';
 import 'kid_repository.dart';
 
 final kidRepositoryProvider = Provider<KidRepository>((_) {
@@ -13,3 +14,5 @@ final kidsProvider = FutureProvider.autoDispose((ref) async {
 });
 
 final currentKidProvider = StateProvider((_) => 0);
+
+final editingKidProvider = StateProvider<Kid?>((_) => null);

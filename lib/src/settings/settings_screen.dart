@@ -27,7 +27,9 @@ class SettingsScreen extends StatelessWidget {
                   Text('Kids'),
                 ],
               ),
-              onTap: () => context.push(KidsScreen.route),
+              onTap: () {
+                context.push(KidsScreen.route);
+              },
             ),
             ListTile(
               leading: Icon(Icons.science),

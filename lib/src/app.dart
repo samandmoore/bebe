@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'kids/edit_kid_screen.dart';
 import 'kids/new_kid_screen.dart';
 import 'settings/settings_screen.dart';
 import 'settings/units_screen.dart';
@@ -23,6 +24,10 @@ class App extends StatelessWidget {
       GoRoute(
         path: NewKidScreen.route,
         builder: (_, __) => const NewKidScreen(),
+      ),
+      GoRoute(
+        path: EditKidScreen.route,
+        builder: (_, __) => const EditKidScreen(),
       ),
       GoRoute(
         path: SettingsScreen.route,

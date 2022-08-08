@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../kids/edit_kid_screen.dart';
 import '../kids/kid.dart';
 import '../kids/new_kid_screen.dart';
 import '../kids/providers.dart';
@@ -28,13 +29,13 @@ class KidsScreen extends ConsumerWidget {
   }
 }
 
-class _KidsScreen extends StatelessWidget {
+class _KidsScreen extends ConsumerWidget {
   final List<Kid> kids;
 
   const _KidsScreen({super.key, required this.kids});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Kids'),
@@ -50,6 +51,10 @@ class _KidsScreen extends StatelessWidget {
                     Text(kid.name),
                   ],
                 ),
+                onTap: () {
+                  ref.read(editingKidProvider.notifier).state = kid;
+                  context.push(EditKidScreen.route);
+                },
               ),
             TextButton(
               onPressed: () => context.push(NewKidScreen.route),
