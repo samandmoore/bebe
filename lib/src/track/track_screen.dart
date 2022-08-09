@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../diapers/new_diaper_event_screen.dart';
 import '../kids/edit_kid_screen.dart';
 import '../kids/kid.dart';
 import '../kids/providers.dart';
@@ -74,9 +75,8 @@ class _TrackScreen extends ConsumerWidget {
                 height: 80,
                 child: PageView.builder(
                   onPageChanged: (value) {
-                    final currentKidSetter =
-                        ref.read(currentKidProvider.notifier);
-                    currentKidSetter.state = value;
+                    final selectedKid = ref.read(selectedKidProvider.notifier);
+                    selectedKid.state = kids[value];
                   },
                   itemCount: kids.length,
                   itemBuilder: (context, index) {
@@ -125,10 +125,10 @@ class _TrackScreen extends ConsumerWidget {
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               Consumer(builder: (_, ref, __) {
-                final currentKid = ref.watch(currentKidProvider);
-                final kid = kids[currentKid];
+                final selectedKid = ref.watch(selectedKidProvider);
                 return ListTile(
-                  title: Text(kid.name, textScaleFactor: 1.3),
+                  title:
+                      Text(selectedKid?.name ?? 'None', textScaleFactor: 1.3),
                 );
               }),
               ListTile(
@@ -149,7 +149,9 @@ class _TrackScreen extends ConsumerWidget {
                     Text('Diaper', textScaleFactor: 1.3),
                   ],
                 ),
-                onTap: () {},
+                onTap: () {
+                  context.push(NewDiaperEventScreen.route);
+                },
               ),
               ListTile(
                 contentPadding: EdgeInsets.all(16),
