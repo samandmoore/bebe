@@ -18,9 +18,9 @@ final kidsProvider = FutureProvider.autoDispose((ref) async {
   if (kids.isEmpty) {
     selectedKid.state = null;
   } else if (!kids.contains(selectedKid.state)) {
-    selectedKid.state = selectedKid.state;
-  } else {
     selectedKid.state = kids.first;
+  } else {
+    // do nothing because the kid is already selected
   }
 
   return kids;

@@ -1,3 +1,4 @@
+import 'package:bebe/src/history/history_screen.dart';
 import 'package:bebe/src/settings/kids_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -33,6 +34,10 @@ class App extends StatelessWidget {
       GoRoute(
         path: EditKidScreen.route,
         builder: (_, __) => const EditKidScreen(),
+      ),
+      GoRoute(
+        path: HistoryScreen.route,
+        builder: (_, __) => const HistoryScreen(),
       ),
       GoRoute(
         path: SettingsScreen.route,

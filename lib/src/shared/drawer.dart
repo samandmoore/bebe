@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../history/history_screen.dart';
 import '../settings/settings_screen.dart';
 import '../track/track_screen.dart';
 
@@ -23,6 +24,12 @@ class NavDrawer extends StatelessWidget {
             title: const Text('Track'),
             onTap: () {
               context.go(TrackScreen.route);
+            },
+          ),
+          ListTile(
+            title: const Text('History'),
+            onTap: () {
+              context.go(HistoryScreen.route);
             },
           ),
           ListTile(
