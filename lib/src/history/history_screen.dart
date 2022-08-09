@@ -75,19 +75,61 @@ class _HistoryScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('History'),
       ),
+      drawer: NavDrawer(),
       body: SafeArea(
         child: ListView.builder(
           itemCount: events.length,
           itemBuilder: (context, index) {
             final event = events[index];
 
-            return ListTile(
-              title: Text(event.runtimeType.toString()),
-              subtitle: Text(event.createdAt.toString()),
+            return event.map(
+              bottle: (event) => _BottleEvent(event: event),
+              diaper: (event) => _DiaperEvent(event: event),
+              sleep: (event) => _SleepEvent(event: event),
             );
           },
         ),
       ),
+    );
+  }
+}
+
+class _BottleEvent extends StatelessWidget {
+  final BottleEvent event;
+
+  const _BottleEvent({required this.event});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text('Bottle'),
+    );
+  }
+}
+
+class _DiaperEvent extends StatelessWidget {
+  final DiaperEvent event;
+
+  const _DiaperEvent({required this.event});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text('${event.diaperType} diaper'),
+      subtitle: Text(event.createdAt.toIso8601String()),
+    );
+  }
+}
+
+class _SleepEvent extends StatelessWidget {
+  final SleepEvent event;
+
+  const _SleepEvent({required this.event});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text('Sleep'),
     );
   }
 }
