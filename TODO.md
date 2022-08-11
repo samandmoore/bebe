@@ -1,0 +1,4 @@
+- [ ] edit diaper event
+- [ ] show latest event of each type on track screen (for current kid)
+- [ ] show history for specific kid
+- [ ] save liquid unit settings
