@@ -26,6 +26,22 @@ class Kid extends Equatable {
 
   @override
   List<Object?> get props => [id, name, birthDate];
+
+  factory Kid.fromJson(Map<String, Object?> json) {
+    return Kid(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      birthDate: DateTime.parse(json['birthDate'] as String),
+    );
+  }
+
+  Map<String, Object?> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'birthDate': birthDate.toIso8601String(),
+    };
+  }
 }
 
 class KidInput extends Equatable {

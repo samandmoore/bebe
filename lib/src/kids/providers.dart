@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'kid.dart';
 import 'kid_repository.dart';
 
-final kidRepositoryProvider = Provider<KidRepository>((_) {
-  return KidRepository();
+final kidRepositoryProvider = Provider<KidRepository>((ref) {
+  return KidRepository(ref);
 });
 
 final kidsProvider = FutureProvider.autoDispose((ref) async {

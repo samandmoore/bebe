@@ -14,6 +14,21 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Event _$EventFromJson(Map<String, dynamic> json) {
+  switch (json['type']) {
+    case 'bottle':
+      return BottleEvent.fromJson(json);
+    case 'diaper':
+      return DiaperEvent.fromJson(json);
+    case 'sleep':
+      return SleepEvent.fromJson(json);
+
+    default:
+      throw CheckedFromJsonException(
+          json, 'type', 'Event', 'Invalid union type "${json['type']}"!');
+  }
+}
+
 /// @nodoc
 mixin _$Event {
   String get id => throw _privateConstructorUsedError;
@@ -81,7 +96,7 @@ mixin _$Event {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $EventCopyWith<Event> get copyWith => throw _privateConstructorUsedError;
 }
@@ -182,14 +197,19 @@ class __$$BottleEventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$BottleEvent implements BottleEvent {
   const _$BottleEvent(
       {required this.id,
       required this.kidId,
       required this.createdAt,
       required this.amount,
-      required this.unit});
+      required this.unit,
+      final String? $type})
+      : $type = $type ?? 'bottle';
+
+  factory _$BottleEvent.fromJson(Map<String, dynamic> json) =>
+      _$$BottleEventFromJson(json);
 
   @override
   final String id;
@@ -201,6 +221,9 @@ class _$BottleEvent implements BottleEvent {
   final Decimal amount;
   @override
   final LiquidUnit unit;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -219,6 +242,7 @@ class _$BottleEvent implements BottleEvent {
             const DeepCollectionEquality().equals(other.unit, unit));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -318,6 +342,13 @@ class _$BottleEvent implements BottleEvent {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$BottleEventToJson(
+      this,
+    );
+  }
 }
 
 abstract class BottleEvent implements Event {
@@ -327,6 +358,9 @@ abstract class BottleEvent implements Event {
       required final DateTime createdAt,
       required final Decimal amount,
       required final LiquidUnit unit}) = _$BottleEvent;
+
+  factory BottleEvent.fromJson(Map<String, dynamic> json) =
+      _$BottleEvent.fromJson;
 
   @override
   String get id;
@@ -391,13 +425,18 @@ class __$$DiaperEventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$DiaperEvent implements DiaperEvent {
   const _$DiaperEvent(
       {required this.id,
       required this.kidId,
       required this.createdAt,
-      required this.diaperType});
+      required this.diaperType,
+      final String? $type})
+      : $type = $type ?? 'diaper';
+
+  factory _$DiaperEvent.fromJson(Map<String, dynamic> json) =>
+      _$$DiaperEventFromJson(json);
 
   @override
   final String id;
@@ -407,6 +446,9 @@ class _$DiaperEvent implements DiaperEvent {
   final DateTime createdAt;
   @override
   final DiaperType diaperType;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -425,6 +467,7 @@ class _$DiaperEvent implements DiaperEvent {
                 .equals(other.diaperType, diaperType));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -523,6 +566,13 @@ class _$DiaperEvent implements DiaperEvent {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$DiaperEventToJson(
+      this,
+    );
+  }
 }
 
 abstract class DiaperEvent implements Event {
@@ -531,6 +581,9 @@ abstract class DiaperEvent implements Event {
       required final String kidId,
       required final DateTime createdAt,
       required final DiaperType diaperType}) = _$DiaperEvent;
+
+  factory DiaperEvent.fromJson(Map<String, dynamic> json) =
+      _$DiaperEvent.fromJson;
 
   @override
   String get id;
@@ -603,14 +656,19 @@ class __$$SleepEventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$SleepEvent implements SleepEvent {
   const _$SleepEvent(
       {required this.id,
       required this.kidId,
       required this.createdAt,
       required this.startedAt,
-      this.endedAt});
+      this.endedAt,
+      final String? $type})
+      : $type = $type ?? 'sleep';
+
+  factory _$SleepEvent.fromJson(Map<String, dynamic> json) =>
+      _$$SleepEventFromJson(json);
 
   @override
   final String id;
@@ -622,6 +680,9 @@ class _$SleepEvent implements SleepEvent {
   final DateTime startedAt;
   @override
   final DateTime? endedAt;
+
+  @JsonKey(name: 'type')
+  final String $type;
 
   @override
   String toString() {
@@ -640,6 +701,7 @@ class _$SleepEvent implements SleepEvent {
             const DeepCollectionEquality().equals(other.endedAt, endedAt));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -739,6 +801,13 @@ class _$SleepEvent implements SleepEvent {
     }
     return orElse();
   }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SleepEventToJson(
+      this,
+    );
+  }
 }
 
 abstract class SleepEvent implements Event {
@@ -748,6 +817,9 @@ abstract class SleepEvent implements Event {
       required final DateTime createdAt,
       required final DateTime startedAt,
       final DateTime? endedAt}) = _$SleepEvent;
+
+  factory SleepEvent.fromJson(Map<String, dynamic> json) =
+      _$SleepEvent.fromJson;
 
   @override
   String get id;

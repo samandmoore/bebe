@@ -1,3 +1,5 @@
+import 'package:bebe/src/events/event.dart';
+import 'package:bebe/src/events/providers.dart';
 import 'package:bebe/src/kids/providers.dart';
 import 'package:bebe/src/shared/extensions.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +8,6 @@ import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 import '../shared/layout.dart';
-import '../track/event.dart';
-import '../track/providers.dart';
 
 final _formProvider = Provider.autoDispose((ref) {
   return FormGroup({

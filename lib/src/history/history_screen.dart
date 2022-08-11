@@ -1,11 +1,11 @@
+import 'package:bebe/src/events/event.dart';
+import 'package:bebe/src/events/providers.dart';
 import 'package:bebe/src/shared/drawer.dart';
-import 'package:bebe/src/track/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../shared/error_screen.dart';
 import '../shared/loading_screen.dart';
-import '../track/event.dart';
 
 final _historyProvider = FutureProvider.autoDispose(
   (ref) async {

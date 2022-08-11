@@ -3,6 +3,7 @@ import 'package:decimal/decimal.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'event.freezed.dart';
+part 'event.g.dart';
 
 @freezed
 class Event with _$Event {
@@ -28,6 +29,8 @@ class Event with _$Event {
     required DateTime startedAt,
     DateTime? endedAt,
   }) = SleepEvent;
+
+  factory Event.fromJson(Map<String, Object?> json) => _$EventFromJson(json);
 }
 
 enum DiaperType {
