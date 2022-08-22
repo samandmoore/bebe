@@ -1,15 +1,14 @@
-import 'package:bebe/src/kids/new_kid_screen.dart';
+import 'package:bebe/src/diapers/new_diaper_event_screen.dart';
+import 'package:bebe/src/kids/kid.dart';
+import 'package:bebe/src/kids/providers.dart';
+import 'package:bebe/src/shared/drawer.dart';
+import 'package:bebe/src/shared/empty_screen.dart';
+import 'package:bebe/src/shared/error_screen.dart';
+import 'package:bebe/src/shared/kid_switcher.dart';
+import 'package:bebe/src/shared/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-import '../diapers/new_diaper_event_screen.dart';
-import '../kids/edit_kid_screen.dart';
-import '../kids/kid.dart';
-import '../kids/providers.dart';
-import '../shared/drawer.dart';
-import '../shared/error_screen.dart';
-import '../shared/loading_screen.dart';
 
 class TrackScreen extends ConsumerWidget {
   static const route = '/';
@@ -26,7 +25,7 @@ class TrackScreen extends ConsumerWidget {
           ErrorScreen(error: error, stackTrace: stackTrace),
       data: (kids) {
         if (kids.isEmpty) {
-          return const _EmptyScreen();
+          return const EmptyScreen();
         }
         return _TrackScreen(kids: kids);
       },
@@ -34,128 +33,18 @@ class TrackScreen extends ConsumerWidget {
   }
 }
 
-class _EmptyScreen extends StatelessWidget {
-  const _EmptyScreen({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('No kids yet, add one!'),
-              AddKidButton(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _TrackScreen extends ConsumerStatefulWidget {
+class _TrackScreen extends ConsumerWidget {
   final List<Kid> kids;
 
   const _TrackScreen({super.key, required this.kids});
 
   @override
-  __TrackScreenState createState() => __TrackScreenState();
-}
-
-class __TrackScreenState extends ConsumerState<_TrackScreen> {
-  late List<Kid> kids = widget.kids..sort((a, b) => a.name.compareTo(b.name));
-
-  late PageController _pageController;
-
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController(
-      initialPage:
-          kids.indexWhere((k) => k.id == ref.read(selectedKidProvider)?.id),
-    );
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       drawer: const NavDrawer(),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            expandedHeight: 200.0,
-            flexibleSpace: FlexibleSpaceBar(
-              title: SizedBox(
-                height: 80,
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (value) {
-                    final repo = ref.read(kidRepositoryProvider);
-                    final kidToSelect = kids[value];
-
-                    repo.update(kidToSelect.copyWith(isCurrent: true));
-                    ref
-                      ..invalidate(kidsProvider)
-                      ..invalidate(selectedKidProvider);
-                  },
-                  findChildIndexCallback: (key) => kids.indexWhere(
-                    (kid) => kid.id == (key as ValueKey<String>).value,
-                  ),
-                  itemCount: kids.length,
-                  itemBuilder: (context, index) {
-                    final kid = kids[index];
-                    return Center(
-                      key: ValueKey(kid.id),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          if (index > 0)
-                            Icon(
-                              Icons.chevron_left,
-                              color: Colors.white,
-                            ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  ref.read(editingKidProvider.notifier).state =
-                                      kid;
-                                  context.push(EditKidScreen.route);
-                                },
-                                style: TextButton.styleFrom(
-                                  primary: Colors.white,
-                                ),
-                                child: Text(kid.name, textScaleFactor: 1.3),
-                              ),
-                              Text(
-                                kid.toPrettyAge(),
-                              ),
-                            ],
-                          ),
-                          if (index < kids.length - 1)
-                            Icon(
-                              Icons.chevron_right,
-                              color: Colors.white,
-                            ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ),
+          KidSwitcherSliverAppBar(kids: kids),
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               Consumer(builder: (_, ref, __) {
@@ -201,20 +90,6 @@ class __TrackScreenState extends ConsumerState<_TrackScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class AddKidButton extends StatelessWidget {
-  const AddKidButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => GoRouter.of(context).push(NewKidScreen.route),
-      child: const Text('Add kid'),
     );
   }
 }
