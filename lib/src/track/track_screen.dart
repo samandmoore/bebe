@@ -67,7 +67,7 @@ class _TrackScreen extends ConsumerStatefulWidget {
 }
 
 class __TrackScreenState extends ConsumerState<_TrackScreen> {
-  List<Kid> get kids => widget.kids;
+  late List<Kid> kids = widget.kids..sort((a, b) => a.name.compareTo(b.name));
 
   late PageController _pageController;
 
