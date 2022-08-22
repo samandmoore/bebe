@@ -37,14 +37,15 @@ class KidRepository {
       id: const Uuid().v4(),
       name: kid.name,
       birthDate: kid.birthDate,
+      isCurrent: true,
     );
 
     final newKids = [
-      ...kids,
+      ...kids.map((k) => k.copyWith(isCurrent: false)),
       newKid,
     ];
 
-    await _storage.save(_storageKey, newKids);
+    await _storage.save(_storageKey, newKids.toList());
 
     return newKid;
   }
@@ -52,19 +53,33 @@ class KidRepository {
   Future<void> update(final Kid kid) async {
     final kids = await fetchAll();
 
-    final newKids = [
-      ...kids.where((k) => k.id != kid.id),
+    var newKids = kids.where((k) => k.id != kid.id);
+    if (kid.isCurrent) {
+      newKids = newKids.map((k) => k.copyWith(isCurrent: false));
+    }
+
+    newKids = [
+      ...newKids,
       kid,
     ];
 
-    await _storage.save(_storageKey, newKids);
+    await _storage.save(_storageKey, newKids.toList());
   }
 
   Future<void> delete(final String id) async {
     final kids = await fetchAll();
 
-    final newKids = kids.where((k) => k.id != id).toList();
+    final kidToDelete = kids.firstWhereOrNull((k) => k.id == id);
 
-    await _storage.save(_storageKey, newKids);
+    if (kidToDelete == null) {
+      return;
+    }
+
+    var newKids = kids.where((k) => k.id != id);
+    if (kidToDelete.isCurrent) {
+      newKids = newKids.map((k) => k.copyWith(isCurrent: false));
+    }
+
+    await _storage.save(_storageKey, newKids.toList());
   }
 }

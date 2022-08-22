@@ -1,15 +1,19 @@
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Kid extends Equatable {
-  final String id;
-  final String name;
-  final DateTime birthDate;
+part 'kid.freezed.dart';
+part 'kid.g.dart';
 
-  const Kid({
-    required this.id,
-    required this.name,
-    required this.birthDate,
-  });
+@freezed
+class Kid with _$Kid {
+  const Kid._();
+
+  const factory Kid({
+    required String id,
+    required String name,
+    required DateTime birthDate,
+    @Default(false) bool isCurrent,
+  }) = _Kid;
 
   String toPrettyAge() {
     final now = DateTime.now();
@@ -24,24 +28,7 @@ class Kid extends Equatable {
     return '$months months, $days days';
   }
 
-  @override
-  List<Object?> get props => [id, name, birthDate];
-
-  factory Kid.fromJson(Map<String, Object?> json) {
-    return Kid(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      birthDate: DateTime.parse(json['birthDate'] as String),
-    );
-  }
-
-  Map<String, Object?> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'birthDate': birthDate.toIso8601String(),
-    };
-  }
+  factory Kid.fromJson(Map<String, Object?> json) => _$KidFromJson(json);
 }
 
 class KidInput extends Equatable {

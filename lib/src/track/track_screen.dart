@@ -57,13 +57,37 @@ class _EmptyScreen extends StatelessWidget {
   }
 }
 
-class _TrackScreen extends ConsumerWidget {
+class _TrackScreen extends ConsumerStatefulWidget {
   final List<Kid> kids;
 
   const _TrackScreen({super.key, required this.kids});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  __TrackScreenState createState() => __TrackScreenState();
+}
+
+class __TrackScreenState extends ConsumerState<_TrackScreen> {
+  List<Kid> get kids => widget.kids;
+
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      initialPage:
+          kids.indexWhere((k) => k.id == ref.read(selectedKidProvider)?.id),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       drawer: const NavDrawer(),
       body: CustomScrollView(
@@ -74,14 +98,24 @@ class _TrackScreen extends ConsumerWidget {
               title: SizedBox(
                 height: 80,
                 child: PageView.builder(
+                  controller: _pageController,
                   onPageChanged: (value) {
-                    final selectedKid = ref.read(selectedKidProvider.notifier);
-                    selectedKid.state = kids[value];
+                    final repo = ref.read(kidRepositoryProvider);
+                    final kidToSelect = kids[value];
+
+                    repo.update(kidToSelect.copyWith(isCurrent: true));
+                    ref
+                      ..invalidate(kidsProvider)
+                      ..invalidate(selectedKidProvider);
                   },
+                  findChildIndexCallback: (key) => kids.indexWhere(
+                    (kid) => kid.id == (key as ValueKey<String>).value,
+                  ),
                   itemCount: kids.length,
                   itemBuilder: (context, index) {
                     final kid = kids[index];
                     return Center(
+                      key: ValueKey(kid.id),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [

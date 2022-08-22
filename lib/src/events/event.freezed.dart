@@ -16,11 +16,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 Event _$EventFromJson(Map<String, dynamic> json) {
   switch (json['type']) {
-    case 'bottle':
+    case 'Bottle':
       return BottleEvent.fromJson(json);
-    case 'diaper':
+    case 'Diaper':
       return DiaperEvent.fromJson(json);
-    case 'sleep':
+    case 'Sleep':
       return SleepEvent.fromJson(json);
 
     default:
@@ -206,7 +206,7 @@ class _$BottleEvent implements BottleEvent {
       required this.amount,
       required this.unit,
       final String? $type})
-      : $type = $type ?? 'bottle';
+      : $type = $type ?? 'Bottle';
 
   factory _$BottleEvent.fromJson(Map<String, dynamic> json) =>
       _$$BottleEventFromJson(json);
@@ -433,7 +433,7 @@ class _$DiaperEvent implements DiaperEvent {
       required this.createdAt,
       required this.diaperType,
       final String? $type})
-      : $type = $type ?? 'diaper';
+      : $type = $type ?? 'Diaper';
 
   factory _$DiaperEvent.fromJson(Map<String, dynamic> json) =>
       _$$DiaperEventFromJson(json);
@@ -665,7 +665,7 @@ class _$SleepEvent implements SleepEvent {
       required this.startedAt,
       this.endedAt,
       final String? $type})
-      : $type = $type ?? 'sleep';
+      : $type = $type ?? 'Sleep';
 
   factory _$SleepEvent.fromJson(Map<String, dynamic> json) =>
       _$$SleepEventFromJson(json);

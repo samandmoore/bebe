@@ -1,5 +1,6 @@
 import 'package:bebe/src/events/event.dart';
 import 'package:bebe/src/events/providers.dart';
+import 'package:bebe/src/kids/providers.dart';
 import 'package:bebe/src/shared/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,11 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../shared/error_screen.dart';
 import '../shared/loading_screen.dart';
 
-final _historyProvider = FutureProvider.autoDispose(
-  (ref) async {
+final _historyProvider = FutureProvider.autoDispose.family<List<Event>, String>(
+  (ref, arg) async {
     final repo = ref.read(eventRepositoryProvider);
-
-    return repo.fetchAll();
+    return repo.fetchAllForKid(arg);
   },
 );
 
@@ -22,7 +22,8 @@ class HistoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final events = ref.watch(_historyProvider);
+    final selectedKid = ref.watch(selectedKidProvider);
+    final events = ref.watch(_historyProvider(selectedKid!.id));
 
     return events.when(
       loading: () => const LoadingScreen(),
@@ -38,6 +39,18 @@ class HistoryScreen extends ConsumerWidget {
   }
 }
 
+class _AppBarTitle extends StatelessWidget {
+  const _AppBarTitle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(builder: (_, ref, __) {
+      final selectedKid = ref.watch(selectedKidProvider);
+      return Text('History for ${selectedKid!.name}');
+    });
+  }
+}
+
 class _EmptyScreen extends StatelessWidget {
   const _EmptyScreen({
     super.key,
@@ -47,7 +60,7 @@ class _EmptyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('History'),
+        title: const _AppBarTitle(),
       ),
       drawer: const NavDrawer(),
       body: SafeArea(
@@ -73,7 +86,7 @@ class _HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('History'),
+        title: const _AppBarTitle(),
       ),
       drawer: NavDrawer(),
       body: SafeArea(

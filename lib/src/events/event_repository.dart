@@ -30,6 +30,11 @@ class EventRepository {
     return events.firstWhereOrNull((k) => k.id == id);
   }
 
+  Future<List<Event>> fetchAllForKid(final String kidId) async {
+    final events = await fetchAll();
+    return events.where((e) => e.kidId == kidId).toList();
+  }
+
   Future<DiaperEvent> createDiaperEvent(final DiaperEventInput input) async {
     final events = await fetchAll();
 

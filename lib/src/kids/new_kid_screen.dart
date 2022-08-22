@@ -104,7 +104,9 @@ class NewKidScreen extends ConsumerWidget {
                                   form.control('birthDate').value as DateTime,
                             ),
                           );
-                          ref.invalidate(kidsProvider);
+                          ref
+                            ..invalidate(kidsProvider)
+                            ..invalidate(selectedKidProvider);
                           context.pop();
                         } else {
                           form.markAllAsTouched();

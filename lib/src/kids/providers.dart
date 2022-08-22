@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'kid.dart';
@@ -13,15 +14,8 @@ final kidsProvider = FutureProvider.autoDispose((ref) async {
 
   final kids = await repo.fetchAll();
 
-  // this should be remote state...
-  // but for now, we'll just use local state
-  if (kids.isEmpty) {
-    selectedKid.state = null;
-  } else if (!kids.contains(selectedKid.state)) {
-    selectedKid.state = kids.first;
-  } else {
-    // do nothing because the kid is already selected
-  }
+  final currentKid = kids.firstWhereOrNull((k) => k.isCurrent);
+  selectedKid.state = currentKid;
 
   return kids;
 });
