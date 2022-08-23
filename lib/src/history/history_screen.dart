@@ -4,6 +4,7 @@ import 'package:bebe/src/kids/kid.dart';
 import 'package:bebe/src/kids/providers.dart';
 import 'package:bebe/src/shared/drawer.dart';
 import 'package:bebe/src/shared/empty_screen.dart';
+import 'package:bebe/src/shared/extensions.dart';
 import 'package:bebe/src/shared/kid_switcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../shared/error_screen.dart';
 import '../shared/loading_screen.dart';
 
-// TODO: figure out how to make this dispos without breaking pull to refresh
+// TODO: figure out how to make this dispose without breaking pull to refresh
+// TODO: switch to a notifier approach so that dismissing can happen immediately without causing a UI error
 final _historyProvider = FutureProvider.family<List<Event>, String>(
   (ref, kidId) async {
     final repo = ref.read(eventRepositoryProvider);
@@ -134,29 +136,78 @@ class _EventList extends ConsumerWidget {
   }
 }
 
-class _BottleEvent extends StatelessWidget {
+class _BottleEvent extends ConsumerWidget {
   final BottleEvent event;
 
   const _BottleEvent({required this.event});
 
   @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text('Bottle'),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Dismissible(
+      key: ValueKey(event.id),
+      direction: DismissDirection.endToStart,
+      onDismissed: (direction) {
+        final repo = ref.read(eventRepositoryProvider);
+        repo.delete(event.id);
+      },
+      child: ListTile(
+        title: Text('Bottle'),
+      ),
     );
   }
 }
 
-class _DiaperEvent extends StatelessWidget {
+class _DiaperEvent extends ConsumerWidget {
   final DiaperEvent event;
 
   const _DiaperEvent({required this.event});
 
   @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text('${event.diaperType} diaper'),
-      subtitle: Text(event.createdAt.toIso8601String()),
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Dismissible(
+      key: ValueKey(event.id),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        color: Colors.red,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+      confirmDismiss: (direction) {
+        return showDialog<bool>(
+          context: context,
+          builder: (dialogContext) => AlertDialog(
+            title: const Text('Delete event?'),
+            content: const Text('This action cannot be undone.'),
+            actions: [
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () => dialogContext.closeDialog(false),
+              ),
+              TextButton(
+                child: const Text('Delete'),
+                onPressed: () => dialogContext.closeDialog(true),
+              ),
+            ],
+          ),
+        );
+      },
+      onDismissed: (direction) {
+        final repo = ref.read(eventRepositoryProvider);
+        repo.delete(event.id);
+        ref.refresh(_historyProvider(event.kidId));
+      },
+      child: ListTile(
+        title: Text('${event.diaperType} diaper'),
+        subtitle: Text(event.createdAt.toIso8601String()),
+      ),
     );
   }
 }

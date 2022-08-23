@@ -11,7 +11,7 @@ extension MapExtensions<K, V> on Map<K, V> {
 }
 
 extension DialogExtensions on BuildContext {
-  void closeDialog() {
-    Navigator.of(this).pop();
+  void closeDialog<T extends Object?>([T? result]) {
+    Navigator.of(this).pop(result);
   }
 }
