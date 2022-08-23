@@ -16,7 +16,7 @@ class KidSwitcherSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 120,
+      expandedHeight: 130,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: EdgeInsets.symmetric(
           vertical: 24,
@@ -49,12 +49,15 @@ class _KidSwitcherState extends ConsumerState<KidSwitcher> {
 
   late PageController _pageController;
 
+  late int _currentIndex;
+
   @override
   void initState() {
     super.initState();
+    _currentIndex =
+        kids.indexWhere((k) => k.id == ref.read(selectedKidProvider)?.id);
     _pageController = PageController(
-      initialPage:
-          kids.indexWhere((k) => k.id == ref.read(selectedKidProvider)?.id),
+      initialPage: _currentIndex,
     );
   }
 
@@ -66,56 +69,77 @@ class _KidSwitcherState extends ConsumerState<KidSwitcher> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
-      controller: _pageController,
-      onPageChanged: (value) {
-        final repo = ref.read(kidRepositoryProvider);
-        final kidToSelect = kids[value];
+    return Stack(children: [
+      PageView.builder(
+        controller: _pageController,
+        onPageChanged: (value) {
+          final repo = ref.read(kidRepositoryProvider);
+          final kidToSelect = kids[value];
 
-        repo.update(kidToSelect.copyWith(isCurrent: true));
-        ref.read(selectedKidProvider.notifier).state = kidToSelect;
-        ref.invalidate(kidsProvider);
-      },
-      findChildIndexCallback: (key) => kids.indexWhere(
-        (kid) => kid.id == (key as ValueKey<String>).value,
-      ),
-      itemCount: kids.length,
-      itemBuilder: (context, index) {
-        final kid = kids[index];
-        return Center(
-          key: ValueKey(kid.id),
-          child: Flex(
-            direction: Axis.horizontal,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      ref.read(editingKidProvider.notifier).state = kid;
-                      context.push(EditKidScreen.route);
-                    },
-                    style: TextButton.styleFrom(
-                      primary: Colors.white,
+          repo.update(kidToSelect.copyWith(isCurrent: true));
+          ref.read(selectedKidProvider.notifier).state = kidToSelect;
+          ref.invalidate(kidsProvider);
+          setState(() => _currentIndex = value);
+        },
+        findChildIndexCallback: (key) => kids.indexWhere(
+          (kid) => kid.id == (key as ValueKey<String>).value,
+        ),
+        itemCount: kids.length,
+        itemBuilder: (context, index) {
+          final kid = kids[index];
+          return Center(
+            key: ValueKey(kid.id),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        ref.read(editingKidProvider.notifier).state = kid;
+                        context.push(EditKidScreen.route);
+                      },
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                      ),
+                      child: Text(
+                        kid.name,
+                        textScaleFactor: 1.3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    child: Text(
-                      kid.name,
-                      textScaleFactor: 1.3,
+                    Text(
+                      kid.toPrettyAge(),
+                      textScaleFactor: 0.5,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Text(
-                    kid.toPrettyAge(),
-                    textScaleFactor: 0.5,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+      Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List<Widget>.generate(
+            kids.length,
+            (index) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: CircleAvatar(
+                radius: 4,
+                backgroundColor: index == _currentIndex
+                    ? Colors.white
+                    : Colors.grey.shade400,
               ),
-            ],
+            ),
           ),
-        );
-      },
-    );
+        ),
+      ),
+    ]);
   }
 }
