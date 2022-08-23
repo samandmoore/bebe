@@ -104,7 +104,7 @@ class _EventList extends ConsumerWidget {
 
     return events.when(
       loading: () => const SliverToBoxAdapter(
-        child: Loading(),
+        child: LoadingIndicator(),
       ),
       error: (error, stackTrace) => SliverToBoxAdapter(
         child: ErrorView(error: error, stackTrace: stackTrace),

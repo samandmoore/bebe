@@ -9,20 +9,25 @@ class LoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Loading(),
+      body: LoadingIndicator(),
     );
   }
 }
 
-class Loading extends StatelessWidget {
-  const Loading({
+class LoadingIndicator extends StatelessWidget {
+  const LoadingIndicator({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: CupertinoActivityIndicator(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.0),
+        child: CupertinoActivityIndicator(
+          radius: 14.0,
+        ),
+      ),
     );
   }
 }

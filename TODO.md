@@ -1,4 +1,9 @@
-- [ ] edit diaper event
+- [ ] filter events on history screen
+- [ ] change date on history screen
+- [ ] delete event on history screen
+- [ ] pull to refresh track screen
+- [ ] pull to refresh kids settings screen
+- [ ] edit diaper event (with delete)
 - [ ] show latest event of each type on track screen (for current kid)
-- [ ] show history for specific kid
+- [ ] totals screen
 - [ ] save liquid unit settings
