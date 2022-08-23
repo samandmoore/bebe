@@ -16,13 +16,9 @@ class KidSwitcherSliverAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 130,
+      expandedHeight: 120,
       flexibleSpace: FlexibleSpaceBar(
-        titlePadding: EdgeInsets.symmetric(
-          vertical: 24,
-          horizontal: 64,
-        ),
-        title: SafeArea(
+        background: SafeArea(
           child: KidSwitcher(
             kids: kids,
           ),
@@ -104,13 +100,14 @@ class _KidSwitcherState extends ConsumerState<KidSwitcher> {
                       ),
                       child: Text(
                         kid.name,
-                        textScaleFactor: 1.3,
+                        textScaleFactor: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Text(
                       kid.toPrettyAge(),
-                      textScaleFactor: 0.5,
+                      style: TextStyle(color: Colors.white),
+                      textScaleFactor: 1.2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
@@ -129,7 +126,7 @@ class _KidSwitcherState extends ConsumerState<KidSwitcher> {
           children: List<Widget>.generate(
             kids.length,
             (index) => Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 16),
               child: CircleAvatar(
                 radius: 4,
                 backgroundColor: index == _currentIndex

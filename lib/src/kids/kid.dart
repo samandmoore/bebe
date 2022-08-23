@@ -19,16 +19,49 @@ class Kid with _$Kid {
     final now = DateTime.now();
     final age = now.difference(birthDate);
     final months = (age.inDays ~/ 30) % 12;
+    final years = (age.inDays ~/ 30) ~/ 12;
     final days = age.inDays % 30;
 
-    if (months >= 12) {
-      return '${months ~/ 12} years';
+    if (years >= 1) {
+      final builder = StringBuffer();
+      builder.write(formatYears(years));
+      if (months > 0) {
+        builder.write(', ');
+        builder.write(formatMonths(months));
+      }
+      return builder.toString();
     }
 
-    return '$months months, $days days';
+    if (months >= 1) {
+      final builder = StringBuffer();
+      builder.write(formatMonths(months));
+      if (days > 0) {
+        builder.write(', ');
+        builder.write(formatDays(days));
+      }
+      return builder.toString();
+    }
+
+    return formatDays(days);
   }
 
   factory Kid.fromJson(Map<String, Object?> json) => _$KidFromJson(json);
+}
+
+String formatYears(int amount) {
+  return formatForPlural(amount, 'year', 'years');
+}
+
+String formatMonths(int amount) {
+  return formatForPlural(amount, 'month', 'months');
+}
+
+String formatDays(int amount) {
+  return formatForPlural(amount, 'day', 'days');
+}
+
+String formatForPlural(int amount, String singular, String plural) {
+  return '$amount ${amount > 1 ? plural : singular}';
 }
 
 class KidInput extends Equatable {
