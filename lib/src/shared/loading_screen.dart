@@ -15,17 +15,21 @@ class LoadingScreen extends StatelessWidget {
 }
 
 class LoadingIndicator extends StatelessWidget {
+  final Color? color;
+
   const LoadingIndicator({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: CupertinoActivityIndicator(
           radius: 14.0,
+          color: color,
         ),
       ),
     );

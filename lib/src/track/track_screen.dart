@@ -44,7 +44,7 @@ class _TrackScreen extends ConsumerWidget {
       drawer: const NavDrawer(),
       body: CustomScrollView(
         slivers: [
-          KidSwitcherSliverAppBar(kids: kids),
+          const KidSwitcherSliverAppBar(),
           SliverList(
             delegate: SliverChildListDelegate.fixed([
               Consumer(builder: (_, ref, __) {

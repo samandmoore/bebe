@@ -80,14 +80,14 @@ class _HistoryScreen extends ConsumerWidget {
       drawer: const NavDrawer(),
       body: CustomScrollView(
         slivers: [
-          KidSwitcherSliverAppBar(kids: kids),
+          const KidSwitcherSliverAppBar(),
           CupertinoSliverRefreshControl(
             onRefresh: () async {
               final selectedKid = ref.read(selectedKidProvider);
               return ref.refresh(_historyProvider(selectedKid!.id).future);
             },
           ),
-          _EventList(kids: kids),
+          const _EventList(),
         ],
       ),
     );
@@ -95,9 +95,7 @@ class _HistoryScreen extends ConsumerWidget {
 }
 
 class _EventList extends ConsumerWidget {
-  final List<Kid> kids;
-
-  const _EventList({super.key, required this.kids});
+  const _EventList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

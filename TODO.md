@@ -1,6 +1,6 @@
 - [ ] filter events on history screen
 - [ ] change date on history screen
-- [ ] delete event on history screen
+- [ ] fix bugs in delete event on history screen
 - [ ] pull to refresh track screen
 - [ ] pull to refresh kids settings screen
 - [ ] edit diaper event (with delete)
