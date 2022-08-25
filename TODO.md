@@ -1,4 +1,3 @@
-- [ ] show submitting on add/edit diaper screen
 - [ ] edit diaper event (with delete)
 - [ ] fix bugs in delete event on history screen (use notifier)
 - [ ] add/edit bottle screen
@@ -6,6 +5,7 @@
 - [ ] refresh track screen after event change
 - [ ] filter events on history screen
 - [ ] change date on history screen
+- [ ] refactor kid add/edit screen to use notifier like diaper events
 - [ ] pull to refresh kids settings screen
 - [ ] totals screen
 - [ ] save liquid unit settings
