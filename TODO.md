@@ -1,4 +1,3 @@
-- [ ] fix bugs in delete event on history screen (use notifier)
 - [ ] edit diaper event (with delete)
 - [ ] add/edit bottle screen
 - [ ] add/edit sleep screen
