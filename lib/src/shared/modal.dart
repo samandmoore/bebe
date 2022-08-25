@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 
+// Taken from https://github.com/fzyzcjy/flutter_portal/blob/86b189bcb5faa00bd6f65faa10ea8797473e4f9b/example/lib/modal.dart
 class Modal extends StatelessWidget {
   const Modal({
     Key? key,
