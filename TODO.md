@@ -1,5 +1,5 @@
-- [ ] edit diaper event (with delete)
 - [ ] fix bugs in delete event on history screen (use notifier)
+- [ ] edit diaper event (with delete)
 - [ ] add/edit bottle screen
 - [ ] add/edit sleep screen
 - [ ] refresh track screen after event change

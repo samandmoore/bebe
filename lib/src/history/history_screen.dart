@@ -12,12 +12,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// TODO: figure out how to make this dispose without breaking pull to refresh
-// TODO: switch to a notifier approach so that dismissing can happen immediately without causing a UI error
-final _historyProvider = FutureProvider.family<List<Event>, String>(
-  (ref, kidId) async {
+class HistoryNotifier extends StateNotifier<AsyncValue<List<Event>>> {
+  final Ref ref;
+  final String kidId;
+
+  HistoryNotifier(this.ref, this.kidId) : super(const AsyncValue.loading()) {
+    fetch();
+  }
+
+  Future<void> fetch() async {
     final repo = ref.read(eventRepositoryProvider);
-    return repo.fetchAllForKid(kidId);
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() => repo.fetchAllForKid(kidId));
+  }
+
+  Future<void> delete(String id) async {
+    final repo = ref.read(eventRepositoryProvider);
+    await repo.delete(id);
+    state = state.whenData((value) => value.where((e) => e.id != id).toList());
+  }
+}
+
+final historyProvider = StateNotifierProvider.family<HistoryNotifier,
+    AsyncValue<List<Event>>, String>(
+  (ref, kidId) {
+    return HistoryNotifier(ref, kidId);
   },
 );
 
@@ -82,7 +101,9 @@ class _HistoryScreen extends ConsumerWidget {
           CupertinoSliverRefreshControl(
             onRefresh: () async {
               final selectedKid = ref.read(selectedKidProvider);
-              return ref.refresh(_historyProvider(selectedKid!.id).future);
+              return ref
+                  .read(historyProvider(selectedKid!.id).notifier)
+                  .fetch();
             },
           ),
           const _EventList(),
@@ -98,7 +119,7 @@ class _EventList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedKid = ref.watch(selectedKidProvider);
-    final events = ref.watch(_historyProvider(selectedKid!.id));
+    final events = ref.watch(historyProvider(selectedKid!.id));
 
     return events.when(
       loading: () => const SliverLoadingIndicator(),
@@ -126,27 +147,6 @@ class _EventList extends ConsumerWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _BottleEvent extends ConsumerWidget {
-  final BottleEvent event;
-
-  const _BottleEvent({required this.event});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Dismissible(
-      key: ValueKey(event.id),
-      direction: DismissDirection.endToStart,
-      onDismissed: (direction) {
-        final repo = ref.read(eventRepositoryProvider);
-        repo.delete(event.id);
-      },
-      child: ListTile(
-        title: Text('Bottle'),
-      ),
     );
   }
 }
@@ -196,12 +196,24 @@ class _DiaperEvent extends ConsumerWidget {
       onDismissed: (direction) {
         final repo = ref.read(eventRepositoryProvider);
         repo.delete(event.id);
-        ref.refresh(_historyProvider(event.kidId));
       },
       child: ListTile(
         title: Text('${event.diaperType} diaper'),
         subtitle: Text(event.createdAt.toIso8601String()),
       ),
+    );
+  }
+}
+
+class _BottleEvent extends ConsumerWidget {
+  final BottleEvent event;
+
+  const _BottleEvent({required this.event});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ListTile(
+      title: Text('Bottle'),
     );
   }
 }
