@@ -4,21 +4,19 @@ import 'package:bebe/src/kids/kid.dart';
 import 'package:bebe/src/kids/providers.dart';
 import 'package:bebe/src/shared/drawer.dart';
 import 'package:bebe/src/shared/empty_screen.dart';
+import 'package:bebe/src/shared/error_screen.dart';
 import 'package:bebe/src/shared/extensions.dart';
 import 'package:bebe/src/shared/kid_switcher.dart';
+import 'package:bebe/src/shared/loading_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../shared/error_screen.dart';
-import '../shared/loading_screen.dart';
 
 // TODO: figure out how to make this dispose without breaking pull to refresh
 // TODO: switch to a notifier approach so that dismissing can happen immediately without causing a UI error
 final _historyProvider = FutureProvider.family<List<Event>, String>(
   (ref, kidId) async {
     final repo = ref.read(eventRepositoryProvider);
-    await Future<void>.delayed(const Duration(seconds: 1));
     return repo.fetchAllForKid(kidId);
   },
 );
@@ -103,9 +101,7 @@ class _EventList extends ConsumerWidget {
     final events = ref.watch(_historyProvider(selectedKid!.id));
 
     return events.when(
-      loading: () => const SliverToBoxAdapter(
-        child: LoadingIndicator(),
-      ),
+      loading: () => const SliverLoadingIndicator(),
       error: (error, stackTrace) => SliverToBoxAdapter(
         child: ErrorView(error: error, stackTrace: stackTrace),
       ),
@@ -167,10 +163,10 @@ class _DiaperEvent extends ConsumerWidget {
       direction: DismissDirection.endToStart,
       background: Container(
         color: Colors.red,
-        child: Align(
+        child: const Align(
           alignment: Alignment.centerRight,
           child: Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: EdgeInsets.only(right: 16.0),
             child: Icon(
               Icons.delete,
               color: Colors.white,

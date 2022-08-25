@@ -5,6 +5,20 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'event.freezed.dart';
 part 'event.g.dart';
 
+enum EventType {
+  bottle,
+  diaper,
+  sleep,
+}
+
+extension EventExtensions on Event {
+  EventType get eventType => map(
+        bottle: (_) => EventType.bottle,
+        diaper: (_) => EventType.diaper,
+        sleep: (_) => EventType.sleep,
+      );
+}
+
 @freezed
 class Event with _$Event {
   const factory Event.bottle({

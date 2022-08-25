@@ -1,3 +1,4 @@
+import 'package:bebe/src/shared/jitter.dart';
 import 'package:bebe/src/storage/storage.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,8 @@ class EventRepository {
   LocalStorage get _storage => ref.read(storageProvider);
 
   Future<List<Event>> fetchAll() async {
+    await jitter();
+
     final data = await _storage.load(_storageKey);
 
     if (data == null) {
@@ -33,6 +36,22 @@ class EventRepository {
   Future<List<Event>> fetchAllForKid(final String kidId) async {
     final events = await fetchAll();
     return events.where((e) => e.kidId == kidId).toList();
+  }
+
+  Future<Map<EventType, Event?>> getLatestByTypes(
+    final String kidId,
+    List<EventType> eventTypes,
+  ) async {
+    final all = await fetchAllForKid(kidId);
+    final grouped = all.groupListsBy((e) => e.eventType);
+    final sorted = grouped
+        .map((key, value) => MapEntry(key, value..sortBy((e) => e.createdAt)));
+
+    return Map.fromEntries(
+      eventTypes.map(
+        (eventType) => MapEntry(eventType, sorted[eventType]?.first),
+      ),
+    );
   }
 
   Future<DiaperEvent> createDiaperEvent(final DiaperEventInput input) async {

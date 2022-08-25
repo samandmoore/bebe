@@ -35,3 +35,14 @@ class LoadingIndicator extends StatelessWidget {
     );
   }
 }
+
+class SliverLoadingIndicator extends StatelessWidget {
+  const SliverLoadingIndicator({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SliverToBoxAdapter(
+      child: LoadingIndicator(),
+    );
+  }
+}

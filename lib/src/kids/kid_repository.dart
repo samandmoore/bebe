@@ -1,3 +1,4 @@
+import 'package:bebe/src/shared/jitter.dart';
 import 'package:bebe/src/storage/storage.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +16,8 @@ class KidRepository {
   LocalStorage get _storage => ref.read(storageProvider);
 
   Future<List<Kid>> fetchAll() async {
+    await jitter();
+
     final data = await _storage.load(_storageKey);
 
     if (data == null) {
