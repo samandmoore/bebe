@@ -36,7 +36,7 @@ class KidSwitcher extends ConsumerWidget {
         kids: kids,
       );
     }
-    return const LoadingIndicator(color: Colors.white);
+    return LoadingIndicator.white();
   }
 }
 

@@ -22,6 +22,9 @@ class LoadingIndicator extends StatelessWidget {
     this.color,
   });
 
+  factory LoadingIndicator.white() =>
+      const LoadingIndicator(color: Colors.white);
+
   @override
   Widget build(BuildContext context) {
     return Center(
