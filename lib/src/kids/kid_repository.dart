@@ -1,10 +1,9 @@
+import 'package:bebe/src/kids/kid.dart';
 import 'package:bebe/src/shared/jitter.dart';
 import 'package:bebe/src/storage/storage.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
-
-import 'kid.dart';
 
 class KidRepository {
   final String _storageKey = 'kids';

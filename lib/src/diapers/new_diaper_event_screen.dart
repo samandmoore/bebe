@@ -2,6 +2,7 @@ import 'package:bebe/src/events/event.dart';
 import 'package:bebe/src/events/providers.dart';
 import 'package:bebe/src/kids/providers.dart';
 import 'package:bebe/src/shared/extensions.dart';
+import 'package:bebe/src/shared/layout.dart';
 import 'package:bebe/src/shared/loading_screen.dart';
 import 'package:bebe/src/shared/modal.dart';
 import 'package:equatable/equatable.dart';
@@ -9,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-
-import '../shared/layout.dart';
 
 class DiaperEventState extends Equatable {
   final AsyncValue<DiaperEvent?> result;

@@ -1,12 +1,11 @@
+import 'package:bebe/src/kids/kid.dart';
 import 'package:bebe/src/kids/providers.dart';
+import 'package:bebe/src/shared/extensions.dart';
 import 'package:bebe/src/shared/layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-
-import '../shared/extensions.dart';
-import 'kid.dart';
 
 final _formProvider = Provider.autoDispose(
   (_) => FormGroup({

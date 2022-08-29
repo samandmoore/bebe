@@ -1,9 +1,8 @@
+import 'package:bebe/src/history/history_screen.dart';
+import 'package:bebe/src/settings/settings_screen.dart';
+import 'package:bebe/src/track/track_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../history/history_screen.dart';
-import '../settings/settings_screen.dart';
-import '../track/track_screen.dart';
 
 class NavDrawer extends StatelessWidget {
   const NavDrawer({super.key});

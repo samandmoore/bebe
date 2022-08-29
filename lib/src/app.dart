@@ -1,17 +1,16 @@
+import 'package:bebe/src/diapers/new_diaper_event_screen.dart';
 import 'package:bebe/src/history/history_screen.dart';
+import 'package:bebe/src/kids/edit_kid_screen.dart';
+import 'package:bebe/src/kids/new_kid_screen.dart';
 import 'package:bebe/src/settings/kids_screen.dart';
+import 'package:bebe/src/settings/settings_screen.dart';
+import 'package:bebe/src/settings/units_screen.dart';
+import 'package:bebe/src/track/track_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:go_router/go_router.dart';
-
-import 'diapers/new_diaper_event_screen.dart';
-import 'kids/edit_kid_screen.dart';
-import 'kids/new_kid_screen.dart';
-import 'settings/settings_screen.dart';
-import 'settings/units_screen.dart';
-import 'track/track_screen.dart';
 
 class App extends StatelessWidget {
   App({super.key});

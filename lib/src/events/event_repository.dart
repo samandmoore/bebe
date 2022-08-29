@@ -1,10 +1,9 @@
+import 'package:bebe/src/events/event.dart';
 import 'package:bebe/src/shared/jitter.dart';
 import 'package:bebe/src/storage/storage.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
-
-import 'event.dart';
 
 class EventRepository {
   final String _storageKey = 'events';
