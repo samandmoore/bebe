@@ -1,6 +1,8 @@
 - [ ] edit diaper event (with delete)
 - [ ] add/edit bottle screen
 - [ ] add/edit sleep screen
+- [ ] show ongoing sleep events on track screen
+- [ ] add edit vs new actions from track screen
 - [ ] refresh track screen after event change
 - [ ] filter events on history screen
 - [ ] change date on history screen
@@ -8,3 +10,6 @@
 - [ ] pull to refresh kids settings screen
 - [ ] totals screen
 - [ ] save liquid unit settings
+- [ ] log in with google/apple (requires backend)
+- [ ] pagination for history screen
+- [ ] implement http-backed repositories
