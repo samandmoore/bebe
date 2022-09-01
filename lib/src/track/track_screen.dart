@@ -8,6 +8,7 @@ import 'package:bebe/src/shared/empty_screen.dart';
 import 'package:bebe/src/shared/error_screen.dart';
 import 'package:bebe/src/shared/kid_switcher.dart';
 import 'package:bebe/src/shared/loading_screen.dart';
+import 'package:bebe/src/shared/time_ago.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -135,7 +136,7 @@ class DiaperActionTile extends StatelessWidget {
           Text('Diaper', textScaleFactor: 1.3),
         ],
       ),
-      subtitle: Text(action.latestEvent?.createdAt.toString() ?? 'None'),
+      subtitle: TimeAgo(action.latestEvent?.createdAt),
       onTap: () {
         context.push(NewDiaperEventScreen.route);
       },
@@ -158,7 +159,7 @@ class BottleActionTile extends StatelessWidget {
           Text('Bottle', textScaleFactor: 1.3),
         ],
       ),
-      subtitle: Text(action.latestEvent?.createdAt.toString() ?? 'None'),
+      subtitle: TimeAgo(action.latestEvent?.createdAt),
       onTap: () {},
     );
   }
@@ -179,7 +180,7 @@ class SleepActionTile extends StatelessWidget {
           Text('Sleep', textScaleFactor: 1.3),
         ],
       ),
-      subtitle: Text(action.latestEvent?.createdAt.toString() ?? 'None'),
+      subtitle: TimeAgo(action.latestEvent?.createdAt),
       onTap: () {},
     );
   }

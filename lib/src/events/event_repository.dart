@@ -43,12 +43,14 @@ class EventRepository {
   ) async {
     final all = await fetchAllForKid(kidId);
     final grouped = all.groupListsBy((e) => e.eventType);
-    final sorted = grouped
-        .map((key, value) => MapEntry(key, value..sortBy((e) => e.createdAt)));
+    final sorted = grouped.map((key, value) => MapEntry(
+          key,
+          value..sortBy((e) => e.createdAt),
+        ));
 
     return Map.fromEntries(
       eventTypes.map(
-        (eventType) => MapEntry(eventType, sorted[eventType]?.first),
+        (eventType) => MapEntry(eventType, sorted[eventType]?.last),
       ),
     );
   }
