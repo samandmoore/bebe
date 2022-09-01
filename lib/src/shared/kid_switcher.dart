@@ -62,8 +62,7 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
   @override
   void initState() {
     super.initState();
-    _currentIndex =
-        kids.indexWhere((k) => k.id == ref.read(selectedKidProvider)?.id);
+    _currentIndex = kids.indexWhere((k) => k.isCurrent);
     _pageController = PageController(
       initialPage: _currentIndex,
     );
@@ -81,13 +80,13 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
       children: [
         PageView.builder(
           controller: _pageController,
-          onPageChanged: (value) {
+          onPageChanged: (value) async {
             final repo = ref.read(kidRepositoryProvider);
             final kidToSelect = kids[value];
 
             repo.update(kidToSelect.copyWith(isCurrent: true));
-            ref.read(selectedKidProvider.notifier).state = kidToSelect;
             ref.invalidate(kidsProvider);
+
             setState(() => _currentIndex = value);
           },
           findChildIndexCallback: (key) => kids.indexWhere(
