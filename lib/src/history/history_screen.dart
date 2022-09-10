@@ -100,8 +100,8 @@ class _HistoryScreen extends ConsumerWidget {
           const KidSwitcherSliverAppBar(),
           CupertinoSliverRefreshControl(
             onRefresh: () async {
-              final selectedKid = await ref.read(selectedKidProvider.future);
-              return ref.read(historyProvider(selectedKid.id).notifier).fetch();
+              final currentKid = await ref.read(currentKidProvider.future);
+              return ref.read(historyProvider(currentKid.id).notifier).fetch();
             },
           ),
           const _EventList(),
@@ -116,13 +116,13 @@ class _EventList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedKidAsync = ref.watch(selectedKidProvider);
+    final currentKidAsync = ref.watch(currentKidProvider);
 
-    if (selectedKidAsync.isLoading) {
+    if (currentKidAsync.isLoading) {
       return const SliverLoadingIndicator();
     }
 
-    final events = ref.watch(historyProvider(selectedKidAsync.value!.id));
+    final events = ref.watch(historyProvider(currentKidAsync.value!.id));
 
     return events.when(
       loading: () => const SliverLoadingIndicator(),

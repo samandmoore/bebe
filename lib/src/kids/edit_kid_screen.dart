@@ -7,20 +7,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-final _formProvider = Provider.autoDispose((ref) {
-  final selectedKid = ref.watch(editingKidProvider);
+final _formProvider = Provider.autoDispose(
+  (ref) {
+    final editingKid = ref.watch(editingKidProvider);
 
-  return FormGroup({
-    'name': FormControl<String>(
-      validators: [Validators.required],
-      value: selectedKid?.name,
-    ),
-    'birthDate': FormControl<DateTime>(
-      validators: [Validators.required],
-      value: selectedKid?.birthDate,
-    ),
-  });
-});
+    return FormGroup({
+      'name': FormControl<String>(
+        validators: [Validators.required],
+        value: editingKid?.name,
+      ),
+      'birthDate': FormControl<DateTime>(
+        validators: [Validators.required],
+        value: editingKid?.birthDate,
+      ),
+    });
+  },
+  dependencies: [editingKidProvider],
+);
 
 class EditKidScreen extends ConsumerWidget {
   static const route = '/kids/edit';
@@ -29,7 +32,7 @@ class EditKidScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final kid = ref.watch(editingKidProvider);
+    final kid = ref.watch(editingKidProvider)!;
     final form = ref.watch(_formProvider);
 
     return Scaffold(
@@ -116,7 +119,7 @@ class EditKidScreen extends ConsumerWidget {
                                   onPressed: () {
                                     ref
                                         .read(kidRepositoryProvider)
-                                        .delete(kid!.id);
+                                        .delete(kid.id);
                                     ref.invalidate(kidsProvider);
 
                                     ScaffoldMessenger.of(context)
@@ -146,7 +149,7 @@ class EditKidScreen extends ConsumerWidget {
                           final repo = ref.read(kidRepositoryProvider);
                           repo.update(
                             Kid(
-                              id: kid!.id,
+                              id: kid.id,
                               name: form.control('name').value as String,
                               birthDate:
                                   form.control('birthDate').value as DateTime,

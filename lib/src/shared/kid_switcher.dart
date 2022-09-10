@@ -104,8 +104,7 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          ref.read(editingKidProvider.notifier).state = kid;
-                          context.push(EditKidScreen.route);
+                          context.push(EditKidScreen.route, extra: kid);
                         },
                         style: TextButton.styleFrom(
                           primary: Colors.white,

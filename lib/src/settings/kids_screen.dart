@@ -52,8 +52,7 @@ class _KidsScreen extends ConsumerWidget {
                 ),
                 subtitle: Text(kid.toString()),
                 onTap: () {
-                  ref.read(editingKidProvider.notifier).state = kid;
-                  context.push(EditKidScreen.route);
+                  context.push(EditKidScreen.route, extra: kid);
                 },
               ),
             TextButton(

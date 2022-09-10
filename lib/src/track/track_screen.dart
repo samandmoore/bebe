@@ -71,8 +71,8 @@ class _TrackScreen extends ConsumerWidget {
           KidSwitcherSliverAppBar(),
           CupertinoSliverRefreshControl(
             onRefresh: () async {
-              final selectedKid = await ref.read(selectedKidProvider.future);
-              return ref.refresh(actionProvider(selectedKid.id).future);
+              final currentKid = await ref.read(currentKidProvider.future);
+              return ref.refresh(actionProvider(currentKid.id).future);
             },
           ),
           ActionsList(),
@@ -87,13 +87,13 @@ class ActionsList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedKidAsync = ref.watch(selectedKidProvider);
+    final currentKidAsync = ref.watch(currentKidProvider);
 
-    if (selectedKidAsync.isLoading) {
+    if (currentKidAsync.isLoading) {
       return const SliverLoadingIndicator();
     }
 
-    final actionsAsync = ref.watch(actionProvider(selectedKidAsync.value!.id));
+    final actionsAsync = ref.watch(actionProvider(currentKidAsync.value!.id));
     if (actionsAsync.isLoading && !actionsAsync.isRefreshing) {
       return const SliverLoadingIndicator();
     }

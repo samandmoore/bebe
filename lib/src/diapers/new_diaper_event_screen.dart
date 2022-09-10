@@ -41,11 +41,11 @@ class DiaperEventNotifier extends StateNotifier<DiaperEventState> {
       return;
     }
 
-    final selectedKid = await ref.read(selectedKidProvider.future);
+    final currentKid = await ref.read(currentKidProvider.future);
 
     final repo = ref.read(eventRepositoryProvider);
     final input = DiaperEventInput(
-      kidId: selectedKid.id,
+      kidId: currentKid.id,
       diaperType: form.value['diaperType'] as DiaperType,
       createdAt: form.value['createdAt'] as DateTime,
     );
