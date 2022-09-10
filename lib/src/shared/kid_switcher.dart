@@ -53,25 +53,35 @@ class KidSwitcherLoaded extends ConsumerStatefulWidget {
 }
 
 class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
-  late List<Kid> kids = widget.kids..sort((a, b) => a.name.compareTo(b.name));
-
+  late List<Kid> kids;
   late PageController _pageController;
-
   late int _currentIndex;
 
   @override
   void initState() {
     super.initState();
+    _setupKids();
     _currentIndex = kids.indexWhere((k) => k.isCurrent);
-    _pageController = PageController(
-      initialPage: _currentIndex,
-    );
+    _pageController = PageController(initialPage: _currentIndex);
   }
 
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(KidSwitcherLoaded oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.kids != widget.kids) {
+      _setupKids();
+      _pageController.jumpToPage(_currentIndex);
+    }
+  }
+
+  void _setupKids() {
+    kids = widget.kids..sort((a, b) => a.name.compareTo(b.name));
   }
 
   @override
