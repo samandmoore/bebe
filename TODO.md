@@ -3,7 +3,6 @@
 - [ ] add/edit sleep screen
 - [ ] show ongoing sleep events on track screen
 - [ ] support edit AND new actions from track screen
-- [ ] refresh track screen after event change
 - [ ] pagination for history screen
 - [ ] filter events on history screen
 - [ ] change date on history screen

@@ -94,10 +94,9 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
             final repo = ref.read(kidRepositoryProvider);
             final kidToSelect = kids[value];
 
-            repo.update(kidToSelect.copyWith(isCurrent: true));
-            ref.invalidate(kidsProvider);
-
             setState(() => _currentIndex = value);
+            await repo.update(kidToSelect.copyWith(isCurrent: true));
+            ref.invalidate(kidsProvider);
           },
           findChildIndexCallback: (key) => kids.indexWhere(
             (kid) => kid.id == (key as ValueKey<String>).value,

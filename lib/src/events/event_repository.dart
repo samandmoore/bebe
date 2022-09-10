@@ -1,4 +1,5 @@
 import 'package:bebe/src/events/event.dart';
+import 'package:bebe/src/events/providers.dart';
 import 'package:bebe/src/shared/jitter.dart';
 import 'package:bebe/src/storage/storage.dart';
 import 'package:collection/collection.dart';
@@ -70,8 +71,7 @@ class EventRepository {
       newDiaperEvent,
     ];
 
-    await _storage.save(_storageKey, newEvents);
-
+    await _saveChanges(newEvents);
     return newDiaperEvent;
   }
 
@@ -80,6 +80,15 @@ class EventRepository {
 
     final newEvents = events.where((k) => k.id != id).toList();
 
+    await _saveChanges(newEvents);
+  }
+
+  Future<void> _saveChanges(List<Event> newEvents) async {
     await _storage.save(_storageKey, newEvents);
+    _onChange();
+  }
+
+  void _onChange() {
+    ref.read(eventChangeProvider.notifier).state++;
   }
 }

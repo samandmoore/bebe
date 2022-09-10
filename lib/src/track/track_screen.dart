@@ -9,12 +9,13 @@ import 'package:bebe/src/shared/error_screen.dart';
 import 'package:bebe/src/shared/kid_switcher.dart';
 import 'package:bebe/src/shared/loading_screen.dart';
 import 'package:bebe/src/shared/time_ago.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class Action {
+class Action extends Equatable {
   final EventType type;
   final Event? latestEvent;
 
@@ -22,10 +23,14 @@ class Action {
     required this.type,
     required this.latestEvent,
   });
+
+  @override
+  List<Object?> get props => [type, latestEvent];
 }
 
 final actionProvider = FutureProvider.family<List<Action>, String>(
   (ref, kidId) async {
+    final _ = ref.watch(eventChangeProvider);
     final repo = ref.read(eventRepositoryProvider);
     final events = await repo.getLatestByTypes(kidId, EventType.values);
     return events.entries

@@ -16,7 +16,8 @@ final kidsProvider = FutureProvider.autoDispose((ref) async {
 
 final currentKidProvider = FutureProvider.autoDispose((ref) async {
   final kids = await ref.watch(kidsProvider.future);
-  return kids.firstWhere((k) => k.isCurrent);
+  final kid = kids.firstWhere((k) => k.isCurrent);
+  return kid;
 });
 
 final editingKidProvider = Provider<Kid?>((_) => null);
