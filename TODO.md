@@ -1,9 +1,8 @@
-- [ ] refactor kid add/edit screen to use notifier like diaper events
 - [ ] edit diaper event (with delete)
 - [ ] add/edit bottle screen
 - [ ] add/edit sleep screen
 - [ ] show ongoing sleep events on track screen
-- [ ] add edit vs new actions from track screen
+- [ ] support edit AND new actions from track screen
 - [ ] refresh track screen after event change
 - [ ] pagination for history screen
 - [ ] filter events on history screen
