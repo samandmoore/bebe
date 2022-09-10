@@ -1,15 +1,15 @@
+- [ ] refactor kid add/edit screen to use notifier like diaper events
 - [ ] edit diaper event (with delete)
 - [ ] add/edit bottle screen
 - [ ] add/edit sleep screen
 - [ ] show ongoing sleep events on track screen
 - [ ] add edit vs new actions from track screen
 - [ ] refresh track screen after event change
+- [ ] pagination for history screen
 - [ ] filter events on history screen
 - [ ] change date on history screen
-- [ ] refactor kid add/edit screen to use notifier like diaper events
 - [ ] pull to refresh kids settings screen
 - [ ] totals screen
 - [ ] save liquid unit settings
 - [ ] log in with google/apple (requires backend)
-- [ ] pagination for history screen
 - [ ] implement http-backed repositories
