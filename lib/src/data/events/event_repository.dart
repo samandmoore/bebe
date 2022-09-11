@@ -1,5 +1,5 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/storage/storage.dart';
+import 'package:bebe/src/data/storage/storage.dart';
 import 'package:bebe/src/utilities/jitter.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';

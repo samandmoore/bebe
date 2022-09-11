@@ -1,4 +1,4 @@
-import 'package:bebe/src/storage/storage.dart';
+import 'package:bebe/src/data/storage/storage.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/settings/kids_screen.dart';
 import 'package:bebe/src/ui/settings/units_screen.dart';
