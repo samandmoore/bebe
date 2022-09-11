@@ -3,39 +3,26 @@ import 'package:bebe/src/data/kids/kid.dart';
 import 'package:bebe/src/ui/diapers/new_diaper_event_screen.dart';
 import 'package:bebe/src/ui/history/providers.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
-import 'package:bebe/src/ui/shared/drawer.dart';
-import 'package:bebe/src/ui/shared/empty_screen.dart';
-import 'package:bebe/src/ui/shared/error_screen.dart';
+import 'package:bebe/src/ui/shared/error.dart';
 import 'package:bebe/src/ui/shared/kid_switcher.dart';
-import 'package:bebe/src/ui/shared/loading_screen.dart';
+import 'package:bebe/src/ui/shared/loading.dart';
+import 'package:bebe/src/ui/shared/nav_drawer.dart';
+import 'package:bebe/src/ui/shared/no_kids_screen.dart';
 import 'package:bebe/src/ui/shared/time_ago.dart';
-import 'package:equatable/equatable.dart';
+import 'package:bebe/src/ui/track/track_action.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class Action extends Equatable {
-  final EventType type;
-  final Event? latestEvent;
-
-  const Action({
-    required this.type,
-    required this.latestEvent,
-  });
-
-  @override
-  List<Object?> get props => [type, latestEvent];
-}
-
-final actionProvider = FutureProvider.family<List<Action>, String>(
+final actionProvider = FutureProvider.family<List<TrackAction>, String>(
   (ref, kidId) async {
     final repo = ref.read(eventRepositoryProvider);
     repo.addListener(() => ref.invalidateSelf());
 
     final events = await repo.getLatestByTypes(kidId, EventType.values);
     return events.entries
-        .map((entry) => Action(type: entry.key, latestEvent: entry.value))
+        .map((entry) => TrackAction(type: entry.key, latestEvent: entry.value))
         .toList();
   },
 );
@@ -55,7 +42,7 @@ class TrackScreen extends ConsumerWidget {
           ErrorScreen(error: error, stackTrace: stackTrace),
       data: (kids) {
         if (kids.isEmpty) {
-          return const EmptyScreen();
+          return const NoKidsScreen();
         }
         return _TrackScreen(kids: kids);
       },
@@ -115,7 +102,7 @@ class ActionsList extends ConsumerWidget {
 }
 
 class ActionTile extends StatelessWidget {
-  final Action action;
+  final TrackAction action;
 
   const ActionTile({super.key, required this.action});
 
@@ -133,7 +120,7 @@ class ActionTile extends StatelessWidget {
 }
 
 class DiaperActionTile extends StatelessWidget {
-  final Action action;
+  final TrackAction action;
 
   const DiaperActionTile({super.key, required this.action});
 
@@ -156,7 +143,7 @@ class DiaperActionTile extends StatelessWidget {
 }
 
 class BottleActionTile extends StatelessWidget {
-  final Action action;
+  final TrackAction action;
 
   const BottleActionTile({super.key, required this.action});
 
@@ -177,7 +164,7 @@ class BottleActionTile extends StatelessWidget {
 }
 
 class SleepActionTile extends StatelessWidget {
-  final Action action;
+  final TrackAction action;
 
   const SleepActionTile({super.key, required this.action});
 

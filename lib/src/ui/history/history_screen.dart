@@ -1,37 +1,17 @@
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/ui/history/history_notifier.dart';
 import 'package:bebe/src/ui/history/providers.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
-import 'package:bebe/src/ui/shared/drawer.dart';
-import 'package:bebe/src/ui/shared/empty_screen.dart';
-import 'package:bebe/src/ui/shared/error_screen.dart';
+import 'package:bebe/src/ui/shared/error.dart';
 import 'package:bebe/src/ui/shared/kid_switcher.dart';
-import 'package:bebe/src/ui/shared/loading_screen.dart';
+import 'package:bebe/src/ui/shared/loading.dart';
+import 'package:bebe/src/ui/shared/nav_drawer.dart';
+import 'package:bebe/src/ui/shared/no_kids_screen.dart';
 import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-class HistoryNotifier extends StateNotifier<AsyncValue<List<Event>>> {
-  final Ref ref;
-  final String kidId;
-
-  HistoryNotifier(this.ref, this.kidId) : super(const AsyncValue.loading()) {
-    fetch();
-  }
-
-  Future<void> fetch() async {
-    final repo = ref.read(eventRepositoryProvider);
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => repo.fetchAllForKid(kidId));
-  }
-
-  Future<void> delete(String id) async {
-    final repo = ref.read(eventRepositoryProvider);
-    await repo.delete(id);
-    state = state.whenData((value) => value.where((e) => e.id != id).toList());
-  }
-}
 
 final historyProvider = StateNotifierProvider.family<HistoryNotifier,
     AsyncValue<List<Event>>, String>(
@@ -55,7 +35,7 @@ class HistoryScreen extends ConsumerWidget {
           ErrorScreen(error: error, stackTrace: stackTrace),
       data: (kids) {
         if (kids.isEmpty) {
-          return const EmptyScreen();
+          return const NoKidsScreen();
         }
         return _HistoryScreen(kids: kids);
       },

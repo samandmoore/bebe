@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
-const unit = 16.0;
+abstract class Spacing {
+  Spacing._();
+  static const unit = 16.0;
+}
 
 class VSpace extends StatelessWidget {
   const VSpace({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(height: unit);
+    return const SizedBox(height: Spacing.unit);
   }
 }
 
@@ -16,6 +19,6 @@ class HSpace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(width: unit);
+    return const SizedBox(width: Spacing.unit);
   }
 }
