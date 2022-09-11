@@ -1,4 +1,5 @@
 import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/ui/kids/delete_kid_notifier.dart';
 import 'package:bebe/src/ui/kids/edit_kid_notifier.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
@@ -10,12 +11,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-final modelProvider =
+final editKidProvider =
     StateNotifierProvider.autoDispose<EditKidNotifier, AsyncValue<Kid?>>(
   (ref) {
     final editingKid = ref.watch(editingKidProvider)!;
     return EditKidNotifier(ref, kid: editingKid);
   },
+  dependencies: [editingKidProvider, kidRepositoryProvider],
+);
+
+final deleteKidProvider =
+    StateNotifierProvider.autoDispose<DeleteKidNotifier, AsyncValue<String?>>(
+  (ref) => DeleteKidNotifier(ref, kid: ref.watch(editingKidProvider)!),
   dependencies: [editingKidProvider, kidRepositoryProvider],
 );
 
@@ -26,20 +33,38 @@ class EditKidScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final kid = ref.watch(editingKidProvider)!;
-    final form = ref.watch(modelProvider.notifier).form;
-    ref.listen<AsyncValue<Kid?>>(modelProvider, (previous, next) {
+    final form = ref.watch(editKidProvider.notifier).form;
+    final kid = ref.watch(editKidProvider.notifier).kid;
+
+    ref.listen<AsyncValue<Kid?>>(editKidProvider, (previous, next) {
       if (next.valueOrNull != null) {
         context.pop();
       }
     });
-    final isSubmitting =
-        ref.watch(modelProvider.select((value) => value.isLoading));
+    final isEditSubmitting =
+        ref.watch(editKidProvider.select((value) => value.isLoading));
+
+    final isDeleteSubmitting =
+        ref.watch(deleteKidProvider.select((value) => value.isLoading));
+
+    ref.listen<AsyncValue<String?>>(deleteKidProvider, (previous, next) {
+      if (next.valueOrNull != null) {
+        ScaffoldMessenger.of(context)
+          ..clearSnackBars()
+          ..showSnackBar(
+            SnackBar(
+              content: Text('Removed ${kid.name}.'),
+            ),
+          );
+
+        context.pop();
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Kid')),
       body: Modal(
-        visible: isSubmitting,
+        visible: isEditSubmitting || isDeleteSubmitting,
         modal: LoadingIndicator.white(),
         child: SafeArea(
           child: SingleChildScrollView(
@@ -122,22 +147,11 @@ class EditKidScreen extends ConsumerWidget {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      ref
-                                          .read(kidRepositoryProvider)
-                                          .delete(kid.id);
-                                      ref.invalidate(kidsProvider);
-
-                                      ScaffoldMessenger.of(context)
-                                        ..clearSnackBars()
-                                        ..showSnackBar(
-                                          SnackBar(
-                                            content:
-                                                Text('Removed ${kid.name}.'),
-                                          ),
-                                        );
+                                      final deleteKid =
+                                          ref.read(deleteKidProvider.notifier);
+                                      deleteKid.delete();
 
                                       dialogContext.closeDialog();
-                                      context.pop();
                                     },
                                     child: const Text('Yes'),
                                   ),
@@ -152,8 +166,8 @@ class EditKidScreen extends ConsumerWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          final model = ref.read(modelProvider.notifier);
-                          model.update();
+                          final editKid = ref.read(editKidProvider.notifier);
+                          editKid.update();
                         },
                         child: const Text('Save'),
                       ),
