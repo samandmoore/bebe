@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-final modelProvider =
+final newKidProvider =
     StateNotifierProvider.autoDispose<NewKidNotifier, AsyncValue<Kid?>>(
   (ref) => NewKidNotifier(ref),
 );
@@ -21,14 +21,14 @@ class NewKidScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final form = ref.watch(modelProvider.notifier).form;
-    ref.listen<AsyncValue<Kid?>>(modelProvider, (previous, next) {
+    final form = ref.watch(newKidProvider.notifier).form;
+    ref.listen<AsyncValue<Kid?>>(newKidProvider, (previous, next) {
       if (next.valueOrNull != null) {
         context.pop();
       }
     });
     final isSubmitting =
-        ref.watch(modelProvider.select((value) => value.isLoading));
+        ref.watch(newKidProvider.select((value) => value.isLoading));
 
     return Scaffold(
       appBar: AppBar(title: const Text('New Kid')),
@@ -101,7 +101,7 @@ class NewKidScreen extends ConsumerWidget {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          final model = ref.read(modelProvider.notifier);
+                          final model = ref.read(newKidProvider.notifier);
                           model.create();
                         },
                         child: const Text('Save'),

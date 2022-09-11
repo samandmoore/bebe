@@ -9,8 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-final modelProvider = StateNotifierProvider.autoDispose<NewDiaperEventNotifier,
-    AsyncValue<DiaperEvent?>>((ref) {
+final newDiaperEventProvider = StateNotifierProvider.autoDispose<
+    NewDiaperEventNotifier, AsyncValue<DiaperEvent?>>((ref) {
   return NewDiaperEventNotifier(ref);
 });
 
@@ -21,14 +21,15 @@ class NewDiaperEventScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final form = ref.watch(modelProvider.notifier).form;
-    ref.listen<AsyncValue<DiaperEvent?>>(modelProvider, (previous, next) {
+    final form = ref.watch(newDiaperEventProvider.notifier).form;
+    ref.listen<AsyncValue<DiaperEvent?>>(newDiaperEventProvider,
+        (previous, next) {
       if (next.valueOrNull != null) {
         context.pop();
       }
     });
     final isSubmitting =
-        ref.watch(modelProvider.select((value) => value.isLoading));
+        ref.watch(newDiaperEventProvider.select((value) => value.isLoading));
 
     return Scaffold(
       appBar: AppBar(
@@ -102,7 +103,7 @@ class NewDiaperEventScreen extends ConsumerWidget {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        final model = ref.read(modelProvider.notifier);
+                        final model = ref.read(newDiaperEventProvider.notifier);
                         model.create();
                       },
                       child: const Text('Save'),
