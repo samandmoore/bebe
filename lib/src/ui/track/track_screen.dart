@@ -1,7 +1,7 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/data/events/providers.dart';
 import 'package:bebe/src/data/kids/kid.dart';
 import 'package:bebe/src/ui/diapers/new_diaper_event_screen.dart';
+import 'package:bebe/src/ui/history/providers.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/shared/drawer.dart';
 import 'package:bebe/src/ui/shared/empty_screen.dart';
@@ -30,8 +30,9 @@ class Action extends Equatable {
 
 final actionProvider = FutureProvider.family<List<Action>, String>(
   (ref, kidId) async {
-    final _ = ref.watch(eventChangeProvider);
     final repo = ref.read(eventRepositoryProvider);
+    repo.addListener(() => ref.invalidateSelf());
+
     final events = await repo.getLatestByTypes(kidId, EventType.values);
     return events.entries
         .map((entry) => Action(type: entry.key, latestEvent: entry.value))

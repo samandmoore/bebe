@@ -1,5 +1,5 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/data/events/providers.dart';
+import 'package:bebe/src/ui/history/providers.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/shared/layout.dart';
 import 'package:bebe/src/ui/shared/loading_screen.dart';

@@ -1,6 +1,6 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/data/events/providers.dart';
 import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/ui/history/providers.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/shared/drawer.dart';
 import 'package:bebe/src/ui/shared/empty_screen.dart';

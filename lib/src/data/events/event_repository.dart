@@ -1,12 +1,12 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/data/events/providers.dart';
 import 'package:bebe/src/storage/storage.dart';
 import 'package:bebe/src/utilities/jitter.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-class EventRepository {
+class EventRepository with ChangeNotifier {
   final String _storageKey = 'events';
 
   final Ref ref;
@@ -85,10 +85,6 @@ class EventRepository {
 
   Future<void> _saveChanges(List<Event> newEvents) async {
     await _storage.save(_storageKey, newEvents);
-    _onChange();
-  }
-
-  void _onChange() {
-    ref.read(eventChangeProvider.notifier).state++;
+    notifyListeners();
   }
 }
