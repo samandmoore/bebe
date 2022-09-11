@@ -3,11 +3,13 @@
 - [ ] add/edit sleep screen
 - [ ] show ongoing sleep events on track screen
 - [ ] support edit AND new actions from track screen
-- [ ] pagination for history screen
-- [ ] filter events on history screen
-- [ ] change date on history screen
-- [ ] pull to refresh kids settings screen
+- [ ] history screen
+  - [ ] pagination for history screen
+  - [ ] filter events on history screen
+  - [ ] change date on history screen
+- [ ] settings
+  - [ ] pull to refresh kids settings screen
+  - [ ] save liquid unit settings
 - [ ] totals screen
-- [ ] save liquid unit settings
 - [ ] log in with google/apple (requires backend)
 - [ ] implement http-backed repositories
