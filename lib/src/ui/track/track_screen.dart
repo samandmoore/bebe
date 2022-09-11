@@ -65,22 +65,22 @@ class TrackScreen extends ConsumerWidget {
 class _TrackScreen extends ConsumerWidget {
   final List<Kid> kids;
 
-  const _TrackScreen({super.key, required this.kids});
+  const _TrackScreen({required this.kids});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      drawer: NavDrawer(),
+      drawer: const NavDrawer(),
       body: CustomScrollView(
         slivers: [
-          KidSwitcherSliverAppBar(),
+          const KidSwitcherSliverAppBar(),
           CupertinoSliverRefreshControl(
             onRefresh: () async {
               final currentKid = await ref.read(currentKidProvider.future);
               return ref.refresh(actionProvider(currentKid.id).future);
             },
           ),
-          ActionsList(),
+          const ActionsList(),
         ],
       ),
     );
@@ -139,10 +139,10 @@ class DiaperActionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.all(16),
-      leading: Icon(Icons.baby_changing_station, size: 32),
+      contentPadding: const EdgeInsets.all(16),
+      leading: const Icon(Icons.baby_changing_station, size: 32),
       title: Row(
-        children: [
+        children: const [
           Text('Diaper', textScaleFactor: 1.3),
         ],
       ),
@@ -162,10 +162,10 @@ class BottleActionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.all(16),
-      leading: Icon(Icons.local_drink, size: 32),
+      contentPadding: const EdgeInsets.all(16),
+      leading: const Icon(Icons.local_drink, size: 32),
       title: Row(
-        children: [
+        children: const [
           Text('Bottle', textScaleFactor: 1.3),
         ],
       ),
@@ -183,10 +183,10 @@ class SleepActionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.all(16),
-      leading: Icon(Icons.bedtime, size: 32),
+      contentPadding: const EdgeInsets.all(16),
+      leading: const Icon(Icons.bedtime, size: 32),
       title: Row(
-        children: [
+        children: const [
           Text('Sleep', textScaleFactor: 1.3),
         ],
       ),

@@ -23,9 +23,9 @@ class SettingsScreen extends ConsumerWidget {
         child: ListView(
           children: [
             ListTile(
-              leading: Icon(Icons.child_care),
+              leading: const Icon(Icons.child_care),
               title: Row(
-                children: [
+                children: const [
                   Text('Kids'),
                 ],
               ),
@@ -34,18 +34,18 @@ class SettingsScreen extends ConsumerWidget {
               },
             ),
             ListTile(
-              leading: Icon(Icons.science),
+              leading: const Icon(Icons.science),
               title: Row(
-                children: [
+                children: const [
                   Text('Units'),
                 ],
               ),
               onTap: () => context.push(UnitsScreen.route),
             ),
             ListTile(
-              leading: Icon(Icons.clear),
+              leading: const Icon(Icons.clear),
               title: Row(
-                children: [
+                children: const [
                   Text('Clear storage'),
                 ],
               ),

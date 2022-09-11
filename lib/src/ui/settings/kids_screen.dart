@@ -31,7 +31,7 @@ class KidsScreen extends ConsumerWidget {
 class _KidsScreen extends ConsumerWidget {
   final List<Kid> kids;
 
-  const _KidsScreen({super.key, required this.kids});
+  const _KidsScreen({required this.kids});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,7 +44,7 @@ class _KidsScreen extends ConsumerWidget {
           children: [
             for (final kid in kids)
               ListTile(
-                leading: Icon(Icons.child_care),
+                leading: const Icon(Icons.child_care),
                 title: Row(
                   children: [
                     Text(kid.name),

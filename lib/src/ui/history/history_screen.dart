@@ -64,9 +64,7 @@ class HistoryScreen extends ConsumerWidget {
 }
 
 class _EmptyList extends StatelessWidget {
-  const _EmptyList({
-    super.key,
-  });
+  const _EmptyList();
 
   @override
   Widget build(BuildContext context) {
@@ -74,8 +72,8 @@ class _EmptyList extends StatelessWidget {
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('No events yet!'),
+          children: const [
+            Text('No events yet!'),
           ],
         ),
       ),
@@ -87,7 +85,6 @@ class _HistoryScreen extends ConsumerWidget {
   final List<Kid> kids;
 
   const _HistoryScreen({
-    super.key,
     required this.kids,
   });
 
@@ -112,7 +109,7 @@ class _HistoryScreen extends ConsumerWidget {
 }
 
 class _EventList extends ConsumerWidget {
-  const _EventList({super.key});
+  const _EventList();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -215,7 +212,7 @@ class _BottleEvent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ListTile(
+    return const ListTile(
       title: Text('Bottle'),
     );
   }
@@ -228,7 +225,7 @@ class _SleepEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return const ListTile(
       title: Text('Sleep'),
     );
   }

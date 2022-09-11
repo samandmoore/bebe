@@ -14,8 +14,8 @@ class EmptyScreen extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('No kids yet, add one!'),
+            children: const [
+              Text('No kids yet, add one!'),
               AddKidButton(),
             ],
           ),

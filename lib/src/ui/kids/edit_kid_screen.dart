@@ -185,7 +185,7 @@ class EditKidScreen extends ConsumerWidget {
                             },
                           );
                         },
-                        style: ElevatedButton.styleFrom(primary: Colors.red),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                         child: const Text('Remove'),
                       ),
                       ElevatedButton(

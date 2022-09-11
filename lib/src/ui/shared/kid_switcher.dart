@@ -7,9 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 class KidSwitcherSliverAppBar extends StatelessWidget {
-  const KidSwitcherSliverAppBar({
-    Key? key,
-  }) : super(key: key);
+  const KidSwitcherSliverAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +47,7 @@ class KidSwitcherLoaded extends ConsumerStatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _KidSwitcherLoadedState createState() => _KidSwitcherLoadedState();
 }
 
@@ -116,7 +115,7 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
                           context.push(EditKidScreen.route, extra: kid);
                         },
                         style: TextButton.styleFrom(
-                          primary: Colors.white,
+                          foregroundColor: Colors.white,
                         ),
                         child: Text(
                           kid.name,
@@ -126,7 +125,7 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
                       ),
                       Text(
                         kid.toPrettyAge(),
-                        style: TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.white),
                         textScaleFactor: 1.2,
                         overflow: TextOverflow.ellipsis,
                       ),
