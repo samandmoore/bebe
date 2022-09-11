@@ -1,71 +1,61 @@
-import 'package:bebe/src/kids/kid.dart';
-import 'package:bebe/src/kids/providers.dart';
-import 'package:bebe/src/shared/extensions.dart';
-import 'package:bebe/src/shared/layout.dart';
-import 'package:bebe/src/shared/loading_screen.dart';
-import 'package:bebe/src/shared/modal.dart';
+import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/ui/kids/providers.dart';
+import 'package:bebe/src/ui/shared/layout.dart';
+import 'package:bebe/src/ui/shared/loading_screen.dart';
+import 'package:bebe/src/ui/shared/modal.dart';
+import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class EditKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
-  final FormGroup form;
+class NewKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
+  final form = FormGroup({
+    'name': FormControl<String>(
+      validators: [Validators.required],
+    ),
+    'birthDate': FormControl<DateTime>(
+      validators: [Validators.required],
+    ),
+  });
+
   final Ref ref;
-  final Kid kid;
 
-  EditKidNotifier(this.ref, {required this.kid})
-      : form = FormGroup({
-          'name': FormControl<String>(
-            validators: [Validators.required],
-            value: kid.name,
-          ),
-          'birthDate': FormControl<DateTime>(
-            validators: [Validators.required],
-            value: kid.birthDate,
-          ),
-        }),
-        super(const AsyncValue.data(null));
+  NewKidNotifier(this.ref) : super(const AsyncValue.data(null));
 
-  Future<void> update() async {
+  Future<void> create() async {
     if (!form.valid) {
       form.markAllAsTouched();
       return;
     }
 
     final repo = ref.read(kidRepositoryProvider);
-    final input = Kid(
-      id: kid.id,
+    final input = KidInput(
       name: form.control('name').value as String,
       birthDate: form.control('birthDate').value as DateTime,
     );
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await repo.update(input);
+      final kid = await repo.create(input);
       ref.invalidate(kidsProvider);
-      return input;
+      return kid;
     });
   }
 }
 
 final modelProvider =
-    StateNotifierProvider.autoDispose<EditKidNotifier, AsyncValue<Kid?>>(
-  (ref) {
-    final editingKid = ref.watch(editingKidProvider)!;
-    return EditKidNotifier(ref, kid: editingKid);
-  },
-  dependencies: [editingKidProvider, kidRepositoryProvider],
+    StateNotifierProvider.autoDispose<NewKidNotifier, AsyncValue<Kid?>>(
+  (ref) => NewKidNotifier(ref),
 );
 
-class EditKidScreen extends ConsumerWidget {
-  static const route = '/kids/edit';
+class NewKidScreen extends ConsumerWidget {
+  static const route = '/kids/new';
 
-  const EditKidScreen({super.key});
+  const NewKidScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final kid = ref.watch(editingKidProvider)!;
     final form = ref.watch(modelProvider.notifier).form;
     ref.listen<AsyncValue<Kid?>>(modelProvider, (previous, next) {
       if (next.valueOrNull != null) {
@@ -76,7 +66,7 @@ class EditKidScreen extends ConsumerWidget {
         ref.watch(modelProvider.select((value) => value.isLoading));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Kid')),
+      appBar: AppBar(title: const Text('New Kid')),
       body: Modal(
         visible: isSubmitting,
         modal: LoadingIndicator.white(),
@@ -145,53 +135,9 @@ class EditKidScreen extends ConsumerWidget {
                         child: const Text('Cancel'),
                       ),
                       ElevatedButton(
-                        onPressed: () async {
-                          showDialog<bool>(
-                            context: context,
-                            builder: (dialogContext) {
-                              return AlertDialog(
-                                content: const Text(
-                                    'Are you sure you want to remove this kid?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      dialogContext.closeDialog();
-                                    },
-                                    child: const Text('No'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      ref
-                                          .read(kidRepositoryProvider)
-                                          .delete(kid.id);
-                                      ref.invalidate(kidsProvider);
-
-                                      ScaffoldMessenger.of(context)
-                                        ..clearSnackBars()
-                                        ..showSnackBar(
-                                          SnackBar(
-                                            content:
-                                                Text('Removed ${kid.name}.'),
-                                          ),
-                                        );
-
-                                      dialogContext.closeDialog();
-                                      context.pop();
-                                    },
-                                    child: const Text('Yes'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(primary: Colors.red),
-                        child: const Text('Remove'),
-                      ),
-                      ElevatedButton(
                         onPressed: () {
                           final model = ref.read(modelProvider.notifier);
-                          model.update();
+                          model.create();
                         },
                         child: const Text('Save'),
                       ),

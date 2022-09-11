@@ -1,9 +1,9 @@
-import 'package:bebe/src/kids/edit_kid_screen.dart';
-import 'package:bebe/src/kids/kid.dart';
-import 'package:bebe/src/kids/new_kid_screen.dart';
-import 'package:bebe/src/kids/providers.dart';
-import 'package:bebe/src/shared/error_screen.dart';
-import 'package:bebe/src/shared/loading_screen.dart';
+import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/ui/kids/edit_kid_screen.dart';
+import 'package:bebe/src/ui/kids/new_kid_screen.dart';
+import 'package:bebe/src/ui/kids/providers.dart';
+import 'package:bebe/src/ui/shared/error_screen.dart';
+import 'package:bebe/src/ui/shared/loading_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

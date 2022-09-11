@@ -1,4 +1,4 @@
-import 'package:bebe/src/settings/providers.dart';
+import 'package:bebe/src/ui/settings/providers.dart';
 import 'package:decimal/decimal.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 

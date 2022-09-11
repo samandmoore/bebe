@@ -1,5 +1,5 @@
-import 'package:bebe/src/kids/kid.dart';
-import 'package:bebe/src/kids/kid_repository.dart';
+import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/kids/kid_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final kidRepositoryProvider = Provider<KidRepository>((ref) {

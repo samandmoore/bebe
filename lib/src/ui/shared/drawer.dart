@@ -1,6 +1,6 @@
-import 'package:bebe/src/history/history_screen.dart';
-import 'package:bebe/src/settings/settings_screen.dart';
-import 'package:bebe/src/track/track_screen.dart';
+import 'package:bebe/src/ui/history/history_screen.dart';
+import 'package:bebe/src/ui/settings/settings_screen.dart';
+import 'package:bebe/src/ui/track/track_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

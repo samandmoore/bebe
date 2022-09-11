@@ -1,7 +1,7 @@
-import 'package:bebe/src/events/event.dart';
-import 'package:bebe/src/events/providers.dart';
-import 'package:bebe/src/shared/jitter.dart';
+import 'package:bebe/src/data/events/event.dart';
+import 'package:bebe/src/data/events/providers.dart';
 import 'package:bebe/src/storage/storage.dart';
+import 'package:bebe/src/utilities/jitter.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';

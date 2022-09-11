@@ -1,8 +1,8 @@
-import 'package:bebe/src/kids/providers.dart';
-import 'package:bebe/src/settings/kids_screen.dart';
-import 'package:bebe/src/settings/units_screen.dart';
-import 'package:bebe/src/shared/drawer.dart';
 import 'package:bebe/src/storage/storage.dart';
+import 'package:bebe/src/ui/kids/providers.dart';
+import 'package:bebe/src/ui/settings/kids_screen.dart';
+import 'package:bebe/src/ui/settings/units_screen.dart';
+import 'package:bebe/src/ui/shared/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

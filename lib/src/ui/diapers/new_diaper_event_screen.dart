@@ -1,10 +1,10 @@
-import 'package:bebe/src/events/event.dart';
-import 'package:bebe/src/events/providers.dart';
-import 'package:bebe/src/kids/providers.dart';
-import 'package:bebe/src/shared/extensions.dart';
-import 'package:bebe/src/shared/layout.dart';
-import 'package:bebe/src/shared/loading_screen.dart';
-import 'package:bebe/src/shared/modal.dart';
+import 'package:bebe/src/data/events/event.dart';
+import 'package:bebe/src/data/events/providers.dart';
+import 'package:bebe/src/ui/kids/providers.dart';
+import 'package:bebe/src/ui/shared/layout.dart';
+import 'package:bebe/src/ui/shared/loading_screen.dart';
+import 'package:bebe/src/ui/shared/modal.dart';
+import 'package:bebe/src/utilities/extensions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
