@@ -5,22 +5,12 @@ import 'package:bebe/src/ui/shared/layout.dart';
 import 'package:bebe/src/ui/shared/loading_screen.dart';
 import 'package:bebe/src/ui/shared/modal.dart';
 import 'package:bebe/src/utilities/extensions.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class DiaperEventState extends Equatable {
-  final AsyncValue<DiaperEvent?> result;
-
-  const DiaperEventState({this.result = const AsyncValue.data(null)});
-
-  @override
-  List<Object?> get props => [result];
-}
-
-class DiaperEventNotifier extends StateNotifier<DiaperEventState> {
+class DiaperEventNotifier extends StateNotifier<AsyncValue<DiaperEvent?>> {
   final form = FormGroup({
     'diaperType': FormControl<DiaperType>(
       validators: [Validators.required],
@@ -33,7 +23,7 @@ class DiaperEventNotifier extends StateNotifier<DiaperEventState> {
 
   final Ref ref;
 
-  DiaperEventNotifier(this.ref, super.state);
+  DiaperEventNotifier(this.ref) : super(const AsyncValue.data(null));
 
   Future<void> create() async {
     if (!form.valid) {
@@ -50,18 +40,16 @@ class DiaperEventNotifier extends StateNotifier<DiaperEventState> {
       createdAt: form.value['createdAt'] as DateTime,
     );
 
-    state = const DiaperEventState(result: AsyncValue.loading());
-    final result = await AsyncValue.guard(
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(
       () => repo.createDiaperEvent(input),
     );
-    state = DiaperEventState(result: result);
   }
 }
 
-final modelProvider =
-    StateNotifierProvider.autoDispose<DiaperEventNotifier, DiaperEventState>(
-        (ref) {
-  return DiaperEventNotifier(ref, const DiaperEventState());
+final modelProvider = StateNotifierProvider.autoDispose<DiaperEventNotifier,
+    AsyncValue<DiaperEvent?>>((ref) {
+  return DiaperEventNotifier(ref);
 });
 
 class NewDiaperEventScreen extends ConsumerWidget {
@@ -72,13 +60,13 @@ class NewDiaperEventScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final form = ref.watch(modelProvider.notifier).form;
-    ref.listen<DiaperEventState>(modelProvider, (previous, next) {
-      if (next.result.valueOrNull != null) {
+    ref.listen<AsyncValue<DiaperEvent?>>(modelProvider, (previous, next) {
+      if (next.valueOrNull != null) {
         context.pop();
       }
     });
     final isSubmitting =
-        ref.watch(modelProvider.select((value) => value.result.isLoading));
+        ref.watch(modelProvider.select((value) => value.isLoading));
 
     return Scaffold(
       appBar: AppBar(
