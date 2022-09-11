@@ -45,12 +45,14 @@ class _KidsScreen extends ConsumerWidget {
             for (final kid in kids)
               ListTile(
                 leading: const Icon(Icons.child_care),
-                title: Row(
+                title: Text(kid.name),
+                subtitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(kid.name),
+                    Text(kid.toPrettyAge()),
+                    if (kid.isCurrent) const Text('(current)')
                   ],
                 ),
-                subtitle: Text(kid.toString()),
                 onTap: () {
                   context.push(EditKidScreen.route, extra: kid);
                 },
