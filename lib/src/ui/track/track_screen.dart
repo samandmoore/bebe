@@ -82,7 +82,7 @@ class ActionsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentKidAsync = ref.watch(currentKidProvider);
 
-    if (currentKidAsync.isLoading) {
+    if (currentKidAsync.isLoading && !currentKidAsync.isRefreshing) {
       return const SliverLoadingIndicator();
     }
 
@@ -95,6 +95,8 @@ class ActionsList extends ConsumerWidget {
 
     return SliverList(
       delegate: SliverChildListDelegate.fixed([
+        if (currentKidAsync.isRefreshing || actionsAsync.isRefreshing)
+          const LoadingIndicator(),
         for (final action in actions) ActionTile(action: action),
       ]),
     );
