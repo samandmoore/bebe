@@ -15,6 +15,8 @@ class EventRepository with ChangeNotifier {
 
   LocalStorage get _storage => ref.read(storageProvider);
 
+  void onChange() => notifyListeners();
+
   Future<List<Event>> fetchAll() async {
     await jitter();
 
@@ -85,6 +87,6 @@ class EventRepository with ChangeNotifier {
 
   Future<void> _saveChanges(List<Event> newEvents) async {
     await _storage.save(_storageKey, newEvents);
-    notifyListeners();
+    onChange();
   }
 }

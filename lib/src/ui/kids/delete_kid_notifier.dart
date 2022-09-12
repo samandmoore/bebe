@@ -15,7 +15,6 @@ class DeleteKidNotifier extends StateNotifier<AsyncValue<String?>> {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await repo.delete(kid.id);
-      ref.invalidate(kidsProvider);
       return kid.id;
     });
   }

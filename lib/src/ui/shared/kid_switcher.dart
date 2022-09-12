@@ -95,7 +95,6 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
 
             setState(() => _currentIndex = value);
             await repo.update(kidToSelect.copyWith(isCurrent: true));
-            ref.invalidate(kidsProvider);
           },
           findChildIndexCallback: (key) => kids.indexWhere(
             (kid) => kid.id == (key as ValueKey<String>).value,

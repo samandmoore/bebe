@@ -2,10 +2,11 @@ import 'package:bebe/src/data/kids/kid.dart';
 import 'package:bebe/src/data/storage/storage.dart';
 import 'package:bebe/src/utilities/jitter.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-class KidRepository {
+class KidRepository with ChangeNotifier {
   final String _storageKey = 'kids';
 
   final Ref ref;
@@ -13,6 +14,8 @@ class KidRepository {
   KidRepository(this.ref);
 
   LocalStorage get _storage => ref.read(storageProvider);
+
+  void onChange() => notifyListeners();
 
   Future<List<Kid>> fetchAll() async {
     await jitter();
@@ -47,7 +50,7 @@ class KidRepository {
       newKid,
     ];
 
-    await _storage.save(_storageKey, newKids.toList());
+    await _saveChanges(newKids.toList());
 
     return newKid;
   }
@@ -65,7 +68,7 @@ class KidRepository {
       kid,
     ];
 
-    await _storage.save(_storageKey, newKids.toList());
+    await _saveChanges(newKids.toList());
   }
 
   Future<void> delete(final String id) async {
@@ -82,6 +85,11 @@ class KidRepository {
       newKids = newKids.map((k) => k.copyWith(isCurrent: false));
     }
 
-    await _storage.save(_storageKey, newKids.toList());
+    await _saveChanges(newKids.toList());
+  }
+
+  Future<void> _saveChanges(List<Kid> newKids) async {
+    await _storage.save(_storageKey, newKids);
+    onChange();
   }
 }

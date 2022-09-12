@@ -3,11 +3,16 @@ import 'package:bebe/src/data/kids/kid_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final kidRepositoryProvider = Provider<KidRepository>((ref) {
-  return KidRepository(ref);
+  final repo = KidRepository(ref);
+  ref.onDispose(() {
+    repo.dispose();
+  });
+  return repo;
 });
 
 final kidsProvider = FutureProvider.autoDispose((ref) async {
   final repo = ref.watch(kidRepositoryProvider);
+  repo.addListener(() => ref.invalidateSelf());
 
   final kids = await repo.fetchAll();
 

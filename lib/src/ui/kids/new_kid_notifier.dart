@@ -32,7 +32,6 @@ class NewKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final kid = await repo.create(input);
-      ref.invalidate(kidsProvider);
       return kid;
     });
   }

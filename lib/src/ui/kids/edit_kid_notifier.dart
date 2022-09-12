@@ -37,7 +37,6 @@ class EditKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await repo.update(input);
-      ref.invalidate(kidsProvider);
       return input;
     });
   }
