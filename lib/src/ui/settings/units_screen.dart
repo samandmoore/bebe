@@ -35,18 +35,18 @@ class UnitsScreen extends ConsumerWidget {
           child: Column(
             children: [
               const VSpace(),
-              ReactiveDropdownField(
-                formControlName: 'liquidUnit',
-                items: [
-                  for (final unit in LiquidUnit.values)
-                    DropdownMenuItem(
-                      value: unit,
-                      child: Text(unit.name),
-                    ),
-                ],
-                decoration: const InputDecoration(
-                  labelText: 'Liquid unit',
-                  border: OutlineInputBorder(),
+              ListTile(
+                leading: const Icon(Icons.science),
+                title: const Text('Type'),
+                subtitle: ReactiveDropdownField(
+                  formControlName: 'liquidUnit',
+                  items: [
+                    for (final unit in LiquidUnit.values)
+                      DropdownMenuItem(
+                        value: unit,
+                        child: Text(unit.name),
+                      ),
+                  ],
                 ),
               ),
               ButtonBar(

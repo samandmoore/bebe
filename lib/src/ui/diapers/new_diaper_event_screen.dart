@@ -61,10 +61,10 @@ class NewDiaperEventScreen extends ConsumerWidget {
                   subtitle: ReactiveDropdownField(
                     formControlName: 'diaperType',
                     items: [
-                      for (final unit in DiaperType.values)
+                      for (final type in DiaperType.values)
                         DropdownMenuItem(
-                          value: unit,
-                          child: Text(unit.name),
+                          value: type,
+                          child: Text(type.name),
                         ),
                     ],
                   ),
