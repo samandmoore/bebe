@@ -7,6 +7,7 @@ import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/settings/kids_screen.dart';
 import 'package:bebe/src/ui/settings/settings_screen.dart';
 import 'package:bebe/src/ui/settings/units_screen.dart';
+import 'package:bebe/src/ui/shared/forms/validators.dart';
 import 'package:bebe/src/ui/track/track_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_portal/flutter_portal.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class App extends StatelessWidget {
   App({super.key});
@@ -65,27 +67,34 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Portal(
-      child: MaterialApp.router(
-        routeInformationProvider: _router.routeInformationProvider,
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
-        restorationScopeId: 'app',
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', ''), // English, no country code
-        ],
-        onGenerateTitle: (BuildContext context) =>
-            AppLocalizations.of(context)!.appTitle,
-        theme: ThemeData(),
-        darkTheme: ThemeData.dark(),
-        themeMode: ThemeMode.system,
-        debugShowCheckedModeBanner: false,
+    return ReactiveFormConfig(
+      validationMessages: {
+        ValidationMessage.required: (_) => 'required',
+        FormValidationMessage.dateLessThanNow: (_) =>
+            FormValidationMessageDefaults.dateLessThanNow,
+      },
+      child: Portal(
+        child: MaterialApp.router(
+          routeInformationProvider: _router.routeInformationProvider,
+          routeInformationParser: _router.routeInformationParser,
+          routerDelegate: _router.routerDelegate,
+          restorationScopeId: 'app',
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', ''), // English, no country code
+          ],
+          onGenerateTitle: (BuildContext context) =>
+              AppLocalizations.of(context)!.appTitle,
+          theme: ThemeData(),
+          darkTheme: ThemeData.dark(),
+          themeMode: ThemeMode.system,
+          debugShowCheckedModeBanner: false,
+        ),
       ),
     );
   }

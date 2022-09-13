@@ -75,11 +75,8 @@ class EditKidScreen extends ConsumerWidget {
                   const VSpace(),
                   const Text('New Kid'),
                   const VSpace(),
-                  ReactiveTextField(
+                  ReactiveTextField<String>(
                     formControlName: 'name',
-                    validationMessages: (control) => {
-                      ValidationMessage.required: 'Name is required',
-                    },
                     decoration: const InputDecoration(
                       labelText: 'Name',
                       border: OutlineInputBorder(),

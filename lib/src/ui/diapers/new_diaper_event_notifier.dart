@@ -1,28 +1,9 @@
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/ui/history/providers.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
+import 'package:bebe/src/ui/shared/forms/validators.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-
-class CustomValidationMessage {
-  static const String dateLessThanNow = 'dateLessThaNow';
-}
-
-class CustomValidationMessageDefaults {
-  static const String dateLessThanNow = 'must be less than or equal to today';
-}
-
-class CustomFormValidators {
-  static Map<String, Object?>? dateLessThanNow(
-      AbstractControl<Object?> control) {
-    final value = control.value as DateTime?;
-
-    if (value != null && value.isAfter(DateTime.now())) {
-      return {CustomValidationMessage.dateLessThanNow: true};
-    }
-    return null;
-  }
-}
 
 class NewDiaperEventNotifier extends StateNotifier<AsyncValue<DiaperEvent?>> {
   final form = FormGroup({
@@ -30,7 +11,7 @@ class NewDiaperEventNotifier extends StateNotifier<AsyncValue<DiaperEvent?>> {
       validators: [Validators.required],
     ),
     'createdAt': FormControl<DateTime>(
-      validators: [Validators.required, CustomFormValidators.dateLessThanNow],
+      validators: [Validators.required, FormValidators.dateLessThanNow],
       value: DateTime.now(),
     ),
   });

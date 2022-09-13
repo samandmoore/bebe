@@ -52,11 +52,6 @@ class NewDiaperEventScreen extends ConsumerWidget {
                     firstDate: DateTime(1900),
                     lastDate: DateTime.now(),
                     type: ReactiveDatePickerFieldType.dateTime,
-                    validationMessages: (_) => {
-                      ValidationMessage.required: 'required',
-                      CustomValidationMessage.dateLessThanNow:
-                          CustomValidationMessageDefaults.dateLessThanNow,
-                    },
                   ),
                 ),
                 const VSpace(),

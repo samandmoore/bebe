@@ -95,8 +95,6 @@ class ActionsList extends ConsumerWidget {
 
     return SliverList(
       delegate: SliverChildListDelegate.fixed([
-        if (currentKidAsync.isRefreshing || actionsAsync.isRefreshing)
-          const LoadingIndicator(),
         for (final action in actions) ActionTile(action: action),
       ]),
     );
