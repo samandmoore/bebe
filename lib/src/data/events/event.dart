@@ -64,3 +64,15 @@ class DiaperEventInput {
     required this.diaperType,
   });
 }
+
+class DiaperEventUpdate {
+  final String id;
+  final DateTime createdAt;
+  final DiaperType diaperType;
+
+  const DiaperEventUpdate({
+    required this.id,
+    required this.createdAt,
+    required this.diaperType,
+  });
+}

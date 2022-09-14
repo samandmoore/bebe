@@ -1,5 +1,6 @@
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
 import 'package:bebe/src/ui/history/history_notifier.dart';
 import 'package:bebe/src/ui/history/providers.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
@@ -12,6 +13,8 @@ import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 final historyProvider = StateNotifierProvider.family<HistoryNotifier,
     AsyncValue<List<Event>>, String>(
@@ -178,8 +181,9 @@ class _DiaperEvent extends ConsumerWidget {
         repo.delete(event.id);
       },
       child: ListTile(
-        title: Text('${event.diaperType} diaper'),
-        subtitle: Text(event.createdAt.toIso8601String()),
+        onTap: () => context.push(DiaperEventScreen.route, extra: event),
+        title: Text('${event.diaperType.name} diaper'),
+        subtitle: Text(DateFormat('M/dd/yyyy HH:MM').format(event.createdAt)),
       ),
     );
   }

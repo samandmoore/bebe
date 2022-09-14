@@ -1,6 +1,6 @@
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/kids/kid.dart';
-import 'package:bebe/src/ui/diapers/new_diaper_event_screen.dart';
+import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
 import 'package:bebe/src/ui/history/providers.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/shared/error.dart';
@@ -136,7 +136,7 @@ class DiaperActionTile extends StatelessWidget {
       ),
       subtitle: TimeAgo(action.latestEvent?.createdAt),
       onTap: () {
-        context.push(NewDiaperEventScreen.route);
+        context.push(DiaperEventScreen.route);
       },
     );
   }

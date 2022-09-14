@@ -27,7 +27,11 @@ class EventRepository with ChangeNotifier {
     }
 
     final list = data as List<Object?>;
-    return list.map((k) => Event.fromJson(k as Map<String, Object?>)).toList();
+    return list
+        .map((k) => Event.fromJson(k as Map<String, Object?>))
+        .sortedBy((e) => e.createdAt)
+        .reversed
+        .toList();
   }
 
   Future<Event?> fetchById(final String id) async {
@@ -75,6 +79,26 @@ class EventRepository with ChangeNotifier {
 
     await _saveChanges(newEvents);
     return newDiaperEvent;
+  }
+
+  Future<DiaperEvent> updateDiaperEvent(DiaperEventUpdate update) async {
+    final events = await fetchAll();
+
+    final existingEvent =
+        events.firstWhere((e) => e.id == update.id) as DiaperEvent;
+
+    final updatedEvent = existingEvent.copyWith(
+      createdAt: update.createdAt,
+      diaperType: update.diaperType,
+    );
+
+    final newEvents = [
+      ...events.where((e) => e.id != update.id),
+      updatedEvent,
+    ];
+
+    await _saveChanges(newEvents);
+    return updatedEvent;
   }
 
   Future<void> delete(final String id) async {

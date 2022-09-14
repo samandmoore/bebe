@@ -1,5 +1,7 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/ui/diapers/new_diaper_event_notifier.dart';
+import 'package:bebe/src/ui/diapers/diaper_event_notifier.dart';
+import 'package:bebe/src/ui/diapers/providers.dart';
+import 'package:bebe/src/ui/history/providers.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:bebe/src/ui/shared/modal.dart';
 import 'package:bebe/src/ui/shared/spacing.dart';
@@ -9,31 +11,31 @@ import 'package:go_router/go_router.dart';
 import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-final newDiaperEventProvider = StateNotifierProvider.autoDispose<
-    NewDiaperEventNotifier, AsyncValue<DiaperEvent?>>((ref) {
-  return NewDiaperEventNotifier(ref);
-});
+final diaperEventProvider = StateNotifierProvider.autoDispose<
+    DiaperEventNotifier, AsyncValue<DiaperEvent?>>((ref) {
+  final event = ref.watch(editingDiaperEventProvider);
+  return DiaperEventNotifier(ref, event);
+}, dependencies: [editingDiaperEventProvider, eventRepositoryProvider]);
 
-class NewDiaperEventScreen extends ConsumerWidget {
+class DiaperEventScreen extends ConsumerWidget {
   static const route = '/events/diapers/new';
 
-  const NewDiaperEventScreen({super.key});
+  const DiaperEventScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final form = ref.watch(newDiaperEventProvider.notifier).form;
-    ref.listen<AsyncValue<DiaperEvent?>>(newDiaperEventProvider,
-        (previous, next) {
+    final form = ref.watch(diaperEventProvider.notifier).form;
+    ref.listen<AsyncValue<DiaperEvent?>>(diaperEventProvider, (previous, next) {
       if (next.valueOrNull != null) {
         context.pop();
       }
     });
     final isSubmitting =
-        ref.watch(newDiaperEventProvider.select((value) => value.isLoading));
+        ref.watch(diaperEventProvider.select((value) => value.isLoading));
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Diaper Event'),
+        title: const Text('Diaper'),
       ),
       body: Modal(
         visible: isSubmitting,
@@ -80,8 +82,8 @@ class NewDiaperEventScreen extends ConsumerWidget {
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                        final model = ref.read(newDiaperEventProvider.notifier);
-                        model.create();
+                        final model = ref.read(diaperEventProvider.notifier);
+                        model.save();
                       },
                       child: const Text('Save'),
                     ),

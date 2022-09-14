@@ -1,5 +1,7 @@
+import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/kids/kid.dart';
-import 'package:bebe/src/ui/diapers/new_diaper_event_screen.dart';
+import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
+import 'package:bebe/src/ui/diapers/providers.dart';
 import 'package:bebe/src/ui/history/history_screen.dart';
 import 'package:bebe/src/ui/kids/edit_kid_screen.dart';
 import 'package:bebe/src/ui/kids/new_kid_screen.dart';
@@ -28,8 +30,14 @@ class App extends StatelessWidget {
         builder: (_, __) => const TrackScreen(),
       ),
       GoRoute(
-        path: NewDiaperEventScreen.route,
-        builder: (_, __) => const NewDiaperEventScreen(),
+        path: DiaperEventScreen.route,
+        builder: (_, state) => ProviderScope(
+          overrides: [
+            editingDiaperEventProvider
+                .overrideWithValue(state.extra as DiaperEvent?)
+          ],
+          child: const DiaperEventScreen(),
+        ),
       ),
       GoRoute(
         path: NewKidScreen.route,
