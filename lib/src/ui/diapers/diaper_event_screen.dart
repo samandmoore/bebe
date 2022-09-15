@@ -2,9 +2,11 @@ import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/ui/diapers/diaper_event_notifier.dart';
 import 'package:bebe/src/ui/diapers/providers.dart';
 import 'package:bebe/src/ui/history/providers.dart';
+import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:bebe/src/ui/shared/modal.dart';
 import 'package:bebe/src/ui/shared/spacing.dart';
+import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -12,10 +14,14 @@ import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 final diaperEventProvider = StateNotifierProvider.autoDispose<
-    DiaperEventNotifier, AsyncValue<DiaperEvent?>>((ref) {
+    DiaperEventNotifier, AsyncValue<DiaperEventResult?>>((ref) {
   final event = ref.watch(editingDiaperEventProvider);
   return DiaperEventNotifier(ref, event);
-}, dependencies: [editingDiaperEventProvider, eventRepositoryProvider]);
+}, dependencies: [
+  editingDiaperEventProvider,
+  eventRepositoryProvider,
+  currentKidProvider.future,
+]);
 
 class DiaperEventScreen extends ConsumerWidget {
   static const route = '/events/diapers/new';
@@ -25,18 +31,21 @@ class DiaperEventScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final form = ref.watch(diaperEventProvider.notifier).form;
-    ref.listen<AsyncValue<DiaperEvent?>>(diaperEventProvider, (previous, next) {
+    ref.listen<AsyncValue<DiaperEventResult?>>(diaperEventProvider,
+        (previous, next) {
       if (next.valueOrNull != null) {
         context.pop();
+      } else if (next.hasError && previous?.error != next.error) {
+        context.logErrorAndShowSnackbar(next.error, next.stackTrace);
       }
     });
     final isSubmitting =
         ref.watch(diaperEventProvider.select((value) => value.isLoading));
+    final canDelete = ref.watch(diaperEventProvider.notifier).canDelete;
+    final isEdit = ref.watch(diaperEventProvider.notifier).isEdit;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Diaper'),
-      ),
+      appBar: AppBar(),
       body: Modal(
         visible: isSubmitting,
         modal: LoadingIndicator.white(),
@@ -45,6 +54,16 @@ class DiaperEventScreen extends ConsumerWidget {
             formGroup: form,
             child: Column(
               children: [
+                const VSpace(),
+                ListTile(
+                  title: const Text('Diaper'),
+                  subtitle: isEdit
+                      ? Text(
+                          'Editing existing event',
+                          style: TextStyle(color: Colors.deepOrange.shade400),
+                        )
+                      : const Text('Add new'),
+                ),
                 const VSpace(),
                 ListTile(
                   leading: const Icon(Icons.access_time),
@@ -80,6 +99,41 @@ class DiaperEventScreen extends ConsumerWidget {
                       },
                       child: const Text('Cancel'),
                     ),
+                    if (canDelete)
+                      ElevatedButton(
+                        onPressed: () async {
+                          showDialog<bool>(
+                            context: context,
+                            builder: (dialogContext) {
+                              return AlertDialog(
+                                content: const Text(
+                                    'Are you sure you want to remove this event?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      dialogContext.closeDialog();
+                                    },
+                                    child: const Text('No'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      final model = ref
+                                          .read(diaperEventProvider.notifier);
+                                      model.delete();
+
+                                      dialogContext.closeDialog();
+                                    },
+                                    child: const Text('Yes'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red),
+                        child: const Text('Remove'),
+                      ),
                     ElevatedButton(
                       onPressed: () async {
                         final model = ref.read(diaperEventProvider.notifier);

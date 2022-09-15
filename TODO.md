@@ -1,9 +1,8 @@
 ## MVP
 
 - [ ] mvp tracking
-  - [ ] edit diaper event (with delete)
-  - [ ] add/edit bottle screen
-  - [ ] add/edit sleep screen
+  - [ ] new/edit bottle screen
+  - [ ] new/edit sleep screen
   - [ ] show ongoing sleep events on track screen
   - [ ] support edit AND new actions from track screen
 - [ ] history screen
@@ -12,6 +11,7 @@
   - [ ] change date on history screen
 - [ ] settings
   - [ ] pull to refresh kids settings screen
+  - [ ] swipe to delete with confirmation on kids settings screen
   - [ ] save liquid unit settings
 - [ ] totals screen
 - [ ] log in with google/apple (requires backend)

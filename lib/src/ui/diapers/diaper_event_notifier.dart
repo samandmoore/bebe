@@ -5,7 +5,10 @@ import 'package:bebe/src/ui/shared/forms/validators.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class DiaperEventNotifier extends StateNotifier<AsyncValue<DiaperEvent?>> {
+enum DiaperEventResult { created, updated, deleted }
+
+class DiaperEventNotifier
+    extends StateNotifier<AsyncValue<DiaperEventResult?>> {
   final FormGroup form;
   final Ref ref;
   final DiaperEvent? event;
@@ -23,6 +26,10 @@ class DiaperEventNotifier extends StateNotifier<AsyncValue<DiaperEvent?>> {
         }),
         super(const AsyncValue.data(null));
 
+  bool get isEdit => event != null;
+
+  bool get canDelete => event != null;
+
   Future<void> save() async {
     if (!form.valid) {
       form.markAllAsTouched();
@@ -36,7 +43,17 @@ class DiaperEventNotifier extends StateNotifier<AsyncValue<DiaperEvent?>> {
     });
   }
 
-  Future<DiaperEvent> _update() async {
+  Future<void> delete() async {
+    final repo = ref.read(eventRepositoryProvider);
+
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() async {
+      await repo.delete(event!.id);
+      return DiaperEventResult.deleted;
+    });
+  }
+
+  Future<DiaperEventResult> _update() async {
     final repo = ref.read(eventRepositoryProvider);
 
     final event = this.event!;
@@ -47,12 +64,12 @@ class DiaperEventNotifier extends StateNotifier<AsyncValue<DiaperEvent?>> {
       createdAt: form.value['createdAt'] as DateTime,
     );
 
-    final result = await repo.updateDiaperEvent(input);
+    await repo.updateDiaperEvent(input);
 
-    return result;
+    return DiaperEventResult.updated;
   }
 
-  Future<DiaperEvent> _create() async {
+  Future<DiaperEventResult> _create() async {
     final currentKid = await ref.read(currentKidProvider.future);
     final repo = ref.read(eventRepositoryProvider);
 
@@ -62,7 +79,8 @@ class DiaperEventNotifier extends StateNotifier<AsyncValue<DiaperEvent?>> {
       createdAt: form.value['createdAt'] as DateTime,
     );
 
-    final result = await repo.createDiaperEvent(input);
-    return result;
+    await repo.createDiaperEvent(input);
+
+    return DiaperEventResult.created;
   }
 }

@@ -183,7 +183,7 @@ class _DiaperEvent extends ConsumerWidget {
       child: ListTile(
         onTap: () => context.push(DiaperEventScreen.route, extra: event),
         title: Text('${event.diaperType.name} diaper'),
-        subtitle: Text(DateFormat('M/dd/yyyy HH:MM').format(event.createdAt)),
+        subtitle: Text(DateFormat('M/dd/yyyy HH:mm').format(event.createdAt)),
       ),
     );
   }
