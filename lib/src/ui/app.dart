@@ -2,6 +2,7 @@ import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/kids/kid.dart';
 import 'package:bebe/src/ui/auth/auth_screen.dart';
+import 'package:bebe/src/ui/auth/debug_auth_screen.dart';
 import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
 import 'package:bebe/src/ui/diapers/providers.dart';
 import 'package:bebe/src/ui/history/history_screen.dart';
@@ -32,6 +33,10 @@ class App extends StatelessWidget {
       GoRoute(
         path: AuthScreen.route,
         builder: (_, __) => const AuthScreen(),
+      ),
+      GoRoute(
+        path: DebugAuthScreen.route,
+        builder: (_, __) => const DebugAuthScreen(),
       ),
       GoRoute(
         path: TrackScreen.route,
