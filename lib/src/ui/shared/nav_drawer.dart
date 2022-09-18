@@ -1,14 +1,16 @@
+import 'package:bebe/src/data/auth/providers.dart';
 import 'package:bebe/src/ui/history/history_screen.dart';
 import 'package:bebe/src/ui/settings/settings_screen.dart';
 import 'package:bebe/src/ui/track/track_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class NavDrawer extends StatelessWidget {
+class NavDrawer extends ConsumerWidget {
   const NavDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -37,6 +39,11 @@ class NavDrawer extends StatelessWidget {
               context.go(SettingsScreen.route);
             },
           ),
+          TextButton(
+            onPressed: () async =>
+                await ref.read(authRepositoryProvider).logout(),
+            child: const Text('Log out'),
+          )
         ],
       ),
     );

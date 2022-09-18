@@ -1,3 +1,4 @@
+import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/kids/kid.dart';
 import 'package:bebe/src/ui/auth/auth_screen.dart';
@@ -21,11 +22,13 @@ import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class App extends StatelessWidget {
-  App({super.key});
+  final AuthRepository authRepository;
+
+  App({super.key, required this.authRepository});
 
   late final _router = GoRouter(
-    initialLocation: AuthScreen.route,
     routes: [
+      GoRoute(path: '/', redirect: (_) => TrackScreen.route),
       GoRoute(
         path: AuthScreen.route,
         builder: (_, __) => const AuthScreen(),
@@ -76,6 +79,24 @@ class App extends StatelessWidget {
         ],
       ),
     ],
+    redirect: (state) {
+      // if the user is not logged in, they need to login
+      final bool loggedIn = authRepository.isLoggedIn;
+      final bool loggingIn = state.subloc == AuthScreen.route;
+      if (!loggedIn) {
+        return loggingIn ? null : AuthScreen.route;
+      }
+
+      // if the user is logged in but still on the login page, send them to
+      // the home page
+      if (loggingIn) {
+        return '/';
+      }
+
+      // no need to redirect at all
+      return null;
+    },
+    refreshListenable: authRepository,
   );
 
   @override

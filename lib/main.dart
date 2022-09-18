@@ -1,3 +1,4 @@
+import 'package:bebe/src/data/auth/providers.dart';
 import 'package:bebe/src/data/storage/storage.dart';
 import 'package:bebe/src/ui/app.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,13 @@ void main() async {
   final storage = container.read(storageProvider);
   await storage.initialize();
 
+  final authRepo = container.read(authRepositoryProvider);
+  await authRepo.initialize();
+
   runApp(
     UncontrolledProviderScope(
       container: container,
-      child: App(),
+      child: App(authRepository: authRepo),
     ),
   );
 }

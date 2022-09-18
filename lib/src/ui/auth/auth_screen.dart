@@ -1,22 +1,23 @@
 import 'dart:math';
 
 import 'package:bebe/src/data/auth/auth_repository.dart';
+import 'package:bebe/src/data/auth/providers.dart';
 import 'package:bebe/src/data/auth/user.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends ConsumerStatefulWidget {
   static const route = '/auth';
 
   const AuthScreen({super.key});
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  ConsumerState<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
-  final authRepository = AuthRepository();
+class _AuthScreenState extends ConsumerState<AuthScreen> {
+  AuthRepository get authRepository => ref.read(authRepositoryProvider);
 
   AsyncValue<User> currentUser = const AsyncValue.loading();
 
@@ -44,6 +45,10 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
       body: ListView(
         children: [
+          ListTile(
+            title: const Text('isLoggedIn'),
+            subtitle: Text(authRepository.isLoggedIn.toString()),
+          ),
           currentUser.when(
             data: (user) => ListTile(
               title: Text(user.name),

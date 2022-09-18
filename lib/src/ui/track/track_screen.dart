@@ -28,7 +28,7 @@ final actionProvider = FutureProvider.family<List<TrackAction>, String>(
 );
 
 class TrackScreen extends ConsumerWidget {
-  static const route = '/';
+  static const route = '/track';
 
   const TrackScreen({super.key});
 
