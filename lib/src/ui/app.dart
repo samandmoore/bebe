@@ -1,5 +1,6 @@
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/ui/auth/auth_screen.dart';
 import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
 import 'package:bebe/src/ui/diapers/providers.dart';
 import 'package:bebe/src/ui/history/history_screen.dart';
@@ -23,8 +24,12 @@ class App extends StatelessWidget {
   App({super.key});
 
   late final _router = GoRouter(
-    initialLocation: TrackScreen.route,
+    initialLocation: AuthScreen.route,
     routes: [
+      GoRoute(
+        path: AuthScreen.route,
+        builder: (_, __) => const AuthScreen(),
+      ),
       GoRoute(
         path: TrackScreen.route,
         builder: (_, __) => const TrackScreen(),
