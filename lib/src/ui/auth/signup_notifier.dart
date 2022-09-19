@@ -1,17 +1,19 @@
 import 'package:bebe/src/data/auth/providers.dart';
-import 'package:bebe/src/data/auth/session.dart';
+import 'package:bebe/src/data/auth/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-enum LoginOrSignupResult { loggedIn, signedUp }
+enum SignupResult { success, failure }
 
-class LoginOrSignupNotifier
-    extends StateNotifier<AsyncValue<LoginOrSignupResult?>> {
+class SignupNotifier extends StateNotifier<AsyncValue<SignupResult?>> {
   final FormGroup form;
   final Ref ref;
 
-  LoginOrSignupNotifier(this.ref)
+  SignupNotifier(this.ref)
       : form = FormGroup({
+          'name': FormControl<String>(
+            validators: [Validators.required],
+          ),
           'email': FormControl<String>(
             validators: [Validators.required],
           ),
@@ -31,13 +33,14 @@ class LoginOrSignupNotifier
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await repo.createSession(
-        SessionInput(
+      await repo.createUser(
+        UserInput(
+          name: form.value['name'] as String,
           email: form.value['email'] as String,
           password: form.value['password'] as String,
         ),
       );
-      return LoginOrSignupResult.loggedIn;
+      return SignupResult.success;
     });
   }
 }
