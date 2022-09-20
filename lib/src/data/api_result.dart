@@ -35,9 +35,9 @@ class ApiResult<T> {
   }
 
   R map<R>({
-    required R Function(T?) success,
-    required R Function(DioError) error,
-    required R Function(Map<String, String>) validationError,
+    required R Function(T? data) success,
+    required R Function(DioError error) error,
+    required R Function(Map<String, String> errors) validationError,
   }) {
     if (this is ApiResultSuccess<T>) {
       return success((this as ApiResultSuccess<T>).data);
