@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 extension MapExtensions<K, V> on Map<K, V> {
   V get(K key, V defaultValue) {
@@ -27,5 +28,19 @@ extension DialogExtensions on BuildContext {
           content: Text('An error occurred'),
         ),
       );
+  }
+}
+
+extension FormGroupExtensions on FormGroup {
+  /// Sets the errors for the controls in the form group.
+  /// The errors are expected to be in the format of:
+  /// {
+  ///   'controlName': 'invalid',
+  ///   'controlName2': 'too_short',
+  /// }
+  void setErrorsForControls(Map<String, String> errors) {
+    errors.forEach((controlName, error) {
+      controls[controlName]?.setErrors(<String, Object>{error: true});
+    });
   }
 }
