@@ -25,7 +25,7 @@ final signupProvider = StateNotifierProvider.autoDispose<SignupNotifier,
 
 enum AuthType { login, signup }
 
-final authTypeProvider = StateProvider((_) => AuthType.login);
+final authTypeProvider = StateProvider.autoDispose((_) => AuthType.login);
 
 class AuthScreen extends ConsumerWidget {
   static const route = '/auth';
@@ -70,7 +70,7 @@ class AuthScreen extends ConsumerWidget {
 }
 
 class _LoginForm extends ConsumerWidget {
-  const _LoginForm({super.key});
+  const _LoginForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -120,7 +120,7 @@ class _LoginForm extends ConsumerWidget {
 }
 
 class _SignupForm extends ConsumerWidget {
-  const _SignupForm({super.key});
+  const _SignupForm();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -1,5 +1,6 @@
 import 'package:bebe/src/data/auth/providers.dart';
 import 'package:bebe/src/data/auth/user.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -33,14 +34,31 @@ class SignupNotifier extends StateNotifier<AsyncValue<SignupResult?>> {
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await repo.createUser(
-        UserInput(
-          name: form.value['name'] as String,
-          email: form.value['email'] as String,
-          password: form.value['password'] as String,
-        ),
-      );
-      return SignupResult.success;
+      try {
+        await repo.createUser(
+          UserInput(
+            name: form.value['name'] as String,
+            email: form.value['email'] as String,
+            password: form.value['password'] as String,
+          ),
+        );
+        return SignupResult.success;
+      } on DioError catch (e) {
+        if (e.response?.statusCode == 422) {
+          final rawErrors = e.response?.data['errors'] as Map<String, Object?>;
+          final errors = rawErrors.map((key, value) {
+            final fieldErrors = value as List<Object?>;
+            final firstError = fieldErrors.first as Map<String, Object?>;
+            final errorSlug = firstError['error'] as String;
+            return MapEntry(key, errorSlug);
+          });
+
+          errors.forEach((key, value) {
+            form.controls[key]?.setErrors(<String, Object>{value: true});
+          });
+        }
+        rethrow;
+      }
     });
   }
 }
