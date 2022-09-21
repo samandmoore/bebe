@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/auth/providers.dart';
+import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/ui/auth/login_notifier.dart';
 import 'package:bebe/src/ui/auth/signup_notifier.dart';
 import 'package:bebe/src/ui/shared/loading.dart';

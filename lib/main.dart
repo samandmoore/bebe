@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/auth/providers.dart';
+import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/storage/storage.dart';
 import 'package:bebe/src/ui/app.dart';
 import 'package:flutter/material.dart';

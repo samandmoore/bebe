@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/auth/providers.dart';
+import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/auth/session.dart';
 import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

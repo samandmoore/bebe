@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/auth/providers.dart';
+import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/ui/history/history_screen.dart';
 import 'package:bebe/src/ui/settings/settings_screen.dart';
 import 'package:bebe/src/ui/track/track_screen.dart';

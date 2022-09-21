@@ -3,7 +3,11 @@ import 'package:bebe/src/data/auth/session.dart';
 import 'package:bebe/src/data/auth/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final authRepositoryProvider =
+    ChangeNotifierProvider((ref) => AuthRepository());
 
 class AuthRepository with ChangeNotifier {
   static const _authHeaderStorageKey = 'auth_header';

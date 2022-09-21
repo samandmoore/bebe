@@ -15,7 +15,6 @@
   - [ ] swipe to delete with confirmation on kids settings screen
   - [ ] save liquid unit settings
 - [ ] totals screen
-- [ ] log in with google/apple (requires backend)
 - [ ] implement http-backed repositories
 
 ## Later on
