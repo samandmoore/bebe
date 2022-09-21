@@ -88,7 +88,7 @@ class EditKidScreen extends ConsumerWidget {
                     leading: const Icon(Icons.calendar_today),
                     title: const Text('Date of Birth'),
                     subtitle: ReactiveDateTimePicker(
-                      formControlName: 'birthDate',
+                      formControlName: 'dateOfBirth',
                       firstDate: DateTime(1900),
                       lastDate: DateTime.now(),
                     ),

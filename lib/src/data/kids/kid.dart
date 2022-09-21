@@ -11,13 +11,13 @@ class Kid with _$Kid {
   const factory Kid({
     required String id,
     required String name,
-    required DateTime birthDate,
+    required DateTime dateOfBirth,
     @Default(false) bool isCurrent,
   }) = _Kid;
 
   String toPrettyAge() {
     final now = DateTime.now();
-    final age = now.difference(birthDate);
+    final age = now.difference(dateOfBirth);
     final months = (age.inDays ~/ 30) % 12;
     final years = (age.inDays ~/ 30) ~/ 12;
     final days = age.inDays % 30;
@@ -66,13 +66,13 @@ String formatForPlural(int amount, String singular, String plural) {
 
 class KidInput extends Equatable {
   final String name;
-  final DateTime birthDate;
+  final DateTime dateOfBirth;
 
   const KidInput({
     required this.name,
-    required this.birthDate,
+    required this.dateOfBirth,
   });
 
   @override
-  List<Object?> get props => [name, birthDate];
+  List<Object?> get props => [name, dateOfBirth];
 }

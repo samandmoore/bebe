@@ -9,6 +9,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 final authRepositoryProvider =
     ChangeNotifierProvider((ref) => AuthRepository());
 
+Dio buildDioClient() {
+  return Dio()..options.baseUrl = 'http://localhost:3000';
+}
+
 class AuthRepository with ChangeNotifier {
   static const _authHeaderStorageKey = 'auth_header';
 
@@ -22,8 +26,7 @@ class AuthRepository with ChangeNotifier {
   AuthRepository({
     Dio? dio,
     FlutterSecureStorage storage = const FlutterSecureStorage(),
-  })  : _dio = dio ?? Dio()
-          ..options.baseUrl = 'http://localhost:3000',
+  })  : _dio = dio ?? buildDioClient(),
         _storage = storage;
 
   Future<void> initialize() async {
@@ -51,7 +54,7 @@ class AuthRepository with ChangeNotifier {
       '/api/mobile/v1/current_user',
       options: Options(
         headers: <String, Object?>{
-          'Authorization': header?.trim(),
+          'Authorization': header,
         },
       ),
     );

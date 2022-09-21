@@ -22,7 +22,7 @@ Kid _$KidFromJson(Map<String, dynamic> json) {
 mixin _$Kid {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  DateTime get birthDate => throw _privateConstructorUsedError;
+  DateTime get dateOfBirth => throw _privateConstructorUsedError;
   bool get isCurrent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +34,7 @@ mixin _$Kid {
 abstract class $KidCopyWith<$Res> {
   factory $KidCopyWith(Kid value, $Res Function(Kid) then) =
       _$KidCopyWithImpl<$Res>;
-  $Res call({String id, String name, DateTime birthDate, bool isCurrent});
+  $Res call({String id, String name, DateTime dateOfBirth, bool isCurrent});
 }
 
 /// @nodoc
@@ -49,7 +49,7 @@ class _$KidCopyWithImpl<$Res> implements $KidCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
-    Object? birthDate = freezed,
+    Object? dateOfBirth = freezed,
     Object? isCurrent = freezed,
   }) {
     return _then(_value.copyWith(
@@ -61,9 +61,9 @@ class _$KidCopyWithImpl<$Res> implements $KidCopyWith<$Res> {
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      birthDate: birthDate == freezed
-          ? _value.birthDate
-          : birthDate // ignore: cast_nullable_to_non_nullable
+      dateOfBirth: dateOfBirth == freezed
+          ? _value.dateOfBirth
+          : dateOfBirth // ignore: cast_nullable_to_non_nullable
               as DateTime,
       isCurrent: isCurrent == freezed
           ? _value.isCurrent
@@ -78,7 +78,7 @@ abstract class _$$_KidCopyWith<$Res> implements $KidCopyWith<$Res> {
   factory _$$_KidCopyWith(_$_Kid value, $Res Function(_$_Kid) then) =
       __$$_KidCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String name, DateTime birthDate, bool isCurrent});
+  $Res call({String id, String name, DateTime dateOfBirth, bool isCurrent});
 }
 
 /// @nodoc
@@ -94,7 +94,7 @@ class __$$_KidCopyWithImpl<$Res> extends _$KidCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? name = freezed,
-    Object? birthDate = freezed,
+    Object? dateOfBirth = freezed,
     Object? isCurrent = freezed,
   }) {
     return _then(_$_Kid(
@@ -106,9 +106,9 @@ class __$$_KidCopyWithImpl<$Res> extends _$KidCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      birthDate: birthDate == freezed
-          ? _value.birthDate
-          : birthDate // ignore: cast_nullable_to_non_nullable
+      dateOfBirth: dateOfBirth == freezed
+          ? _value.dateOfBirth
+          : dateOfBirth // ignore: cast_nullable_to_non_nullable
               as DateTime,
       isCurrent: isCurrent == freezed
           ? _value.isCurrent
@@ -124,7 +124,7 @@ class _$_Kid extends _Kid {
   const _$_Kid(
       {required this.id,
       required this.name,
-      required this.birthDate,
+      required this.dateOfBirth,
       this.isCurrent = false})
       : super._();
 
@@ -135,14 +135,14 @@ class _$_Kid extends _Kid {
   @override
   final String name;
   @override
-  final DateTime birthDate;
+  final DateTime dateOfBirth;
   @override
   @JsonKey()
   final bool isCurrent;
 
   @override
   String toString() {
-    return 'Kid(id: $id, name: $name, birthDate: $birthDate, isCurrent: $isCurrent)';
+    return 'Kid(id: $id, name: $name, dateOfBirth: $dateOfBirth, isCurrent: $isCurrent)';
   }
 
   @override
@@ -152,7 +152,8 @@ class _$_Kid extends _Kid {
             other is _$_Kid &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.birthDate, birthDate) &&
+            const DeepCollectionEquality()
+                .equals(other.dateOfBirth, dateOfBirth) &&
             const DeepCollectionEquality().equals(other.isCurrent, isCurrent));
   }
 
@@ -162,7 +163,7 @@ class _$_Kid extends _Kid {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(birthDate),
+      const DeepCollectionEquality().hash(dateOfBirth),
       const DeepCollectionEquality().hash(isCurrent));
 
   @JsonKey(ignore: true)
@@ -182,7 +183,7 @@ abstract class _Kid extends Kid {
   const factory _Kid(
       {required final String id,
       required final String name,
-      required final DateTime birthDate,
+      required final DateTime dateOfBirth,
       final bool isCurrent}) = _$_Kid;
   const _Kid._() : super._();
 
@@ -193,7 +194,7 @@ abstract class _Kid extends Kid {
   @override
   String get name;
   @override
-  DateTime get birthDate;
+  DateTime get dateOfBirth;
   @override
   bool get isCurrent;
   @override

@@ -14,9 +14,9 @@ class EditKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
             validators: [Validators.required],
             value: kid.name,
           ),
-          'birthDate': FormControl<DateTime>(
+          'dateOfBirth': FormControl<DateTime>(
             validators: [Validators.required],
-            value: kid.birthDate,
+            value: kid.dateOfBirth,
           ),
         }),
         super(const AsyncValue.data(null));
@@ -31,7 +31,7 @@ class EditKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
     final input = Kid(
       id: kid.id,
       name: form.control('name').value as String,
-      birthDate: form.control('birthDate').value as DateTime,
+      dateOfBirth: form.control('dateOfBirth').value as DateTime,
     );
 
     state = const AsyncValue.loading();

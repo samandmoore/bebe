@@ -8,7 +8,7 @@ class NewKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
     'name': FormControl<String>(
       validators: [Validators.required],
     ),
-    'birthDate': FormControl<DateTime>(
+    'dateOfBirth': FormControl<DateTime>(
       validators: [Validators.required],
     ),
   });
@@ -26,7 +26,7 @@ class NewKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
     final repo = ref.read(kidRepositoryProvider);
     final input = KidInput(
       name: form.control('name').value as String,
-      birthDate: form.control('birthDate').value as DateTime,
+      dateOfBirth: form.control('dateOfBirth').value as DateTime,
     );
 
     state = const AsyncValue.loading();

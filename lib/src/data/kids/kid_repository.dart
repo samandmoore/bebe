@@ -41,7 +41,7 @@ class KidRepository with ChangeNotifier {
     final newKid = Kid(
       id: const Uuid().v4(),
       name: kid.name,
-      birthDate: kid.birthDate,
+      dateOfBirth: kid.dateOfBirth,
       isCurrent: true,
     );
 
