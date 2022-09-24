@@ -51,4 +51,8 @@ class SignupNotifier extends StateNotifier<AsyncValue<SignupResult?>> {
       );
     });
   }
+
+  void reset() {
+    state = const AsyncValue.data(null);
+  }
 }

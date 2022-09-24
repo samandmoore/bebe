@@ -47,4 +47,8 @@ class LoginNotifier extends StateNotifier<AsyncValue<LoginResult?>> {
       );
     });
   }
+
+  void reset() {
+    state = const AsyncValue.data(null);
+  }
 }

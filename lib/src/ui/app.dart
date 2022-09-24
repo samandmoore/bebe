@@ -28,7 +28,7 @@ class App extends StatelessWidget {
 
   late final _router = GoRouter(
     routes: [
-      GoRoute(path: '/', redirect: (_) => TrackScreen.route),
+      GoRoute(path: '/', redirect: (_, __) => TrackScreen.route),
       GoRoute(
         path: AuthScreen.route,
         builder: (_, __) => const AuthScreen(),
@@ -79,7 +79,7 @@ class App extends StatelessWidget {
         ],
       ),
     ],
-    redirect: (state) {
+    redirect: (context, state) {
       // if the user is not logged in, they need to login
       final bool loggedIn = authRepository.isLoggedIn;
       final bool loggingIn = state.subloc == AuthScreen.route;

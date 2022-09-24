@@ -1,6 +1,7 @@
 import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/ui/auth/login_notifier.dart';
 import 'package:bebe/src/ui/auth/signup_notifier.dart';
+import 'package:bebe/src/ui/shared/error.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:bebe/src/ui/shared/modal.dart';
 import 'package:bebe/src/ui/shared/spacing.dart';
@@ -76,42 +77,48 @@ class _LoginForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final form = ref.read(loginProvider.notifier).form;
     final isSubmitting = ref.watch(loginProvider.select((v) => v.isLoading));
-    return Modal(
-      visible: isSubmitting,
-      modal: LoadingIndicator.white(),
-      child: SafeArea(
-        child: ReactiveForm(
-          formGroup: form,
-          child: Column(
-            children: [
-              const VSpace(),
-              ListTile(
-                title: const Text('Email'),
-                subtitle: ReactiveTextField<String>(
-                  formControlName: 'email',
-                ),
-              ),
-              const VSpace(),
-              ListTile(
-                title: const Text('Password'),
-                subtitle: ReactiveTextField<String>(
-                  formControlName: 'password',
-                  obscureText: true,
-                ),
-              ),
-              const VSpace(),
-              ButtonBar(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      final model = ref.read(loginProvider.notifier);
-                      model.save();
-                    },
-                    child: const Text('Log in'),
+    final hasError = ref.watch(loginProvider.select((v) => v.hasError));
+
+    return ErrorModal(
+      isVisible: hasError,
+      onDismiss: () => ref.read(loginProvider.notifier).reset(),
+      child: Modal(
+        visible: isSubmitting,
+        modal: LoadingIndicator.white(),
+        child: SafeArea(
+          child: ReactiveForm(
+            formGroup: form,
+            child: Column(
+              children: [
+                const VSpace(),
+                ListTile(
+                  title: const Text('Email'),
+                  subtitle: ReactiveTextField<String>(
+                    formControlName: 'email',
                   ),
-                ],
-              ),
-            ],
+                ),
+                const VSpace(),
+                ListTile(
+                  title: const Text('Password'),
+                  subtitle: ReactiveTextField<String>(
+                    formControlName: 'password',
+                    obscureText: true,
+                  ),
+                ),
+                const VSpace(),
+                ButtonBar(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        final model = ref.read(loginProvider.notifier);
+                        model.save();
+                      },
+                      child: const Text('Log in'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -126,50 +133,55 @@ class _SignupForm extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final form = ref.read(signupProvider.notifier).form;
     final isSubmitting = ref.watch(signupProvider.select((v) => v.isLoading));
+    final hasError = ref.watch(loginProvider.select((v) => v.hasError));
 
-    return Modal(
-      visible: isSubmitting,
-      modal: LoadingIndicator.white(),
-      child: SafeArea(
-        child: ReactiveForm(
-          formGroup: form,
-          child: Column(
-            children: [
-              const VSpace(),
-              ListTile(
-                title: const Text('Name'),
-                subtitle: ReactiveTextField<String>(
-                  formControlName: 'name',
-                ),
-              ),
-              const VSpace(),
-              ListTile(
-                title: const Text('Email'),
-                subtitle: ReactiveTextField<String>(
-                  formControlName: 'email',
-                ),
-              ),
-              const VSpace(),
-              ListTile(
-                title: const Text('Password'),
-                subtitle: ReactiveTextField<String>(
-                  formControlName: 'password',
-                  obscureText: true,
-                ),
-              ),
-              const VSpace(),
-              ButtonBar(
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      final model = ref.read(signupProvider.notifier);
-                      model.save();
-                    },
-                    child: const Text('Sign up'),
+    return ErrorModal(
+      isVisible: hasError,
+      onDismiss: () => ref.read(signupProvider.notifier).reset(),
+      child: Modal(
+        visible: isSubmitting,
+        modal: LoadingIndicator.white(),
+        child: SafeArea(
+          child: ReactiveForm(
+            formGroup: form,
+            child: Column(
+              children: [
+                const VSpace(),
+                ListTile(
+                  title: const Text('Name'),
+                  subtitle: ReactiveTextField<String>(
+                    formControlName: 'name',
                   ),
-                ],
-              ),
-            ],
+                ),
+                const VSpace(),
+                ListTile(
+                  title: const Text('Email'),
+                  subtitle: ReactiveTextField<String>(
+                    formControlName: 'email',
+                  ),
+                ),
+                const VSpace(),
+                ListTile(
+                  title: const Text('Password'),
+                  subtitle: ReactiveTextField<String>(
+                    formControlName: 'password',
+                    obscureText: true,
+                  ),
+                ),
+                const VSpace(),
+                ButtonBar(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        final model = ref.read(signupProvider.notifier);
+                        model.save();
+                      },
+                      child: const Text('Sign up'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

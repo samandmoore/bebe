@@ -1,3 +1,5 @@
+import 'package:bebe/src/ui/shared/modal.dart';
+import 'package:bebe/src/ui/shared/spacing.dart';
 import 'package:flutter/material.dart';
 
 class ErrorScreen extends StatelessWidget {
@@ -17,14 +19,14 @@ class ErrorScreen extends StatelessWidget {
 }
 
 class ErrorView extends StatelessWidget {
+  final Object? error;
+  final StackTrace? stackTrace;
+
   const ErrorView({
     Key? key,
     required this.error,
     required this.stackTrace,
   }) : super(key: key);
-
-  final Object error;
-  final StackTrace? stackTrace;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,47 @@ class ErrorView extends StatelessWidget {
         'Error: $error\n$stackTrace',
         textAlign: TextAlign.center,
       ),
+    );
+  }
+}
+
+class ErrorModal extends StatelessWidget {
+  final bool isVisible;
+  final VoidCallback onDismiss;
+  final Widget child;
+
+  const ErrorModal({
+    super.key,
+    required this.isVisible,
+    required this.onDismiss,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Modal(
+      visible: isVisible,
+      modal: Center(
+        child: Container(
+          color: Colors.white,
+          padding: const EdgeInsets.symmetric(
+            horizontal: Spacing.unit * 4,
+            vertical: Spacing.unit * 2,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('An error has occurred.'),
+              const VSpace(),
+              TextButton(
+                onPressed: onDismiss,
+                child: const Text('Try again'),
+              ),
+            ],
+          ),
+        ),
+      ),
+      child: child,
     );
   }
 }
