@@ -2,6 +2,7 @@ import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/kids/kid.dart';
 import 'package:bebe/src/ui/auth/auth_screen.dart';
+import 'package:bebe/src/ui/auth/secondary_auth.dart';
 import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
 import 'package:bebe/src/ui/diapers/providers.dart';
 import 'package:bebe/src/ui/history/history_screen.dart';
@@ -32,6 +33,10 @@ class App extends StatelessWidget {
       GoRoute(
         path: AuthScreen.route,
         builder: (_, __) => const AuthScreen(),
+      ),
+      GoRoute(
+        path: SecondaryAuthScreen.route,
+        builder: (_, __) => const SecondaryAuthScreen(),
       ),
       GoRoute(
         path: TrackScreen.route,
@@ -81,15 +86,24 @@ class App extends StatelessWidget {
     ],
     redirect: (context, state) {
       // if the user is not logged in, they need to login
-      final bool loggedIn = authRepository.isLoggedIn;
-      final bool loggingIn = state.subloc == AuthScreen.route;
+      final loggedIn = authRepository.isLoggedIn;
+      final loggingIn = state.subloc == AuthScreen.route;
       if (!loggedIn) {
         return loggingIn ? null : AuthScreen.route;
       }
 
+      // we only want to handle secondary auth as a redirect if we're in app startup
+      // otherwise, it's handled as an overlay
+      final needsSecondaryAuth = authRepository.needsSecondaryAuth;
+      final hasEverSecondaryAuthed = authRepository.hasEverSecondaryAuthed;
+      final doingSecondaryAuth = state.subloc == SecondaryAuthScreen.route;
+      if (!hasEverSecondaryAuthed && needsSecondaryAuth) {
+        return doingSecondaryAuth ? null : SecondaryAuthScreen.route;
+      }
+
       // if the user is logged in but still on the login page, send them to
       // the home page
-      if (loggingIn) {
+      if (loggingIn || doingSecondaryAuth) {
         return '/';
       }
 
@@ -128,6 +142,9 @@ class App extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: ThemeMode.system,
           debugShowCheckedModeBanner: false,
+          builder: (context, child) {
+            return SecondaryAuth(child: child!);
+          },
         ),
       ),
     );

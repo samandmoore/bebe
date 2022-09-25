@@ -19,9 +19,16 @@ class AuthRepository with ChangeNotifier {
   final Dio _dio;
   final FlutterSecureStorage _storage;
 
-  bool _isLoggedIn = false;
+  bool _hasEverSecondaryAuthed = false;
+  bool get hasEverSecondaryAuthed => _hasEverSecondaryAuthed;
 
+  bool _isLoggedIn = false;
   bool get isLoggedIn => _isLoggedIn;
+
+  bool _isSecondaryAuthLoggedIn = false;
+  bool get isSecondaryAuthLoggedIn => _isSecondaryAuthLoggedIn;
+
+  bool get needsSecondaryAuth => !isSecondaryAuthLoggedIn && isLoggedIn;
 
   AuthRepository({
     Dio? dio,
@@ -45,6 +52,7 @@ class AuthRepository with ChangeNotifier {
   Future<void> logout() async {
     await _storage.delete(key: _authHeaderStorageKey);
     _isLoggedIn = false;
+    _isSecondaryAuthLoggedIn = false;
     notifyListeners();
   }
 
@@ -87,6 +95,17 @@ class AuthRepository with ChangeNotifier {
   Future<void> _saveAuthHeader(String? authHeader) async {
     await _storage.write(key: _authHeaderStorageKey, value: authHeader);
     _isLoggedIn = true;
+    notifyListeners();
+  }
+
+  void secondaryAuthLogIn() {
+    _hasEverSecondaryAuthed = true;
+    _isSecondaryAuthLoggedIn = true;
+    notifyListeners();
+  }
+
+  void clearSecondaryAuth() {
+    _isSecondaryAuthLoggedIn = false;
     notifyListeners();
   }
 }
