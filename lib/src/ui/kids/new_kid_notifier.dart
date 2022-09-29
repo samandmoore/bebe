@@ -1,6 +1,5 @@
 import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/data/user/user_repository.dart';
-import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -39,10 +38,7 @@ class NewKidNotifier extends StateNotifier<AsyncValue<NewKidResult?>> {
     state = await AsyncValue.guard(() async {
       final result = await repo.createKid(input);
       return result.map(
-        success: (_) {
-          ref.invalidate(userProvider);
-          return NewKidResult.success;
-        },
+        success: (_) => NewKidResult.success,
         error: (error) => throw error,
         validationError: (errors) => throw errors,
       );

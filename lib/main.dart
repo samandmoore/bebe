@@ -1,5 +1,5 @@
 import 'package:bebe/src/data/storage/storage.dart';
-import 'package:bebe/src/data/user/user_repository.dart';
+import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:bebe/src/ui/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +11,7 @@ void main() async {
   final storage = container.read(storageProvider);
   await storage.initialize();
 
-  final authRepo = container.read(userRepositoryProvider);
+  final authRepo = container.read(authRepositoryProvider);
   await authRepo.initialize();
 
   runApp(

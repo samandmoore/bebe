@@ -1,4 +1,5 @@
 import 'package:bebe/src/data/api_result.dart';
+import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/data/user/session.dart';
 import 'package:bebe/src/data/user/user.dart';
@@ -7,51 +8,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-final userRepositoryProvider =
-    ChangeNotifierProvider((ref) => UserRepository());
+final userRepositoryProvider = ChangeNotifierProvider((ref) {
+  final authRepo = ref.watch(authRepositoryProvider);
+  return UserRepository(authRepository: authRepo);
+});
 
 Dio buildDioClient() {
   return Dio()..options.baseUrl = 'http://localhost:3000';
 }
 
 class UserRepository with ChangeNotifier {
-  static const _authHeaderStorageKey = 'auth_header';
-
   final Dio _dio;
-  final FlutterSecureStorage _storage;
-
-  bool _isLoggedIn = false;
-
-  bool get isLoggedIn => _isLoggedIn;
+  final AuthRepository _authRepository;
 
   UserRepository({
     Dio? dio,
     FlutterSecureStorage storage = const FlutterSecureStorage(),
+    AuthRepository? authRepository,
   })  : _dio = dio ?? buildDioClient(),
-        _storage = storage;
-
-  Future<void> initialize() async {
-    final authHeader = await _storage.read(key: _authHeaderStorageKey);
-    if (authHeader != null) {
-      _isLoggedIn = true;
-      notifyListeners();
-    }
-  }
-
-  Future<String?> getAuthHeader() async {
-    final header = await _storage.read(key: _authHeaderStorageKey);
-    return header;
-  }
-
-  Future<void> logout() async {
-    await _storage.delete(key: _authHeaderStorageKey);
-    _isLoggedIn = false;
-    notifyListeners();
-  }
+        _authRepository = authRepository ?? AuthRepository();
 
   Future<ApiResult<User>> getUser() async {
     return ApiResult.from(() async {
-      final header = await getAuthHeader();
+      final header = await _getAuthHeader();
       final response = await _dio.get<Object?>(
         '/api/mobile/v1/current_user',
         options: Options(
@@ -67,7 +46,7 @@ class UserRepository with ChangeNotifier {
 
   Future<ApiResult<void>> updateCurrentKid(String kidId) async {
     return ApiResult.from(() async {
-      final header = await getAuthHeader();
+      final header = await _getAuthHeader();
       await _dio.put<Object?>(
         '/api/mobile/v1/current_kid',
         data: {'current_kid_id': kidId},
@@ -78,13 +57,14 @@ class UserRepository with ChangeNotifier {
         ),
       );
 
+      notifyListeners();
       return;
     });
   }
 
   Future<ApiResult<void>> createKid(KidInput input) async {
     return ApiResult.from(() async {
-      final header = await getAuthHeader();
+      final header = await _getAuthHeader();
       await _dio.post<Object?>(
         '/api/mobile/v1/kids',
         data: {'kid': input.toJson()},
@@ -95,13 +75,14 @@ class UserRepository with ChangeNotifier {
         ),
       );
 
+      notifyListeners();
       return;
     });
   }
 
   Future<ApiResult<void>> deleteKid(String kidId) async {
     return ApiResult.from(() async {
-      final header = await getAuthHeader();
+      final header = await _getAuthHeader();
       await _dio.delete<Object?>(
         '/api/mobile/v1/kids/$kidId',
         options: Options(
@@ -111,13 +92,14 @@ class UserRepository with ChangeNotifier {
         ),
       );
 
+      notifyListeners();
       return;
     });
   }
 
   Future<ApiResult<void>> updateKid(String kidId, KidInput input) async {
     return ApiResult.from(() async {
-      final header = await getAuthHeader();
+      final header = await _getAuthHeader();
       await _dio.put<Object?>(
         '/api/mobile/v1/kids/$kidId',
         data: {'kid': input.toJson()},
@@ -128,6 +110,7 @@ class UserRepository with ChangeNotifier {
         ),
       );
 
+      notifyListeners();
       return;
     });
   }
@@ -155,9 +138,11 @@ class UserRepository with ChangeNotifier {
     });
   }
 
+  Future<String?> _getAuthHeader() async {
+    return _authRepository.getAuthHeader();
+  }
+
   Future<void> _saveAuthHeader(String? authHeader) async {
-    await _storage.write(key: _authHeaderStorageKey, value: authHeader);
-    _isLoggedIn = true;
-    notifyListeners();
+    _authRepository.storeAuthHeader(authHeader);
   }
 }
