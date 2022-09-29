@@ -1,20 +1,20 @@
 import 'package:bebe/src/data/api_result.dart';
-import 'package:bebe/src/data/auth/session.dart';
-import 'package:bebe/src/data/auth/user.dart';
-import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/user/kid.dart';
+import 'package:bebe/src/data/user/session.dart';
+import 'package:bebe/src/data/user/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-final authRepositoryProvider =
-    ChangeNotifierProvider((ref) => AuthRepository());
+final userRepositoryProvider =
+    ChangeNotifierProvider((ref) => UserRepository());
 
 Dio buildDioClient() {
   return Dio()..options.baseUrl = 'http://localhost:3000';
 }
 
-class AuthRepository with ChangeNotifier {
+class UserRepository with ChangeNotifier {
   static const _authHeaderStorageKey = 'auth_header';
 
   final Dio _dio;
@@ -24,7 +24,7 @@ class AuthRepository with ChangeNotifier {
 
   bool get isLoggedIn => _isLoggedIn;
 
-  AuthRepository({
+  UserRepository({
     Dio? dio,
     FlutterSecureStorage storage = const FlutterSecureStorage(),
   })  : _dio = dio ?? buildDioClient(),

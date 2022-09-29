@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/auth/auth_repository.dart';
+import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:bebe/src/ui/history/history_screen.dart';
 import 'package:bebe/src/ui/settings/settings_screen.dart';
 import 'package:bebe/src/ui/track/track_screen.dart';
@@ -41,7 +41,7 @@ class NavDrawer extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () async =>
-                await ref.read(authRepositoryProvider).logout(),
+                await ref.read(userRepositoryProvider).logout(),
             child: const Text('Log out'),
           )
         ],

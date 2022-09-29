@@ -1,5 +1,5 @@
-import 'package:bebe/src/data/auth/auth_repository.dart';
-import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/user/kid.dart';
+import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,7 +11,7 @@ class DeleteKidNotifier extends StateNotifier<AsyncValue<String?>> {
       : super(const AsyncValue.data(null));
 
   Future<void> delete() async {
-    final repo = ref.read(authRepositoryProvider);
+    final repo = ref.read(userRepositoryProvider);
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {

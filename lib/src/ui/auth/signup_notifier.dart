@@ -1,5 +1,5 @@
-import 'package:bebe/src/data/auth/auth_repository.dart';
-import 'package:bebe/src/data/auth/user.dart';
+import 'package:bebe/src/data/user/user.dart';
+import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -30,7 +30,7 @@ class SignupNotifier extends StateNotifier<AsyncValue<SignupResult?>> {
       return;
     }
 
-    final repo = ref.read(authRepositoryProvider);
+    final repo = ref.read(userRepositoryProvider);
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {

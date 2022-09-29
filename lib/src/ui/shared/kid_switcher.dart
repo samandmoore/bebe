@@ -1,5 +1,5 @@
-import 'package:bebe/src/data/auth/auth_repository.dart';
-import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/user/kid.dart';
+import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:bebe/src/ui/kids/edit_kid_screen.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
@@ -91,7 +91,7 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
         PageView.builder(
           controller: _pageController,
           onPageChanged: (value) async {
-            final repo = ref.read(authRepositoryProvider);
+            final repo = ref.read(userRepositoryProvider);
             final kidToSelect = kids[value];
 
             setState(() => _currentIndex = value);

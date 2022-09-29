@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/user/kid.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user.freezed.dart';

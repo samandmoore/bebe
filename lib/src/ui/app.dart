@@ -1,6 +1,6 @@
-import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/user/kid.dart';
+import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:bebe/src/ui/auth/auth_screen.dart';
 import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
 import 'package:bebe/src/ui/diapers/providers.dart';
@@ -22,7 +22,7 @@ import 'package:go_router/go_router.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class App extends StatelessWidget {
-  final AuthRepository authRepository;
+  final UserRepository authRepository;
 
   App({super.key, required this.authRepository});
 

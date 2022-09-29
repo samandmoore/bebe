@@ -1,10 +1,10 @@
-import 'package:bebe/src/data/auth/auth_repository.dart';
-import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/user/kid.dart';
+import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userProvider = FutureProvider.autoDispose((ref) async {
-  final repo = ref.watch(authRepositoryProvider);
+  final repo = ref.watch(userRepositoryProvider);
   repo.addListener(() => ref.invalidateSelf());
 
   final user = await repo.getUser();

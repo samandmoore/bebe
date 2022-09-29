@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/auth/auth_repository.dart';
+import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:bebe/src/ui/kids/delete_kid_notifier.dart';
 import 'package:bebe/src/ui/kids/edit_kid_notifier.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
@@ -18,13 +18,13 @@ final editKidProvider = StateNotifierProvider.autoDispose<EditKidNotifier,
     final editingKid = ref.watch(editingKidProvider)!;
     return EditKidNotifier(ref, kid: editingKid);
   },
-  dependencies: [editingKidProvider, authRepositoryProvider],
+  dependencies: [editingKidProvider, userRepositoryProvider],
 );
 
 final deleteKidProvider =
     StateNotifierProvider.autoDispose<DeleteKidNotifier, AsyncValue<String?>>(
   (ref) => DeleteKidNotifier(ref, kid: ref.watch(editingKidProvider)!),
-  dependencies: [editingKidProvider, authRepositoryProvider],
+  dependencies: [editingKidProvider, userRepositoryProvider],
 );
 
 class EditKidScreen extends ConsumerWidget {

@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/auth/auth_repository.dart';
+import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:bebe/src/ui/auth/login_notifier.dart';
 import 'package:bebe/src/ui/auth/signup_notifier.dart';
 import 'package:bebe/src/ui/shared/error.dart';
@@ -14,14 +14,14 @@ final loginProvider =
         (ref) {
   return LoginNotifier(ref);
 }, dependencies: [
-  authRepositoryProvider,
+  userRepositoryProvider,
 ]);
 
 final signupProvider = StateNotifierProvider.autoDispose<SignupNotifier,
     AsyncValue<SignupResult?>>((ref) {
   return SignupNotifier(ref);
 }, dependencies: [
-  authRepositoryProvider,
+  userRepositoryProvider,
 ]);
 
 enum AuthType { login, signup }

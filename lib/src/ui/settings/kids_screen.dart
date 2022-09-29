@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/ui/kids/edit_kid_screen.dart';
 import 'package:bebe/src/ui/kids/new_kid_screen.dart';
 import 'package:bebe/src/ui/kids/providers.dart';

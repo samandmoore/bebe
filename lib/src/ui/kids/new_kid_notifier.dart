@@ -1,5 +1,5 @@
-import 'package:bebe/src/data/auth/auth_repository.dart';
-import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/user/kid.dart';
+import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -29,7 +29,7 @@ class NewKidNotifier extends StateNotifier<AsyncValue<NewKidResult?>> {
       return;
     }
 
-    final repo = ref.read(authRepositoryProvider);
+    final repo = ref.read(userRepositoryProvider);
     final input = KidInput(
       name: form.control('name').value as String,
       dateOfBirth: form.control('dateOfBirth').value as DateTime,
