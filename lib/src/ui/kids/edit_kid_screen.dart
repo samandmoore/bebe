@@ -1,4 +1,4 @@
-import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/ui/kids/delete_kid_notifier.dart';
 import 'package:bebe/src/ui/kids/edit_kid_notifier.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
@@ -12,19 +12,19 @@ import 'package:go_router/go_router.dart';
 import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-final editKidProvider =
-    StateNotifierProvider.autoDispose<EditKidNotifier, AsyncValue<Kid?>>(
+final editKidProvider = StateNotifierProvider.autoDispose<EditKidNotifier,
+    AsyncValue<EditKidResult?>>(
   (ref) {
     final editingKid = ref.watch(editingKidProvider)!;
     return EditKidNotifier(ref, kid: editingKid);
   },
-  dependencies: [editingKidProvider, kidRepositoryProvider],
+  dependencies: [editingKidProvider, authRepositoryProvider],
 );
 
 final deleteKidProvider =
     StateNotifierProvider.autoDispose<DeleteKidNotifier, AsyncValue<String?>>(
   (ref) => DeleteKidNotifier(ref, kid: ref.watch(editingKidProvider)!),
-  dependencies: [editingKidProvider, kidRepositoryProvider],
+  dependencies: [editingKidProvider, authRepositoryProvider],
 );
 
 class EditKidScreen extends ConsumerWidget {
@@ -37,7 +37,7 @@ class EditKidScreen extends ConsumerWidget {
     final form = ref.watch(editKidProvider.notifier).form;
     final kid = ref.watch(editKidProvider.notifier).kid;
 
-    ref.listen<AsyncValue<Kid?>>(editKidProvider, (previous, next) {
+    ref.listen<AsyncValue<EditKidResult?>>(editKidProvider, (previous, next) {
       if (next.valueOrNull != null) {
         context.pop();
       }

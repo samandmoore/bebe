@@ -1,4 +1,3 @@
-import 'package:bebe/src/data/kids/kid.dart';
 import 'package:bebe/src/ui/kids/new_kid_notifier.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:bebe/src/ui/shared/modal.dart';
@@ -9,8 +8,8 @@ import 'package:go_router/go_router.dart';
 import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-final newKidProvider =
-    StateNotifierProvider.autoDispose<NewKidNotifier, AsyncValue<Kid?>>(
+final newKidProvider = StateNotifierProvider.autoDispose<NewKidNotifier,
+    AsyncValue<NewKidResult?>>(
   (ref) => NewKidNotifier(ref),
 );
 
@@ -22,7 +21,7 @@ class NewKidScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final form = ref.watch(newKidProvider.notifier).form;
-    ref.listen<AsyncValue<Kid?>>(newKidProvider, (previous, next) {
+    ref.listen<AsyncValue<NewKidResult?>>(newKidProvider, (previous, next) {
       if (next.valueOrNull != null) {
         context.pop();
       }

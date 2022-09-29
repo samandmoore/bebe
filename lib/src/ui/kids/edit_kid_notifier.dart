@@ -1,9 +1,14 @@
+import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/kids/kid.dart';
-import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class EditKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
+enum EditKidResult {
+  success,
+  error,
+}
+
+class EditKidNotifier extends StateNotifier<AsyncValue<EditKidResult?>> {
   final FormGroup form;
   final Ref ref;
   final Kid kid;
@@ -27,17 +32,20 @@ class EditKidNotifier extends StateNotifier<AsyncValue<Kid?>> {
       return;
     }
 
-    final repo = ref.read(kidRepositoryProvider);
-    final input = Kid(
-      id: kid.id,
+    final repo = ref.read(authRepositoryProvider);
+    final input = KidInput(
       name: form.control('name').value as String,
       dateOfBirth: form.control('dateOfBirth').value as DateTime,
     );
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await repo.update(input);
-      return input;
+      final result = await repo.updateKid(kid.id, input);
+      return result.map(
+        success: (_) => EditKidResult.success,
+        error: (error) => throw error,
+        validationError: (errors) => throw errors,
+      );
     });
   }
 }

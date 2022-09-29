@@ -21,8 +21,12 @@ Kid _$KidFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Kid {
   String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
-  DateTime get dateOfBirth => throw _privateConstructorUsedError;
+  String get name =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'date_of_birth')
+  DateTime get dateOfBirth =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'current')
   bool get isCurrent => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +38,11 @@ mixin _$Kid {
 abstract class $KidCopyWith<$Res> {
   factory $KidCopyWith(Kid value, $Res Function(Kid) then) =
       _$KidCopyWithImpl<$Res>;
-  $Res call({String id, String name, DateTime dateOfBirth, bool isCurrent});
+  $Res call(
+      {String id,
+      String name,
+      @JsonKey(name: 'date_of_birth') DateTime dateOfBirth,
+      @JsonKey(name: 'current') bool isCurrent});
 }
 
 /// @nodoc
@@ -78,7 +86,11 @@ abstract class _$$_KidCopyWith<$Res> implements $KidCopyWith<$Res> {
   factory _$$_KidCopyWith(_$_Kid value, $Res Function(_$_Kid) then) =
       __$$_KidCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String name, DateTime dateOfBirth, bool isCurrent});
+  $Res call(
+      {String id,
+      String name,
+      @JsonKey(name: 'date_of_birth') DateTime dateOfBirth,
+      @JsonKey(name: 'current') bool isCurrent});
 }
 
 /// @nodoc
@@ -124,8 +136,8 @@ class _$_Kid extends _Kid {
   const _$_Kid(
       {required this.id,
       required this.name,
-      required this.dateOfBirth,
-      this.isCurrent = false})
+      @JsonKey(name: 'date_of_birth') required this.dateOfBirth,
+      @JsonKey(name: 'current') this.isCurrent = false})
       : super._();
 
   factory _$_Kid.fromJson(Map<String, dynamic> json) => _$$_KidFromJson(json);
@@ -134,10 +146,13 @@ class _$_Kid extends _Kid {
   final String id;
   @override
   final String name;
+// ignore: invalid_annotation_target
   @override
+  @JsonKey(name: 'date_of_birth')
   final DateTime dateOfBirth;
+// ignore: invalid_annotation_target
   @override
-  @JsonKey()
+  @JsonKey(name: 'current')
   final bool isCurrent;
 
   @override
@@ -183,8 +198,8 @@ abstract class _Kid extends Kid {
   const factory _Kid(
       {required final String id,
       required final String name,
-      required final DateTime dateOfBirth,
-      final bool isCurrent}) = _$_Kid;
+      @JsonKey(name: 'date_of_birth') required final DateTime dateOfBirth,
+      @JsonKey(name: 'current') final bool isCurrent}) = _$_Kid;
   const _Kid._() : super._();
 
   factory _Kid.fromJson(Map<String, dynamic> json) = _$_Kid.fromJson;
@@ -193,9 +208,11 @@ abstract class _Kid extends Kid {
   String get id;
   @override
   String get name;
-  @override
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'date_of_birth')
   DateTime get dateOfBirth;
-  @override
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'current')
   bool get isCurrent;
   @override
   @JsonKey(ignore: true)

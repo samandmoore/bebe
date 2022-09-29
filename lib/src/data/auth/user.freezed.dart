@@ -23,6 +23,7 @@ mixin _$User {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
+  List<Kid> get kids => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +34,7 @@ mixin _$User {
 abstract class $UserCopyWith<$Res> {
   factory $UserCopyWith(User value, $Res Function(User) then) =
       _$UserCopyWithImpl<$Res>;
-  $Res call({String id, String name, String email});
+  $Res call({String id, String name, String email, List<Kid> kids});
 }
 
 /// @nodoc
@@ -49,6 +50,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
     Object? id = freezed,
     Object? name = freezed,
     Object? email = freezed,
+    Object? kids = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -63,6 +65,10 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      kids: kids == freezed
+          ? _value.kids
+          : kids // ignore: cast_nullable_to_non_nullable
+              as List<Kid>,
     ));
   }
 }
@@ -72,7 +78,7 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$$_UserCopyWith(_$_User value, $Res Function(_$_User) then) =
       __$$_UserCopyWithImpl<$Res>;
   @override
-  $Res call({String id, String name, String email});
+  $Res call({String id, String name, String email, List<Kid> kids});
 }
 
 /// @nodoc
@@ -89,6 +95,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? id = freezed,
     Object? name = freezed,
     Object? email = freezed,
+    Object? kids = freezed,
   }) {
     return _then(_$_User(
       id: id == freezed
@@ -103,6 +110,10 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String,
+      kids: kids == freezed
+          ? _value._kids
+          : kids // ignore: cast_nullable_to_non_nullable
+              as List<Kid>,
     ));
   }
 }
@@ -110,7 +121,12 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_User implements _User {
-  const _$_User({required this.id, required this.name, required this.email});
+  const _$_User(
+      {required this.id,
+      required this.name,
+      required this.email,
+      required final List<Kid> kids})
+      : _kids = kids;
 
   factory _$_User.fromJson(Map<String, dynamic> json) => _$$_UserFromJson(json);
 
@@ -120,10 +136,16 @@ class _$_User implements _User {
   final String name;
   @override
   final String email;
+  final List<Kid> _kids;
+  @override
+  List<Kid> get kids {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_kids);
+  }
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email)';
+    return 'User(id: $id, name: $name, email: $email, kids: $kids)';
   }
 
   @override
@@ -133,7 +155,8 @@ class _$_User implements _User {
             other is _$_User &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.email, email));
+            const DeepCollectionEquality().equals(other.email, email) &&
+            const DeepCollectionEquality().equals(other._kids, _kids));
   }
 
   @JsonKey(ignore: true)
@@ -142,7 +165,8 @@ class _$_User implements _User {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(email));
+      const DeepCollectionEquality().hash(email),
+      const DeepCollectionEquality().hash(_kids));
 
   @JsonKey(ignore: true)
   @override
@@ -161,7 +185,8 @@ abstract class _User implements User {
   const factory _User(
       {required final String id,
       required final String name,
-      required final String email}) = _$_User;
+      required final String email,
+      required final List<Kid> kids}) = _$_User;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
 
@@ -171,6 +196,8 @@ abstract class _User implements User {
   String get name;
   @override
   String get email;
+  @override
+  List<Kid> get kids;
   @override
   @JsonKey(ignore: true)
   _$$_UserCopyWith<_$_User> get copyWith => throw _privateConstructorUsedError;

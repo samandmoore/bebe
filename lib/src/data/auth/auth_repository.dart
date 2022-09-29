@@ -1,6 +1,7 @@
 import 'package:bebe/src/data/api_result.dart';
 import 'package:bebe/src/data/auth/session.dart';
 import 'package:bebe/src/data/auth/user.dart';
+import 'package:bebe/src/data/kids/kid.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -48,17 +49,87 @@ class AuthRepository with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<User> getUser() async {
-    final header = await getAuthHeader();
-    final response = await _dio.get<Object?>(
-      '/api/mobile/v1/current_user',
-      options: Options(
-        headers: <String, Object?>{
-          'Authorization': header,
-        },
-      ),
-    );
-    return User.fromJson(response.data as Map<String, Object?>);
+  Future<ApiResult<User>> getUser() async {
+    return ApiResult.from(() async {
+      final header = await getAuthHeader();
+      final response = await _dio.get<Object?>(
+        '/api/mobile/v1/current_user',
+        options: Options(
+          headers: <String, Object?>{
+            'Authorization': header,
+          },
+        ),
+      );
+
+      return User.fromJson(response.data as Map<String, Object?>);
+    });
+  }
+
+  Future<ApiResult<void>> updateCurrentKid(String kidId) async {
+    return ApiResult.from(() async {
+      final header = await getAuthHeader();
+      await _dio.put<Object?>(
+        '/api/mobile/v1/current_kid',
+        data: {'current_kid_id': kidId},
+        options: Options(
+          headers: <String, Object?>{
+            'Authorization': header,
+          },
+        ),
+      );
+
+      return;
+    });
+  }
+
+  Future<ApiResult<void>> createKid(KidInput input) async {
+    return ApiResult.from(() async {
+      final header = await getAuthHeader();
+      await _dio.post<Object?>(
+        '/api/mobile/v1/kids',
+        data: {'kid': input.toJson()},
+        options: Options(
+          headers: <String, Object?>{
+            'Authorization': header,
+          },
+        ),
+      );
+
+      return;
+    });
+  }
+
+  Future<ApiResult<void>> deleteKid(String kidId) async {
+    return ApiResult.from(() async {
+      final header = await getAuthHeader();
+      await _dio.delete<Object?>(
+        '/api/mobile/v1/kids/$kidId',
+        options: Options(
+          headers: <String, Object?>{
+            'Authorization': header,
+          },
+        ),
+      );
+
+      return;
+    });
+  }
+
+  Future<ApiResult<void>> updateKid(String kidId, KidInput input) async {
+    return ApiResult.from(() async {
+      final header = await getAuthHeader();
+      await _dio.put<Object?>(
+        '/api/mobile/v1/kids/$kidId',
+        data: {'kid': input.toJson()},
+        options: Options(
+          headers: <String, Object?>{
+            'Authorization': header,
+          },
+        ),
+      );
+
+      return;
+    });
   }
 
   Future<ApiResult<User>> createUser(UserInput input) async {

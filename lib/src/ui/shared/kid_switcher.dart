@@ -1,3 +1,4 @@
+import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/kids/kid.dart';
 import 'package:bebe/src/ui/kids/edit_kid_screen.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
@@ -31,7 +32,7 @@ class KidSwitcher extends ConsumerWidget {
     if (kidsFetch.hasValue) {
       final kids = kidsFetch.value!;
       return KidSwitcherLoaded(
-        kids: kids,
+        kids: kids.toList(growable: false),
       );
     }
     return LoadingIndicator.white();
@@ -90,11 +91,11 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
         PageView.builder(
           controller: _pageController,
           onPageChanged: (value) async {
-            final repo = ref.read(kidRepositoryProvider);
+            final repo = ref.read(authRepositoryProvider);
             final kidToSelect = kids[value];
 
             setState(() => _currentIndex = value);
-            await repo.update(kidToSelect.copyWith(isCurrent: true));
+            await repo.updateCurrentKid(kidToSelect.id);
           },
           findChildIndexCallback: (key) => kids.indexWhere(
             (kid) => kid.id == (key as ValueKey<String>).value,

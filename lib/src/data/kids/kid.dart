@@ -11,8 +11,10 @@ class Kid with _$Kid {
   const factory Kid({
     required String id,
     required String name,
-    required DateTime dateOfBirth,
-    @Default(false) bool isCurrent,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'date_of_birth') required DateTime dateOfBirth,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'current') @Default(false) bool isCurrent,
   }) = _Kid;
 
   String toPrettyAge() {
@@ -75,4 +77,11 @@ class KidInput extends Equatable {
 
   @override
   List<Object?> get props => [name, dateOfBirth];
+
+  Map<String, Object?> toJson() {
+    return {
+      'name': name,
+      'date_of_birth': dateOfBirth.toIso8601String(),
+    };
+  }
 }

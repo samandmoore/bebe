@@ -1,3 +1,4 @@
+import 'package:bebe/src/data/kids/kid.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user.freezed.dart';
@@ -9,6 +10,7 @@ class User with _$User {
     required String id,
     required String name,
     required String email,
+    required List<Kid> kids,
   }) = _User;
 
   factory User.fromJson(Map<String, Object?> json) => _$UserFromJson(json);

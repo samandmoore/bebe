@@ -1,23 +1,18 @@
+import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/kids/kid.dart';
-import 'package:bebe/src/data/kids/kid_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final kidRepositoryProvider = Provider<KidRepository>((ref) {
-  final repo = KidRepository(ref);
-  ref.onDispose(() {
-    repo.dispose();
-  });
-  return repo;
-});
-
 final kidsProvider = FutureProvider.autoDispose((ref) async {
-  final repo = ref.watch(kidRepositoryProvider);
+  final repo = ref.watch(authRepositoryProvider);
   repo.addListener(() => ref.invalidateSelf());
 
-  final kids = await repo.fetchAll();
-
-  return kids;
+  final user = await repo.getUser();
+  return user.map(
+    success: ((data) => data!.kids),
+    error: (error) => throw error,
+    validationError: (error) => throw error,
+  );
 });
 
 final currentKidProvider = FutureProvider.autoDispose((ref) async {
