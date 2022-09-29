@@ -3,16 +3,21 @@ import 'package:bebe/src/data/kids/kid.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final kidsProvider = FutureProvider.autoDispose((ref) async {
+final userProvider = FutureProvider.autoDispose((ref) async {
   final repo = ref.watch(authRepositoryProvider);
   repo.addListener(() => ref.invalidateSelf());
 
   final user = await repo.getUser();
   return user.map(
-    success: ((data) => data!.kids),
+    success: ((data) => data!),
     error: (error) => throw error,
     validationError: (error) => throw error,
   );
+});
+
+final kidsProvider = FutureProvider.autoDispose((ref) async {
+  final user = await ref.watch(userProvider.future);
+  return user.kids;
 });
 
 final currentKidProvider = FutureProvider.autoDispose((ref) async {

@@ -1,5 +1,6 @@
 import 'package:bebe/src/data/auth/auth_repository.dart';
 import 'package:bebe/src/data/kids/kid.dart';
+import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -42,7 +43,10 @@ class EditKidNotifier extends StateNotifier<AsyncValue<EditKidResult?>> {
     state = await AsyncValue.guard(() async {
       final result = await repo.updateKid(kid.id, input);
       return result.map(
-        success: (_) => EditKidResult.success,
+        success: (_) {
+          ref.invalidate(userProvider);
+          return EditKidResult.success;
+        },
         error: (error) => throw error,
         validationError: (errors) => throw errors,
       );
