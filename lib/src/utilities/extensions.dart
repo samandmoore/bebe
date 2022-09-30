@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 extension MapExtensions<K, V> on Map<K, V> {
@@ -42,5 +44,13 @@ extension FormGroupExtensions on FormGroup {
     errors.forEach((controlName, error) {
       controls[controlName]?.setErrors(<String, Object>{error: true});
     });
+  }
+}
+
+extension RefreshProviderExtensions on Ref {
+  // When invoked refreshes provider after [duration]
+  void refreshEvery(Duration duration) {
+    final timer = Timer(duration, () => invalidateSelf());
+    onDispose(() => timer.cancel());
   }
 }

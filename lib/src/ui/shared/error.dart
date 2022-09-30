@@ -5,16 +5,32 @@ import 'package:flutter/material.dart';
 class ErrorScreen extends StatelessWidget {
   final Object error;
   final StackTrace? stackTrace;
+  final VoidCallback? onRetry;
 
   const ErrorScreen({
     super.key,
     required this.error,
     this.stackTrace,
+    this.onRetry,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ErrorView(error: error, stackTrace: stackTrace);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Error'),
+      ),
+      body: ListView(
+        children: [
+          if (onRetry != null)
+            TextButton(
+              onPressed: onRetry,
+              child: const Text('Retry'),
+            ),
+          ErrorView(error: error, stackTrace: stackTrace),
+        ],
+      ),
+    );
   }
 }
 

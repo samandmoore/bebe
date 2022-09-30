@@ -10,13 +10,17 @@ import 'package:bebe/src/ui/shared/nav_drawer.dart';
 import 'package:bebe/src/ui/shared/no_kids_screen.dart';
 import 'package:bebe/src/ui/shared/time_ago.dart';
 import 'package:bebe/src/ui/track/track_action.dart';
+import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final actionProvider = FutureProvider.family<List<TrackAction>, String>(
+final actionProvider =
+    FutureProvider.family.autoDispose<List<TrackAction>, String>(
   (ref, kidId) async {
+    ref.refreshEvery(const Duration(seconds: 5));
+
     final repo = ref.read(eventRepositoryProvider);
     repo.addListener(() => ref.invalidateSelf());
 
@@ -38,8 +42,11 @@ class TrackScreen extends ConsumerWidget {
 
     return kids.when(
       loading: () => const LoadingScreen(),
-      error: (error, stackTrace) =>
-          ErrorScreen(error: error, stackTrace: stackTrace),
+      error: (error, stackTrace) => ErrorScreen(
+        error: error,
+        stackTrace: stackTrace,
+        onRetry: () => ref.refresh(userProvider),
+      ),
       data: (kids) {
         if (kids.isEmpty) {
           return const NoKidsScreen();

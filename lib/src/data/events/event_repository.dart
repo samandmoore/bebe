@@ -17,30 +17,8 @@ class EventRepository with ChangeNotifier {
 
   void onChange() => notifyListeners();
 
-  Future<List<Event>> fetchAll() async {
-    await jitter();
-
-    final data = await _storage.load(_storageKey);
-
-    if (data == null) {
-      return [];
-    }
-
-    final list = data as List<Object?>;
-    return list
-        .map((k) => Event.fromJson(k as Map<String, Object?>))
-        .sortedBy((e) => e.createdAt)
-        .reversed
-        .toList();
-  }
-
-  Future<Event?> fetchById(final String id) async {
-    final events = await fetchAll();
-    return events.firstWhereOrNull((k) => k.id == id);
-  }
-
   Future<List<Event>> fetchAllForKid(final String kidId) async {
-    final events = await fetchAll();
+    final events = await _fetchAll();
     return events.where((e) => e.kidId == kidId).toList();
   }
 
@@ -63,7 +41,7 @@ class EventRepository with ChangeNotifier {
   }
 
   Future<DiaperEvent> createDiaperEvent(final DiaperEventInput input) async {
-    final events = await fetchAll();
+    final events = await _fetchAll();
 
     final newDiaperEvent = DiaperEvent(
       id: const Uuid().v4(),
@@ -82,7 +60,7 @@ class EventRepository with ChangeNotifier {
   }
 
   Future<DiaperEvent> updateDiaperEvent(DiaperEventUpdate update) async {
-    final events = await fetchAll();
+    final events = await _fetchAll();
 
     final existingEvent =
         events.firstWhere((e) => e.id == update.id) as DiaperEvent;
@@ -102,11 +80,28 @@ class EventRepository with ChangeNotifier {
   }
 
   Future<void> delete(final String id) async {
-    final events = await fetchAll();
+    final events = await _fetchAll();
 
     final newEvents = events.where((k) => k.id != id).toList();
 
     await _saveChanges(newEvents);
+  }
+
+  Future<List<Event>> _fetchAll() async {
+    await jitter();
+
+    final data = await _storage.load(_storageKey);
+
+    if (data == null) {
+      return [];
+    }
+
+    final list = data as List<Object?>;
+    return list
+        .map((k) => Event.fromJson(k as Map<String, Object?>))
+        .sortedBy((e) => e.createdAt)
+        .reversed
+        .toList();
   }
 
   Future<void> _saveChanges(List<Event> newEvents) async {
