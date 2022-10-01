@@ -1,4 +1,3 @@
-import 'package:bebe/src/data/storage/storage.dart';
 import 'package:bebe/src/ui/settings/kids_screen.dart';
 import 'package:bebe/src/ui/settings/units_screen.dart';
 import 'package:bebe/src/ui/shared/nav_drawer.dart';
@@ -40,23 +39,6 @@ class SettingsScreen extends ConsumerWidget {
                 ],
               ),
               onTap: () => context.push(UnitsScreen.route),
-            ),
-            ListTile(
-              leading: const Icon(Icons.clear),
-              title: Row(
-                children: const [
-                  Text('Clear storage'),
-                ],
-              ),
-              onTap: () {
-                ref.read(storageProvider).clear();
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Storage cleared'),
-                  ),
-                );
-              },
             ),
           ],
         ),

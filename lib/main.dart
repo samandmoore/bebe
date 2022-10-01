@@ -1,4 +1,3 @@
-import 'package:bebe/src/data/storage/storage.dart';
 import 'package:bebe/src/ui/app.dart';
 import 'package:bebe/src/ui/providers.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +7,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final container = ProviderContainer();
-  final storage = container.read(storageProvider);
-  await storage.initialize();
 
   final authRepo = container.read(authRepositoryProvider);
   await authRepo.initialize();

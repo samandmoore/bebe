@@ -1,14 +1,11 @@
 import 'package:bebe/src/data/api_result.dart';
+import 'package:bebe/src/data/http_client.dart';
 import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/data/user/session.dart';
 import 'package:bebe/src/data/user/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
-Dio buildDioClient() {
-  return Dio()..options.baseUrl = 'http://localhost:3000';
-}
 
 class UserRepository with ChangeNotifier {
   final Dio _dio;

@@ -1,13 +1,10 @@
 import 'package:bebe/src/data/api_result.dart';
 import 'package:bebe/src/data/events/event.dart';
+import 'package:bebe/src/data/http_client.dart';
 import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-
-Dio buildDioClient() {
-  return Dio()..options.baseUrl = 'http://localhost:3000';
-}
 
 class EventRepository with ChangeNotifier {
   final Dio _dio;
