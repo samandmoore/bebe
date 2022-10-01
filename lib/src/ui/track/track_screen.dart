@@ -15,7 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final actionProvider = FutureProvider.family<List<TrackAction>, String>(
+final actionProvider =
+    FutureProvider.autoDispose.family<List<TrackAction>, String>(
   (ref, kidId) async {
     ref.refreshEvery(const Duration(seconds: 5));
 

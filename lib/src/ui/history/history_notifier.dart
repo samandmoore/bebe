@@ -15,11 +15,7 @@ class HistoryNotifier extends StateNotifier<AsyncValue<List<Event>>> {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final result = await repo.fetchAllForKid(kidId);
-      return result.map(
-        success: (data) => data.events,
-        error: (e) => throw e,
-        validationError: (e) => throw e,
-      );
+      return result.unwrapOrThrow().events;
     });
   }
 
