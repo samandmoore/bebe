@@ -24,7 +24,7 @@ class EventRepository with ChangeNotifier {
     List<EventType> eventTypes,
   ) async {
     final result = await fetchAllForKid(kidId);
-    final all = result.successOrThrow().events;
+    final all = result.unwrapOrThrow().events;
     final grouped = all.groupListsBy((e) => e.eventType);
     final sorted = grouped.map((key, value) => MapEntry(
           key,

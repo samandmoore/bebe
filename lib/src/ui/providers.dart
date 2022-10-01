@@ -32,7 +32,7 @@ final userProvider = FutureProvider.autoDispose((ref) async {
 
   final user = await repo.getUser();
   return user.map(
-    success: ((data) => data!),
+    success: (data) => data,
     error: (error) => throw error,
     validationError: (error) => throw error,
   );

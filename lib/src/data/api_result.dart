@@ -35,7 +35,7 @@ class ApiResult<T> {
   }
 
   R map<R>({
-    required R Function(T? data) success,
+    required R Function(T data) success,
     required R Function(DioError error) error,
     required R Function(Map<String, String> errors) validationError,
   }) {
@@ -50,9 +50,9 @@ class ApiResult<T> {
     }
   }
 
-  T successOrThrow() {
+  T unwrapOrThrow() {
     return map(
-      success: (data) => data!,
+      success: (data) => data,
       error: (error) => throw error,
       validationError: (errors) => throw errors,
     );
@@ -60,8 +60,8 @@ class ApiResult<T> {
 }
 
 class ApiResultSuccess<T> extends ApiResult<T> {
-  final T? data;
-  ApiResultSuccess({this.data}) : super._();
+  final T data;
+  ApiResultSuccess({required this.data}) : super._();
 }
 
 class ApiResultError<T> extends ApiResult<T> {
