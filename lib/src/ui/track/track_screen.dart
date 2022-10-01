@@ -140,6 +140,15 @@ class DiaperActionTile extends StatelessWidget {
         ],
       ),
       subtitle: TimeAgo(action.latestEvent?.startedAt),
+      trailing: action.latestEvent != null
+          ? IconButton(
+              onPressed: () {
+                context.push(DiaperEventScreen.route,
+                    extra: action.latestEvent);
+              },
+              icon: const Icon(Icons.edit),
+            )
+          : null,
       onTap: () {
         context.push(DiaperEventScreen.route);
       },

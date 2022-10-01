@@ -20,7 +20,7 @@ class DiaperEventNotifier
           ),
           'startedAt': FormControl<DateTime>(
             validators: [Validators.required, FormValidators.dateLessThanNow],
-            value: event?.startedAt ?? DateTime.now(),
+            value: event?.startedAt.toLocal() ?? DateTime.now(),
           ),
         }),
         super(const AsyncValue.data(null));
