@@ -5,8 +5,7 @@ import 'package:bebe/src/ui/auth/auth_screen.dart';
 import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
 import 'package:bebe/src/ui/diapers/providers.dart';
 import 'package:bebe/src/ui/history/history_screen.dart';
-import 'package:bebe/src/ui/kids/edit_kid_screen.dart';
-import 'package:bebe/src/ui/kids/new_kid_screen.dart';
+import 'package:bebe/src/ui/kids/manage_kid_screen.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/settings/kids_screen.dart';
 import 'package:bebe/src/ui/settings/settings_screen.dart';
@@ -48,16 +47,12 @@ class App extends StatelessWidget {
         ),
       ),
       GoRoute(
-        path: NewKidScreen.route,
-        builder: (_, __) => const NewKidScreen(),
-      ),
-      GoRoute(
-        path: EditKidScreen.route,
+        path: ManageKidScreen.route,
         builder: (_, state) => ProviderScope(
           overrides: [
-            editingKidProvider.overrideWithValue(state.extra! as Kid)
+            editingKidProvider.overrideWithValue(state.extra as Kid?)
           ],
-          child: const EditKidScreen(),
+          child: const ManageKidScreen(),
         ),
       ),
       GoRoute(

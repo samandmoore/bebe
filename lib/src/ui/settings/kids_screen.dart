@@ -1,6 +1,5 @@
 import 'package:bebe/src/data/user/kid.dart';
-import 'package:bebe/src/ui/kids/edit_kid_screen.dart';
-import 'package:bebe/src/ui/kids/new_kid_screen.dart';
+import 'package:bebe/src/ui/kids/manage_kid_screen.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/shared/error.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
@@ -54,11 +53,11 @@ class _KidsScreen extends ConsumerWidget {
                   ],
                 ),
                 onTap: () {
-                  context.push(EditKidScreen.route, extra: kid);
+                  context.push(ManageKidScreen.route, extra: kid);
                 },
               ),
             TextButton(
-              onPressed: () => context.push(NewKidScreen.route),
+              onPressed: () => context.push(ManageKidScreen.route),
               child: const Text('Add kid'),
             ),
           ],

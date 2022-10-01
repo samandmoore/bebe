@@ -1,7 +1,7 @@
 import 'package:reactive_forms/reactive_forms.dart';
 
 class FormValidationMessage {
-  static const String dateLessThanNow = 'dateLessThaNow';
+  static const String dateLessThanNow = 'dateLessThanNow';
 }
 
 class FormValidationMessageDefaults {

@@ -1,6 +1,6 @@
 import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/data/user/user_repository.dart';
-import 'package:bebe/src/ui/kids/edit_kid_screen.dart';
+import 'package:bebe/src/ui/kids/manage_kid_screen.dart';
 import 'package:bebe/src/ui/kids/providers.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:flutter/material.dart';
@@ -112,7 +112,7 @@ class _KidSwitcherLoadedState extends ConsumerState<KidSwitcherLoaded> {
                     children: [
                       TextButton(
                         onPressed: () {
-                          context.push(EditKidScreen.route, extra: kid);
+                          context.push(ManageKidScreen.route, extra: kid);
                         },
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.white,
