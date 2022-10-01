@@ -4,7 +4,6 @@
   - [ ] new/edit bottle screen
   - [ ] new/edit sleep screen
   - [ ] show ongoing sleep events on track screen
-  - [ ] support edit AND new actions from track screen
 - [ ] history screen
   - [ ] pagination for history screen
   - [ ] filter events on history screen
