@@ -1,7 +1,20 @@
+import 'package:bebe/src/data/events/event.dart';
+import 'package:bebe/src/data/events/event_repository.dart';
+import 'package:bebe/src/data/liquid_unit.dart';
 import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final editingDiaperEventProvider = Provider<DiaperEvent?>((_) => null);
+
+final eventRepositoryProvider = Provider<EventRepository>((ref) {
+  final repo = EventRepository(ref);
+  ref.onDispose(() {
+    repo.dispose();
+  });
+  return repo;
+});
 
 final userProvider = FutureProvider.autoDispose((ref) async {
   final repo = ref.watch(userRepositoryProvider);
@@ -27,3 +40,5 @@ final currentKidProvider = FutureProvider.autoDispose((ref) async {
 });
 
 final editingKidProvider = Provider<Kid?>((_) => null);
+
+final liquidUnitProvider = StateProvider((_) => LiquidUnit.ml);

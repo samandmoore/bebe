@@ -1,5 +1,5 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/ui/history/providers.dart';
+import 'package:bebe/src/ui/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HistoryNotifier extends StateNotifier<AsyncValue<List<Event>>> {

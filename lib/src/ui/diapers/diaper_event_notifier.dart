@@ -1,6 +1,5 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/ui/history/providers.dart';
-import 'package:bebe/src/ui/kids/providers.dart';
+import 'package:bebe/src/ui/providers.dart';
 import 'package:bebe/src/ui/shared/forms/validators.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';

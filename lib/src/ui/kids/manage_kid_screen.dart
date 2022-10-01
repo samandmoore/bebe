@@ -1,6 +1,6 @@
 import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:bebe/src/ui/kids/kid_notifier.dart';
-import 'package:bebe/src/ui/kids/providers.dart';
+import 'package:bebe/src/ui/providers.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:bebe/src/ui/shared/modal.dart';
 import 'package:bebe/src/ui/shared/spacing.dart';

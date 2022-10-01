@@ -1,6 +1,6 @@
 import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/ui/kids/manage_kid_screen.dart';
-import 'package:bebe/src/ui/kids/providers.dart';
+import 'package:bebe/src/ui/providers.dart';
 import 'package:bebe/src/ui/shared/error.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:flutter/material.dart';
