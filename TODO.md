@@ -10,7 +10,6 @@
   - [ ] filter events on history screen
   - [ ] change date on history screen
 - [ ] settings
-  - [ ] refactor new/edit/delete kid to use a single screen and notifier
   - [ ] pull to refresh kids settings screen
   - [ ] swipe to delete with confirmation on kids settings screen
   - [ ] save liquid unit settings

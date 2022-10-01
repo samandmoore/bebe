@@ -1,36 +1,34 @@
+import 'package:bebe/src/data/api_result.dart';
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/data/storage/storage.dart';
-import 'package:bebe/src/utilities/jitter.dart';
+import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:collection/collection.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
+
+Dio buildDioClient() {
+  return Dio()..options.baseUrl = 'http://localhost:3000';
+}
 
 class EventRepository with ChangeNotifier {
-  final String _storageKey = 'events';
+  final Dio _dio;
+  final AuthRepository _authRepository;
 
-  final Ref ref;
-
-  EventRepository(this.ref);
-
-  LocalStorage get _storage => ref.read(storageProvider);
-
-  void onChange() => notifyListeners();
-
-  Future<List<Event>> fetchAllForKid(final String kidId) async {
-    final events = await _fetchAll();
-    return events.where((e) => e.kidId == kidId).toList();
-  }
+  EventRepository({
+    Dio? dio,
+    AuthRepository? authRepository,
+  })  : _dio = dio ?? buildDioClient(),
+        _authRepository = authRepository ?? AuthRepository();
 
   Future<Map<EventType, Event?>> getLatestByTypes(
     final String kidId,
     List<EventType> eventTypes,
   ) async {
-    final all = await fetchAllForKid(kidId);
+    final result = await fetchAllForKid(kidId);
+    final all = result.successOrThrow().events;
     final grouped = all.groupListsBy((e) => e.eventType);
     final sorted = grouped.map((key, value) => MapEntry(
           key,
-          value..sortBy((e) => e.createdAt),
+          value..sortBy((e) => e.startedAt),
         ));
 
     return Map.fromEntries(
@@ -40,72 +38,81 @@ class EventRepository with ChangeNotifier {
     );
   }
 
-  Future<DiaperEvent> createDiaperEvent(final DiaperEventInput input) async {
-    final events = await _fetchAll();
+  Future<ApiResult<EventPage>> fetchAllForKid(
+    String kidId, {
+    String? cursor,
+  }) async {
+    return ApiResult.from(() async {
+      final header = await _getAuthHeader();
+      final response = await _dio.get<Object?>(
+        '/api/mobile/v1/kids/$kidId/events',
+        queryParameters: <String, Object?>{'cursor': cursor},
+        options: Options(
+          headers: <String, Object?>{
+            'Authorization': header,
+          },
+        ),
+      );
 
-    final newDiaperEvent = DiaperEvent(
-      id: const Uuid().v4(),
-      kidId: input.kidId,
-      createdAt: input.createdAt,
-      diaperType: input.diaperType,
-    );
-
-    final newEvents = [
-      ...events,
-      newDiaperEvent,
-    ];
-
-    await _saveChanges(newEvents);
-    return newDiaperEvent;
+      return EventPage.fromJson(response.data as Map<String, Object?>);
+    });
   }
 
-  Future<DiaperEvent> updateDiaperEvent(DiaperEventUpdate update) async {
-    final events = await _fetchAll();
+  Future<ApiResult<void>> createDiaperEvent(
+      final DiaperEventInput input) async {
+    return ApiResult.from(() async {
+      final header = await _getAuthHeader();
+      await _dio.post<Object?>(
+        '/api/mobile/v1/kids/${input.kidId}/diaper_events',
+        data: {'diaper_event': input.toJson()},
+        options: Options(
+          headers: <String, Object?>{
+            'Authorization': header,
+          },
+        ),
+      );
 
-    final existingEvent =
-        events.firstWhere((e) => e.id == update.id) as DiaperEvent;
-
-    final updatedEvent = existingEvent.copyWith(
-      createdAt: update.createdAt,
-      diaperType: update.diaperType,
-    );
-
-    final newEvents = [
-      ...events.where((e) => e.id != update.id),
-      updatedEvent,
-    ];
-
-    await _saveChanges(newEvents);
-    return updatedEvent;
+      notifyListeners();
+      return;
+    });
   }
 
-  Future<void> delete(final String id) async {
-    final events = await _fetchAll();
+  Future<ApiResult<void>> updateDiaperEvent(DiaperEventUpdate update) async {
+    return ApiResult.from(() async {
+      final header = await _getAuthHeader();
+      await _dio.put<Object?>(
+        '/api/mobile/v1/kids/${update.kidId}/diaper_events/${update.id}',
+        data: {'diaper_event': update.toJson()},
+        options: Options(
+          headers: <String, Object?>{
+            'Authorization': header,
+          },
+        ),
+      );
 
-    final newEvents = events.where((k) => k.id != id).toList();
-
-    await _saveChanges(newEvents);
+      notifyListeners();
+      return;
+    });
   }
 
-  Future<List<Event>> _fetchAll() async {
-    await jitter();
+  Future<ApiResult<void>> delete(String eventId) async {
+    return ApiResult.from(() async {
+      final header = await _getAuthHeader();
+      await _dio.delete<Object?>(
+        '/api/mobile/v1/events/$eventId',
+        options: Options(
+          headers: <String, Object?>{
+            'Authorization': header,
+          },
+        ),
+      );
 
-    final data = await _storage.load(_storageKey);
-
-    if (data == null) {
-      return [];
-    }
-
-    final list = data as List<Object?>;
-    return list
-        .map((k) => Event.fromJson(k as Map<String, Object?>))
-        .sortedBy((e) => e.createdAt)
-        .reversed
-        .toList();
+      notifyListeners();
+      return;
+    });
   }
 
-  Future<void> _saveChanges(List<Event> newEvents) async {
-    await _storage.save(_storageKey, newEvents);
-    onChange();
+  Future<String?> _getAuthHeader() async {
+    return _authRepository.getAuthHeader();
   }
 }

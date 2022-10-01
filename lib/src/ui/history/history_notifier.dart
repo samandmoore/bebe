@@ -13,7 +13,14 @@ class HistoryNotifier extends StateNotifier<AsyncValue<List<Event>>> {
   Future<void> fetch() async {
     final repo = ref.read(eventRepositoryProvider);
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => repo.fetchAllForKid(kidId));
+    state = await AsyncValue.guard(() async {
+      final result = await repo.fetchAllForKid(kidId);
+      return result.map(
+        success: (data) => data!.events,
+        error: (e) => throw e,
+        validationError: (e) => throw e,
+      );
+    });
   }
 
   Future<void> delete(String id) async {

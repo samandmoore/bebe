@@ -14,13 +14,170 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+EventPage _$EventPageFromJson(Map<String, dynamic> json) {
+  return _EventPage.fromJson(json);
+}
+
+/// @nodoc
+mixin _$EventPage {
+  List<Event> get events => throw _privateConstructorUsedError;
+  String? get nextCursor => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $EventPageCopyWith<EventPage> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $EventPageCopyWith<$Res> {
+  factory $EventPageCopyWith(EventPage value, $Res Function(EventPage) then) =
+      _$EventPageCopyWithImpl<$Res>;
+  $Res call({List<Event> events, String? nextCursor});
+}
+
+/// @nodoc
+class _$EventPageCopyWithImpl<$Res> implements $EventPageCopyWith<$Res> {
+  _$EventPageCopyWithImpl(this._value, this._then);
+
+  final EventPage _value;
+  // ignore: unused_field
+  final $Res Function(EventPage) _then;
+
+  @override
+  $Res call({
+    Object? events = freezed,
+    Object? nextCursor = freezed,
+  }) {
+    return _then(_value.copyWith(
+      events: events == freezed
+          ? _value.events
+          : events // ignore: cast_nullable_to_non_nullable
+              as List<Event>,
+      nextCursor: nextCursor == freezed
+          ? _value.nextCursor
+          : nextCursor // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$$_EventPageCopyWith<$Res> implements $EventPageCopyWith<$Res> {
+  factory _$$_EventPageCopyWith(
+          _$_EventPage value, $Res Function(_$_EventPage) then) =
+      __$$_EventPageCopyWithImpl<$Res>;
+  @override
+  $Res call({List<Event> events, String? nextCursor});
+}
+
+/// @nodoc
+class __$$_EventPageCopyWithImpl<$Res> extends _$EventPageCopyWithImpl<$Res>
+    implements _$$_EventPageCopyWith<$Res> {
+  __$$_EventPageCopyWithImpl(
+      _$_EventPage _value, $Res Function(_$_EventPage) _then)
+      : super(_value, (v) => _then(v as _$_EventPage));
+
+  @override
+  _$_EventPage get _value => super._value as _$_EventPage;
+
+  @override
+  $Res call({
+    Object? events = freezed,
+    Object? nextCursor = freezed,
+  }) {
+    return _then(_$_EventPage(
+      events: events == freezed
+          ? _value._events
+          : events // ignore: cast_nullable_to_non_nullable
+              as List<Event>,
+      nextCursor: nextCursor == freezed
+          ? _value.nextCursor
+          : nextCursor // ignore: cast_nullable_to_non_nullable
+              as String?,
+    ));
+  }
+}
+
+/// @nodoc
+@JsonSerializable()
+class _$_EventPage implements _EventPage {
+  _$_EventPage({required final List<Event> events, this.nextCursor})
+      : _events = events;
+
+  factory _$_EventPage.fromJson(Map<String, dynamic> json) =>
+      _$$_EventPageFromJson(json);
+
+  final List<Event> _events;
+  @override
+  List<Event> get events {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_events);
+  }
+
+  @override
+  final String? nextCursor;
+
+  @override
+  String toString() {
+    return 'EventPage(events: $events, nextCursor: $nextCursor)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$_EventPage &&
+            const DeepCollectionEquality().equals(other._events, _events) &&
+            const DeepCollectionEquality()
+                .equals(other.nextCursor, nextCursor));
+  }
+
+  @JsonKey(ignore: true)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_events),
+      const DeepCollectionEquality().hash(nextCursor));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_EventPageCopyWith<_$_EventPage> get copyWith =>
+      __$$_EventPageCopyWithImpl<_$_EventPage>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_EventPageToJson(
+      this,
+    );
+  }
+}
+
+abstract class _EventPage implements EventPage {
+  factory _EventPage(
+      {required final List<Event> events,
+      final String? nextCursor}) = _$_EventPage;
+
+  factory _EventPage.fromJson(Map<String, dynamic> json) =
+      _$_EventPage.fromJson;
+
+  @override
+  List<Event> get events;
+  @override
+  String? get nextCursor;
+  @override
+  @JsonKey(ignore: true)
+  _$$_EventPageCopyWith<_$_EventPage> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 Event _$EventFromJson(Map<String, dynamic> json) {
   switch (json['type']) {
-    case 'Bottle':
+    case 'bottle':
       return BottleEvent.fromJson(json);
-    case 'Diaper':
+    case 'diaper':
       return DiaperEvent.fromJson(json);
-    case 'Sleep':
+    case 'sleep':
       return SleepEvent.fromJson(json);
 
     default:
@@ -33,43 +190,43 @@ Event _$EventFromJson(Map<String, dynamic> json) {
 mixin _$Event {
   String get id => throw _privateConstructorUsedError;
   String get kidId => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get startedAt => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String kidId, DateTime createdAt,
+    required TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)
         bottle,
     required TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)
         diaper,
-    required TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)
+    required TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)
         sleep,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String id, String kidId, DateTime createdAt,
+    TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)?
         bottle,
     TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)?
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)?
         diaper,
-    TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)?
+    TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)?
         sleep,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String kidId, DateTime createdAt,
+    TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)?
         bottle,
     TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)?
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)?
         diaper,
-    TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)?
+    TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)?
         sleep,
     required TResult orElse(),
   }) =>
@@ -105,7 +262,7 @@ mixin _$Event {
 abstract class $EventCopyWith<$Res> {
   factory $EventCopyWith(Event value, $Res Function(Event) then) =
       _$EventCopyWithImpl<$Res>;
-  $Res call({String id, String kidId, DateTime createdAt});
+  $Res call({String id, String kidId, DateTime startedAt});
 }
 
 /// @nodoc
@@ -120,7 +277,7 @@ class _$EventCopyWithImpl<$Res> implements $EventCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? kidId = freezed,
-    Object? createdAt = freezed,
+    Object? startedAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -131,9 +288,9 @@ class _$EventCopyWithImpl<$Res> implements $EventCopyWith<$Res> {
           ? _value.kidId
           : kidId // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
+      startedAt: startedAt == freezed
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
     ));
   }
@@ -148,7 +305,7 @@ abstract class _$$BottleEventCopyWith<$Res> implements $EventCopyWith<$Res> {
   $Res call(
       {String id,
       String kidId,
-      DateTime createdAt,
+      DateTime startedAt,
       Decimal amount,
       LiquidUnit unit});
 }
@@ -167,7 +324,7 @@ class __$$BottleEventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? kidId = freezed,
-    Object? createdAt = freezed,
+    Object? startedAt = freezed,
     Object? amount = freezed,
     Object? unit = freezed,
   }) {
@@ -180,9 +337,9 @@ class __$$BottleEventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
           ? _value.kidId
           : kidId // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
+      startedAt: startedAt == freezed
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       amount: amount == freezed
           ? _value.amount
@@ -202,11 +359,11 @@ class _$BottleEvent implements BottleEvent {
   const _$BottleEvent(
       {required this.id,
       required this.kidId,
-      required this.createdAt,
+      required this.startedAt,
       required this.amount,
       required this.unit,
       final String? $type})
-      : $type = $type ?? 'Bottle';
+      : $type = $type ?? 'bottle';
 
   factory _$BottleEvent.fromJson(Map<String, dynamic> json) =>
       _$$BottleEventFromJson(json);
@@ -216,7 +373,7 @@ class _$BottleEvent implements BottleEvent {
   @override
   final String kidId;
   @override
-  final DateTime createdAt;
+  final DateTime startedAt;
   @override
   final Decimal amount;
   @override
@@ -227,7 +384,7 @@ class _$BottleEvent implements BottleEvent {
 
   @override
   String toString() {
-    return 'Event.bottle(id: $id, kidId: $kidId, createdAt: $createdAt, amount: $amount, unit: $unit)';
+    return 'Event.bottle(id: $id, kidId: $kidId, startedAt: $startedAt, amount: $amount, unit: $unit)';
   }
 
   @override
@@ -237,7 +394,7 @@ class _$BottleEvent implements BottleEvent {
             other is _$BottleEvent &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.kidId, kidId) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.startedAt, startedAt) &&
             const DeepCollectionEquality().equals(other.amount, amount) &&
             const DeepCollectionEquality().equals(other.unit, unit));
   }
@@ -248,7 +405,7 @@ class _$BottleEvent implements BottleEvent {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(kidId),
-      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(startedAt),
       const DeepCollectionEquality().hash(amount),
       const DeepCollectionEquality().hash(unit));
 
@@ -260,51 +417,51 @@ class _$BottleEvent implements BottleEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String kidId, DateTime createdAt,
+    required TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)
         bottle,
     required TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)
         diaper,
-    required TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)
+    required TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)
         sleep,
   }) {
-    return bottle(id, kidId, createdAt, amount, unit);
+    return bottle(id, kidId, startedAt, amount, unit);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String id, String kidId, DateTime createdAt,
+    TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)?
         bottle,
     TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)?
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)?
         diaper,
-    TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)?
+    TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)?
         sleep,
   }) {
-    return bottle?.call(id, kidId, createdAt, amount, unit);
+    return bottle?.call(id, kidId, startedAt, amount, unit);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String kidId, DateTime createdAt,
+    TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)?
         bottle,
     TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)?
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)?
         diaper,
-    TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)?
+    TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)?
         sleep,
     required TResult orElse(),
   }) {
     if (bottle != null) {
-      return bottle(id, kidId, createdAt, amount, unit);
+      return bottle(id, kidId, startedAt, amount, unit);
     }
     return orElse();
   }
@@ -355,7 +512,7 @@ abstract class BottleEvent implements Event {
   const factory BottleEvent(
       {required final String id,
       required final String kidId,
-      required final DateTime createdAt,
+      required final DateTime startedAt,
       required final Decimal amount,
       required final LiquidUnit unit}) = _$BottleEvent;
 
@@ -367,7 +524,7 @@ abstract class BottleEvent implements Event {
   @override
   String get kidId;
   @override
-  DateTime get createdAt;
+  DateTime get startedAt;
   Decimal get amount;
   LiquidUnit get unit;
   @override
@@ -383,7 +540,7 @@ abstract class _$$DiaperEventCopyWith<$Res> implements $EventCopyWith<$Res> {
       __$$DiaperEventCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String id, String kidId, DateTime createdAt, DiaperType diaperType});
+      {String id, String kidId, DateTime startedAt, DiaperType diaperType});
 }
 
 /// @nodoc
@@ -400,7 +557,7 @@ class __$$DiaperEventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? kidId = freezed,
-    Object? createdAt = freezed,
+    Object? startedAt = freezed,
     Object? diaperType = freezed,
   }) {
     return _then(_$DiaperEvent(
@@ -412,9 +569,9 @@ class __$$DiaperEventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
           ? _value.kidId
           : kidId // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
+      startedAt: startedAt == freezed
+          ? _value.startedAt
+          : startedAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
       diaperType: diaperType == freezed
           ? _value.diaperType
@@ -430,10 +587,10 @@ class _$DiaperEvent implements DiaperEvent {
   const _$DiaperEvent(
       {required this.id,
       required this.kidId,
-      required this.createdAt,
+      required this.startedAt,
       required this.diaperType,
       final String? $type})
-      : $type = $type ?? 'Diaper';
+      : $type = $type ?? 'diaper';
 
   factory _$DiaperEvent.fromJson(Map<String, dynamic> json) =>
       _$$DiaperEventFromJson(json);
@@ -443,7 +600,7 @@ class _$DiaperEvent implements DiaperEvent {
   @override
   final String kidId;
   @override
-  final DateTime createdAt;
+  final DateTime startedAt;
   @override
   final DiaperType diaperType;
 
@@ -452,7 +609,7 @@ class _$DiaperEvent implements DiaperEvent {
 
   @override
   String toString() {
-    return 'Event.diaper(id: $id, kidId: $kidId, createdAt: $createdAt, diaperType: $diaperType)';
+    return 'Event.diaper(id: $id, kidId: $kidId, startedAt: $startedAt, diaperType: $diaperType)';
   }
 
   @override
@@ -462,7 +619,7 @@ class _$DiaperEvent implements DiaperEvent {
             other is _$DiaperEvent &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.kidId, kidId) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
+            const DeepCollectionEquality().equals(other.startedAt, startedAt) &&
             const DeepCollectionEquality()
                 .equals(other.diaperType, diaperType));
   }
@@ -473,7 +630,7 @@ class _$DiaperEvent implements DiaperEvent {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(kidId),
-      const DeepCollectionEquality().hash(createdAt),
+      const DeepCollectionEquality().hash(startedAt),
       const DeepCollectionEquality().hash(diaperType));
 
   @JsonKey(ignore: true)
@@ -484,51 +641,51 @@ class _$DiaperEvent implements DiaperEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String kidId, DateTime createdAt,
+    required TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)
         bottle,
     required TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)
         diaper,
-    required TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)
+    required TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)
         sleep,
   }) {
-    return diaper(id, kidId, createdAt, diaperType);
+    return diaper(id, kidId, startedAt, diaperType);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String id, String kidId, DateTime createdAt,
+    TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)?
         bottle,
     TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)?
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)?
         diaper,
-    TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)?
+    TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)?
         sleep,
   }) {
-    return diaper?.call(id, kidId, createdAt, diaperType);
+    return diaper?.call(id, kidId, startedAt, diaperType);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String kidId, DateTime createdAt,
+    TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)?
         bottle,
     TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)?
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)?
         diaper,
-    TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)?
+    TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)?
         sleep,
     required TResult orElse(),
   }) {
     if (diaper != null) {
-      return diaper(id, kidId, createdAt, diaperType);
+      return diaper(id, kidId, startedAt, diaperType);
     }
     return orElse();
   }
@@ -579,7 +736,7 @@ abstract class DiaperEvent implements Event {
   const factory DiaperEvent(
       {required final String id,
       required final String kidId,
-      required final DateTime createdAt,
+      required final DateTime startedAt,
       required final DiaperType diaperType}) = _$DiaperEvent;
 
   factory DiaperEvent.fromJson(Map<String, dynamic> json) =
@@ -590,7 +747,7 @@ abstract class DiaperEvent implements Event {
   @override
   String get kidId;
   @override
-  DateTime get createdAt;
+  DateTime get startedAt;
   DiaperType get diaperType;
   @override
   @JsonKey(ignore: true)
@@ -604,12 +761,7 @@ abstract class _$$SleepEventCopyWith<$Res> implements $EventCopyWith<$Res> {
           _$SleepEvent value, $Res Function(_$SleepEvent) then) =
       __$$SleepEventCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {String id,
-      String kidId,
-      DateTime createdAt,
-      DateTime startedAt,
-      DateTime? endedAt});
+  $Res call({String id, String kidId, DateTime startedAt, DateTime? endedAt});
 }
 
 /// @nodoc
@@ -626,7 +778,6 @@ class __$$SleepEventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? kidId = freezed,
-    Object? createdAt = freezed,
     Object? startedAt = freezed,
     Object? endedAt = freezed,
   }) {
@@ -639,10 +790,6 @@ class __$$SleepEventCopyWithImpl<$Res> extends _$EventCopyWithImpl<$Res>
           ? _value.kidId
           : kidId // ignore: cast_nullable_to_non_nullable
               as String,
-      createdAt: createdAt == freezed
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
       startedAt: startedAt == freezed
           ? _value.startedAt
           : startedAt // ignore: cast_nullable_to_non_nullable
@@ -661,11 +808,10 @@ class _$SleepEvent implements SleepEvent {
   const _$SleepEvent(
       {required this.id,
       required this.kidId,
-      required this.createdAt,
       required this.startedAt,
       this.endedAt,
       final String? $type})
-      : $type = $type ?? 'Sleep';
+      : $type = $type ?? 'sleep';
 
   factory _$SleepEvent.fromJson(Map<String, dynamic> json) =>
       _$$SleepEventFromJson(json);
@@ -674,8 +820,6 @@ class _$SleepEvent implements SleepEvent {
   final String id;
   @override
   final String kidId;
-  @override
-  final DateTime createdAt;
   @override
   final DateTime startedAt;
   @override
@@ -686,7 +830,7 @@ class _$SleepEvent implements SleepEvent {
 
   @override
   String toString() {
-    return 'Event.sleep(id: $id, kidId: $kidId, createdAt: $createdAt, startedAt: $startedAt, endedAt: $endedAt)';
+    return 'Event.sleep(id: $id, kidId: $kidId, startedAt: $startedAt, endedAt: $endedAt)';
   }
 
   @override
@@ -696,7 +840,6 @@ class _$SleepEvent implements SleepEvent {
             other is _$SleepEvent &&
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality().equals(other.kidId, kidId) &&
-            const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality().equals(other.startedAt, startedAt) &&
             const DeepCollectionEquality().equals(other.endedAt, endedAt));
   }
@@ -707,7 +850,6 @@ class _$SleepEvent implements SleepEvent {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(kidId),
-      const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(startedAt),
       const DeepCollectionEquality().hash(endedAt));
 
@@ -719,51 +861,51 @@ class _$SleepEvent implements SleepEvent {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String id, String kidId, DateTime createdAt,
+    required TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)
         bottle,
     required TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)
         diaper,
-    required TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)
+    required TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)
         sleep,
   }) {
-    return sleep(id, kidId, createdAt, startedAt, endedAt);
+    return sleep(id, kidId, startedAt, endedAt);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult Function(String id, String kidId, DateTime createdAt,
+    TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)?
         bottle,
     TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)?
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)?
         diaper,
-    TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)?
+    TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)?
         sleep,
   }) {
-    return sleep?.call(id, kidId, createdAt, startedAt, endedAt);
+    return sleep?.call(id, kidId, startedAt, endedAt);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String id, String kidId, DateTime createdAt,
+    TResult Function(String id, String kidId, DateTime startedAt,
             Decimal amount, LiquidUnit unit)?
         bottle,
     TResult Function(
-            String id, String kidId, DateTime createdAt, DiaperType diaperType)?
+            String id, String kidId, DateTime startedAt, DiaperType diaperType)?
         diaper,
-    TResult Function(String id, String kidId, DateTime createdAt,
-            DateTime startedAt, DateTime? endedAt)?
+    TResult Function(
+            String id, String kidId, DateTime startedAt, DateTime? endedAt)?
         sleep,
     required TResult orElse(),
   }) {
     if (sleep != null) {
-      return sleep(id, kidId, createdAt, startedAt, endedAt);
+      return sleep(id, kidId, startedAt, endedAt);
     }
     return orElse();
   }
@@ -814,7 +956,6 @@ abstract class SleepEvent implements Event {
   const factory SleepEvent(
       {required final String id,
       required final String kidId,
-      required final DateTime createdAt,
       required final DateTime startedAt,
       final DateTime? endedAt}) = _$SleepEvent;
 
@@ -826,7 +967,6 @@ abstract class SleepEvent implements Event {
   @override
   String get kidId;
   @override
-  DateTime get createdAt;
   DateTime get startedAt;
   DateTime? get endedAt;
   @override

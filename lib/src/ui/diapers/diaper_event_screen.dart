@@ -67,7 +67,7 @@ class DiaperEventScreen extends ConsumerWidget {
                   leading: const Icon(Icons.access_time),
                   title: const Text('Time'),
                   subtitle: ReactiveDateTimePicker(
-                    formControlName: 'createdAt',
+                    formControlName: 'startedAt',
                     firstDate: DateTime(1900),
                     lastDate: DateTime.now(),
                     type: ReactiveDatePickerFieldType.dateTime,

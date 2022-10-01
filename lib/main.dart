@@ -1,6 +1,6 @@
 import 'package:bebe/src/data/storage/storage.dart';
-import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:bebe/src/ui/app.dart';
+import 'package:bebe/src/ui/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -4,4 +4,7 @@ targets:
       freezed:
         options:
           union_key: type
-          union_value_case: pascal
+          union_value_case: snake
+      json_serializable:
+        options:
+          field_rename: snake

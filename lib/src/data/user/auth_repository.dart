@@ -1,8 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-final authRepositoryProvider = Provider((ref) => AuthRepository());
 
 class AuthRepository with ChangeNotifier {
   static const _authHeaderStorageKey = 'auth_header';

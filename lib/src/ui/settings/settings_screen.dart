@@ -1,5 +1,4 @@
 import 'package:bebe/src/data/storage/storage.dart';
-import 'package:bebe/src/ui/providers.dart';
 import 'package:bebe/src/ui/settings/kids_screen.dart';
 import 'package:bebe/src/ui/settings/units_screen.dart';
 import 'package:bebe/src/ui/shared/nav_drawer.dart';
@@ -51,7 +50,6 @@ class SettingsScreen extends ConsumerWidget {
               ),
               onTap: () {
                 ref.read(storageProvider).clear();
-                ref.read(eventRepositoryProvider).onChange();
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(

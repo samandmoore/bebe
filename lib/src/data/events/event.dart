@@ -5,6 +5,17 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'event.freezed.dart';
 part 'event.g.dart';
 
+@freezed
+class EventPage with _$EventPage {
+  factory EventPage({
+    required List<Event> events,
+    String? nextCursor,
+  }) = _EventPage;
+
+  factory EventPage.fromJson(Map<String, Object?> json) =>
+      _$EventPageFromJson(json);
+}
+
 enum EventType {
   bottle,
   diaper,
@@ -24,7 +35,7 @@ class Event with _$Event {
   const factory Event.bottle({
     required String id,
     required String kidId,
-    required DateTime createdAt,
+    required DateTime startedAt,
     required Decimal amount,
     required LiquidUnit unit,
   }) = BottleEvent;
@@ -32,14 +43,13 @@ class Event with _$Event {
   const factory Event.diaper({
     required String id,
     required String kidId,
-    required DateTime createdAt,
+    required DateTime startedAt,
     required DiaperType diaperType,
   }) = DiaperEvent;
 
   const factory Event.sleep({
     required String id,
     required String kidId,
-    required DateTime createdAt,
     required DateTime startedAt,
     DateTime? endedAt,
   }) = SleepEvent;
@@ -50,29 +60,45 @@ class Event with _$Event {
 enum DiaperType {
   wet,
   dirty,
-  both,
+  mixed,
 }
 
 class DiaperEventInput {
   final String kidId;
-  final DateTime createdAt;
+  final DateTime startedAt;
   final DiaperType diaperType;
 
   const DiaperEventInput({
     required this.kidId,
-    required this.createdAt,
+    required this.startedAt,
     required this.diaperType,
   });
+
+  Map<String, Object?> toJson() {
+    return {
+      'started_at': startedAt.toIso8601String(),
+      'diaper_type': diaperType.toString().split('.').last,
+    };
+  }
 }
 
 class DiaperEventUpdate {
   final String id;
-  final DateTime createdAt;
+  final String kidId;
+  final DateTime startedAt;
   final DiaperType diaperType;
 
   const DiaperEventUpdate({
     required this.id,
-    required this.createdAt,
+    required this.kidId,
+    required this.startedAt,
     required this.diaperType,
   });
+
+  Map<String, Object?> toJson() {
+    return {
+      'started_at': startedAt.toIso8601String(),
+      'diaper_type': diaperType.toString().split('.').last,
+    };
+  }
 }

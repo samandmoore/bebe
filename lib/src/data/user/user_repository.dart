@@ -5,13 +5,6 @@ import 'package:bebe/src/data/user/session.dart';
 import 'package:bebe/src/data/user/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-final userRepositoryProvider = ChangeNotifierProvider((ref) {
-  final authRepo = ref.watch(authRepositoryProvider);
-  return UserRepository(authRepository: authRepo);
-});
 
 Dio buildDioClient() {
   return Dio()..options.baseUrl = 'http://localhost:3000';
@@ -23,7 +16,6 @@ class UserRepository with ChangeNotifier {
 
   UserRepository({
     Dio? dio,
-    FlutterSecureStorage storage = const FlutterSecureStorage(),
     AuthRepository? authRepository,
   })  : _dio = dio ?? buildDioClient(),
         _authRepository = authRepository ?? AuthRepository();

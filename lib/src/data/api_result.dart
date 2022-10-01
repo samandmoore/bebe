@@ -49,6 +49,14 @@ class ApiResult<T> {
       throw UnimplementedError();
     }
   }
+
+  T successOrThrow() {
+    return map(
+      success: (data) => data!,
+      error: (error) => throw error,
+      validationError: (errors) => throw errors,
+    );
+  }
 }
 
 class ApiResultSuccess<T> extends ApiResult<T> {

@@ -15,8 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final actionProvider =
-    FutureProvider.family.autoDispose<List<TrackAction>, String>(
+final actionProvider = FutureProvider.family<List<TrackAction>, String>(
   (ref, kidId) async {
     ref.refreshEvery(const Duration(seconds: 5));
 
@@ -140,7 +139,7 @@ class DiaperActionTile extends StatelessWidget {
           Text('Diaper', textScaleFactor: 1.3),
         ],
       ),
-      subtitle: TimeAgo(action.latestEvent?.createdAt),
+      subtitle: TimeAgo(action.latestEvent?.startedAt),
       onTap: () {
         context.push(DiaperEventScreen.route);
       },
@@ -163,7 +162,7 @@ class BottleActionTile extends StatelessWidget {
           Text('Bottle', textScaleFactor: 1.3),
         ],
       ),
-      subtitle: TimeAgo(action.latestEvent?.createdAt),
+      subtitle: TimeAgo(action.latestEvent?.startedAt),
       onTap: () {},
     );
   }
@@ -184,7 +183,7 @@ class SleepActionTile extends StatelessWidget {
           Text('Sleep', textScaleFactor: 1.3),
         ],
       ),
-      subtitle: TimeAgo(action.latestEvent?.createdAt),
+      subtitle: TimeAgo(action.latestEvent?.startedAt),
       onTap: () {},
     );
   }

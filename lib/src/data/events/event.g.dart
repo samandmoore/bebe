@@ -6,11 +6,24 @@ part of 'event.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$_EventPage _$$_EventPageFromJson(Map<String, dynamic> json) => _$_EventPage(
+      events: (json['events'] as List<dynamic>)
+          .map((e) => Event.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      nextCursor: json['next_cursor'] as String?,
+    );
+
+Map<String, dynamic> _$$_EventPageToJson(_$_EventPage instance) =>
+    <String, dynamic>{
+      'events': instance.events,
+      'next_cursor': instance.nextCursor,
+    };
+
 _$BottleEvent _$$BottleEventFromJson(Map<String, dynamic> json) =>
     _$BottleEvent(
       id: json['id'] as String,
-      kidId: json['kidId'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
+      kidId: json['kid_id'] as String,
+      startedAt: DateTime.parse(json['started_at'] as String),
       amount: Decimal.fromJson(json['amount'] as String),
       unit: $enumDecode(_$LiquidUnitEnumMap, json['unit']),
       $type: json['type'] as String?,
@@ -19,8 +32,8 @@ _$BottleEvent _$$BottleEventFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$BottleEventToJson(_$BottleEvent instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'kidId': instance.kidId,
-      'createdAt': instance.createdAt.toIso8601String(),
+      'kid_id': instance.kidId,
+      'started_at': instance.startedAt.toIso8601String(),
       'amount': instance.amount,
       'unit': _$LiquidUnitEnumMap[instance.unit]!,
       'type': instance.$type,
@@ -34,44 +47,42 @@ const _$LiquidUnitEnumMap = {
 _$DiaperEvent _$$DiaperEventFromJson(Map<String, dynamic> json) =>
     _$DiaperEvent(
       id: json['id'] as String,
-      kidId: json['kidId'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      diaperType: $enumDecode(_$DiaperTypeEnumMap, json['diaperType']),
+      kidId: json['kid_id'] as String,
+      startedAt: DateTime.parse(json['started_at'] as String),
+      diaperType: $enumDecode(_$DiaperTypeEnumMap, json['diaper_type']),
       $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$DiaperEventToJson(_$DiaperEvent instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'kidId': instance.kidId,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'diaperType': _$DiaperTypeEnumMap[instance.diaperType]!,
+      'kid_id': instance.kidId,
+      'started_at': instance.startedAt.toIso8601String(),
+      'diaper_type': _$DiaperTypeEnumMap[instance.diaperType]!,
       'type': instance.$type,
     };
 
 const _$DiaperTypeEnumMap = {
   DiaperType.wet: 'wet',
   DiaperType.dirty: 'dirty',
-  DiaperType.both: 'both',
+  DiaperType.mixed: 'mixed',
 };
 
 _$SleepEvent _$$SleepEventFromJson(Map<String, dynamic> json) => _$SleepEvent(
       id: json['id'] as String,
-      kidId: json['kidId'] as String,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      startedAt: DateTime.parse(json['startedAt'] as String),
-      endedAt: json['endedAt'] == null
+      kidId: json['kid_id'] as String,
+      startedAt: DateTime.parse(json['started_at'] as String),
+      endedAt: json['ended_at'] == null
           ? null
-          : DateTime.parse(json['endedAt'] as String),
+          : DateTime.parse(json['ended_at'] as String),
       $type: json['type'] as String?,
     );
 
 Map<String, dynamic> _$$SleepEventToJson(_$SleepEvent instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'kidId': instance.kidId,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'startedAt': instance.startedAt.toIso8601String(),
-      'endedAt': instance.endedAt?.toIso8601String(),
+      'kid_id': instance.kidId,
+      'started_at': instance.startedAt.toIso8601String(),
+      'ended_at': instance.endedAt?.toIso8601String(),
       'type': instance.$type,
     };

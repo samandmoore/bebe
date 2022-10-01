@@ -18,6 +18,7 @@ import 'package:intl/intl.dart';
 final historyProvider = StateNotifierProvider.family<HistoryNotifier,
     AsyncValue<List<Event>>, String>(
   (ref, kidId) {
+    ref.watch(eventRepositoryProvider);
     return HistoryNotifier(ref, kidId);
   },
 );
@@ -182,7 +183,8 @@ class _DiaperEvent extends ConsumerWidget {
       child: ListTile(
         onTap: () => context.push(DiaperEventScreen.route, extra: event),
         title: Text('${event.diaperType.name} diaper'),
-        subtitle: Text(DateFormat('M/dd/yyyy HH:mm').format(event.createdAt)),
+        subtitle:
+            Text(DateFormat.yMd().add_jm().format(event.startedAt.toLocal())),
       ),
     );
   }

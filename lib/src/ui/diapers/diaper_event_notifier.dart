@@ -18,9 +18,9 @@ class DiaperEventNotifier
             validators: [Validators.required],
             value: event?.diaperType,
           ),
-          'createdAt': FormControl<DateTime>(
+          'startedAt': FormControl<DateTime>(
             validators: [Validators.required, FormValidators.dateLessThanNow],
-            value: event?.createdAt ?? DateTime.now(),
+            value: event?.startedAt ?? DateTime.now(),
           ),
         }),
         super(const AsyncValue.data(null));
@@ -47,8 +47,12 @@ class DiaperEventNotifier
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      await repo.delete(event!.id);
-      return DiaperEventResult.deleted;
+      final result = await repo.delete(event!.id);
+      return result.map(
+        success: (_) => DiaperEventResult.deleted,
+        error: (e) => throw e,
+        validationError: (e) => throw e,
+      );
     });
   }
 
@@ -59,13 +63,18 @@ class DiaperEventNotifier
 
     final input = DiaperEventUpdate(
       id: event.id,
+      kidId: event.kidId,
       diaperType: form.value['diaperType'] as DiaperType,
-      createdAt: form.value['createdAt'] as DateTime,
+      startedAt: (form.value['startedAt'] as DateTime).toUtc(),
     );
 
-    await repo.updateDiaperEvent(input);
+    final result = await repo.updateDiaperEvent(input);
 
-    return DiaperEventResult.updated;
+    return result.map(
+      success: (_) => DiaperEventResult.updated,
+      error: (e) => throw e,
+      validationError: (e) => throw e,
+    );
   }
 
   Future<DiaperEventResult> _create() async {
@@ -75,11 +84,14 @@ class DiaperEventNotifier
     final input = DiaperEventInput(
       kidId: currentKid.id,
       diaperType: form.value['diaperType'] as DiaperType,
-      createdAt: form.value['createdAt'] as DateTime,
+      startedAt: (form.value['startedAt'] as DateTime).toUtc(),
     );
 
-    await repo.createDiaperEvent(input);
-
-    return DiaperEventResult.created;
+    final result = await repo.createDiaperEvent(input);
+    return result.map(
+      success: (_) => DiaperEventResult.created,
+      error: (e) => throw e,
+      validationError: (e) => throw e,
+    );
   }
 }

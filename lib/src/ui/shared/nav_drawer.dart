@@ -1,5 +1,5 @@
-import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:bebe/src/ui/history/history_screen.dart';
+import 'package:bebe/src/ui/providers.dart';
 import 'package:bebe/src/ui/settings/settings_screen.dart';
 import 'package:bebe/src/ui/track/track_screen.dart';
 import 'package:flutter/material.dart';
