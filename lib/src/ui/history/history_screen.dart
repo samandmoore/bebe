@@ -1,7 +1,6 @@
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
-import 'package:bebe/src/ui/history/history_notifier.dart';
 import 'package:bebe/src/ui/providers.dart';
 import 'package:bebe/src/ui/shared/error.dart';
 import 'package:bebe/src/ui/shared/kid_switcher.dart';
@@ -13,14 +12,36 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:intl/intl.dart';
 
-final historyProvider = StateNotifierProvider.family<HistoryNotifier,
-    AsyncValue<List<Event>>, String>(
+final historyPagingControllerProvider =
+    Provider.family.autoDispose<PagingController<String, Event>, String>(
   (ref, kidId) {
-    ref.watch(eventRepositoryProvider);
-    return HistoryNotifier(ref, kidId);
+    final controller = PagingController<String, Event>(firstPageKey: '');
+
+    controller.addPageRequestListener((pageKey) async {
+      final repo = ref.read(eventRepositoryProvider);
+      final result = await repo.fetchAllForKid(kidId, cursor: pageKey);
+      final page = result.unwrapOrThrow();
+      if (page.hasMore) {
+        controller.appendPage(page.events, page.nextCursor);
+      } else {
+        controller.appendLastPage(page.events);
+      }
+    });
+
+    ref.onDispose(() {
+      controller.dispose();
+    });
+
+    return controller;
   },
+  dependencies: [
+    currentKidProvider,
+    currentKidProvider.future,
+    eventRepositoryProvider,
+  ],
 );
 
 class HistoryScreen extends ConsumerWidget {
@@ -46,24 +67,6 @@ class HistoryScreen extends ConsumerWidget {
   }
 }
 
-class _EmptyList extends StatelessWidget {
-  const _EmptyList();
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('No events yet!'),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _HistoryScreen extends ConsumerWidget {
   final List<Kid> kids;
 
@@ -80,8 +83,10 @@ class _HistoryScreen extends ConsumerWidget {
           const KidSwitcherSliverAppBar(),
           CupertinoSliverRefreshControl(
             onRefresh: () async {
-              final currentKid = await ref.read(currentKidProvider.future);
-              return ref.read(historyProvider(currentKid.id).notifier).fetch();
+              final currentKid = await ref.watch(currentKidProvider.future);
+              ref
+                  .read(historyPagingControllerProvider(currentKid.id))
+                  .refresh();
             },
           ),
           const _EventList(),
@@ -97,39 +102,25 @@ class _EventList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentKidAsync = ref.watch(currentKidProvider);
-
     if (currentKidAsync.isLoading) {
       return const SliverLoadingIndicator();
     }
 
-    final events = ref.watch(historyProvider(currentKidAsync.value!.id));
+    final controller =
+        ref.watch(historyPagingControllerProvider(currentKidAsync.value!.id));
 
-    return events.when(
-      loading: () => const SliverLoadingIndicator(),
-      error: (error, stackTrace) => SliverToBoxAdapter(
-        child: ErrorView(error: error, stackTrace: stackTrace),
-      ),
-      data: (events) {
-        if (events.isEmpty) {
-          return const SliverToBoxAdapter(
-            child: _EmptyList(),
+    return PagedSliverList(
+      pagingController: controller,
+      builderDelegate: PagedChildBuilderDelegate<Event>(
+        newPageProgressIndicatorBuilder: (context) => const LoadingIndicator(),
+        itemBuilder: (context, event, index) {
+          return event.map(
+            bottle: (event) => _BottleEvent(event: event),
+            diaper: (event) => _DiaperEvent(event: event),
+            sleep: (event) => _SleepEvent(event: event),
           );
-        }
-        return SliverList(
-          delegate: SliverChildBuilderDelegate(
-            childCount: events.length,
-            (context, index) {
-              final event = events[index];
-
-              return event.map(
-                bottle: (event) => _BottleEvent(event: event),
-                diaper: (event) => _DiaperEvent(event: event),
-                sleep: (event) => _SleepEvent(event: event),
-              );
-            },
-          ),
-        );
-      },
+        },
+      ),
     );
   }
 }
@@ -176,9 +167,9 @@ class _DiaperEvent extends ConsumerWidget {
           ),
         );
       },
-      onDismissed: (direction) {
+      onDismissed: (direction) async {
         final repo = ref.read(eventRepositoryProvider);
-        repo.delete(event.id);
+        await repo.delete(event.id);
       },
       child: ListTile(
         onTap: () => context.push(DiaperEventScreen.route, extra: event),

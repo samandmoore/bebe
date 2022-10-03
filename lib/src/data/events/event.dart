@@ -10,6 +10,8 @@ class EventPage with _$EventPage {
   factory EventPage({
     required List<Event> events,
     String? nextCursor,
+    // ignore: invalid_annotation_target
+    @JsonKey(name: 'more') required bool hasMore,
   }) = _EventPage;
 
   factory EventPage.fromJson(Map<String, Object?> json) =>

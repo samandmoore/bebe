@@ -21,7 +21,10 @@ EventPage _$EventPageFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$EventPage {
   List<Event> get events => throw _privateConstructorUsedError;
-  String? get nextCursor => throw _privateConstructorUsedError;
+  String? get nextCursor =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @JsonKey(name: 'more')
+  bool get hasMore => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +36,10 @@ mixin _$EventPage {
 abstract class $EventPageCopyWith<$Res> {
   factory $EventPageCopyWith(EventPage value, $Res Function(EventPage) then) =
       _$EventPageCopyWithImpl<$Res>;
-  $Res call({List<Event> events, String? nextCursor});
+  $Res call(
+      {List<Event> events,
+      String? nextCursor,
+      @JsonKey(name: 'more') bool hasMore});
 }
 
 /// @nodoc
@@ -48,6 +54,7 @@ class _$EventPageCopyWithImpl<$Res> implements $EventPageCopyWith<$Res> {
   $Res call({
     Object? events = freezed,
     Object? nextCursor = freezed,
+    Object? hasMore = freezed,
   }) {
     return _then(_value.copyWith(
       events: events == freezed
@@ -58,6 +65,10 @@ class _$EventPageCopyWithImpl<$Res> implements $EventPageCopyWith<$Res> {
           ? _value.nextCursor
           : nextCursor // ignore: cast_nullable_to_non_nullable
               as String?,
+      hasMore: hasMore == freezed
+          ? _value.hasMore
+          : hasMore // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -68,7 +79,10 @@ abstract class _$$_EventPageCopyWith<$Res> implements $EventPageCopyWith<$Res> {
           _$_EventPage value, $Res Function(_$_EventPage) then) =
       __$$_EventPageCopyWithImpl<$Res>;
   @override
-  $Res call({List<Event> events, String? nextCursor});
+  $Res call(
+      {List<Event> events,
+      String? nextCursor,
+      @JsonKey(name: 'more') bool hasMore});
 }
 
 /// @nodoc
@@ -85,6 +99,7 @@ class __$$_EventPageCopyWithImpl<$Res> extends _$EventPageCopyWithImpl<$Res>
   $Res call({
     Object? events = freezed,
     Object? nextCursor = freezed,
+    Object? hasMore = freezed,
   }) {
     return _then(_$_EventPage(
       events: events == freezed
@@ -95,6 +110,10 @@ class __$$_EventPageCopyWithImpl<$Res> extends _$EventPageCopyWithImpl<$Res>
           ? _value.nextCursor
           : nextCursor // ignore: cast_nullable_to_non_nullable
               as String?,
+      hasMore: hasMore == freezed
+          ? _value.hasMore
+          : hasMore // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -102,7 +121,10 @@ class __$$_EventPageCopyWithImpl<$Res> extends _$EventPageCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_EventPage implements _EventPage {
-  _$_EventPage({required final List<Event> events, this.nextCursor})
+  _$_EventPage(
+      {required final List<Event> events,
+      this.nextCursor,
+      @JsonKey(name: 'more') required this.hasMore})
       : _events = events;
 
   factory _$_EventPage.fromJson(Map<String, dynamic> json) =>
@@ -117,10 +139,14 @@ class _$_EventPage implements _EventPage {
 
   @override
   final String? nextCursor;
+// ignore: invalid_annotation_target
+  @override
+  @JsonKey(name: 'more')
+  final bool hasMore;
 
   @override
   String toString() {
-    return 'EventPage(events: $events, nextCursor: $nextCursor)';
+    return 'EventPage(events: $events, nextCursor: $nextCursor, hasMore: $hasMore)';
   }
 
   @override
@@ -130,7 +156,8 @@ class _$_EventPage implements _EventPage {
             other is _$_EventPage &&
             const DeepCollectionEquality().equals(other._events, _events) &&
             const DeepCollectionEquality()
-                .equals(other.nextCursor, nextCursor));
+                .equals(other.nextCursor, nextCursor) &&
+            const DeepCollectionEquality().equals(other.hasMore, hasMore));
   }
 
   @JsonKey(ignore: true)
@@ -138,7 +165,8 @@ class _$_EventPage implements _EventPage {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_events),
-      const DeepCollectionEquality().hash(nextCursor));
+      const DeepCollectionEquality().hash(nextCursor),
+      const DeepCollectionEquality().hash(hasMore));
 
   @JsonKey(ignore: true)
   @override
@@ -156,7 +184,8 @@ class _$_EventPage implements _EventPage {
 abstract class _EventPage implements EventPage {
   factory _EventPage(
       {required final List<Event> events,
-      final String? nextCursor}) = _$_EventPage;
+      final String? nextCursor,
+      @JsonKey(name: 'more') required final bool hasMore}) = _$_EventPage;
 
   factory _EventPage.fromJson(Map<String, dynamic> json) =
       _$_EventPage.fromJson;
@@ -165,6 +194,9 @@ abstract class _EventPage implements EventPage {
   List<Event> get events;
   @override
   String? get nextCursor;
+  @override // ignore: invalid_annotation_target
+  @JsonKey(name: 'more')
+  bool get hasMore;
   @override
   @JsonKey(ignore: true)
   _$$_EventPageCopyWith<_$_EventPage> get copyWith =>

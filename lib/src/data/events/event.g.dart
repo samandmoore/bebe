@@ -11,12 +11,14 @@ _$_EventPage _$$_EventPageFromJson(Map<String, dynamic> json) => _$_EventPage(
           .map((e) => Event.fromJson(e as Map<String, dynamic>))
           .toList(),
       nextCursor: json['next_cursor'] as String?,
+      hasMore: json['more'] as bool,
     );
 
 Map<String, dynamic> _$$_EventPageToJson(_$_EventPage instance) =>
     <String, dynamic>{
       'events': instance.events,
       'next_cursor': instance.nextCursor,
+      'more': instance.hasMore,
     };
 
 _$BottleEvent _$$BottleEventFromJson(Map<String, dynamic> json) =>
