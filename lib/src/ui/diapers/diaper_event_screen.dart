@@ -18,7 +18,6 @@ final diaperEventProvider = StateNotifierProvider.autoDispose<
 }, dependencies: [
   editingDiaperEventProvider,
   eventRepositoryProvider,
-  currentKidProvider.future,
 ]);
 
 class DiaperEventScreen extends ConsumerWidget {

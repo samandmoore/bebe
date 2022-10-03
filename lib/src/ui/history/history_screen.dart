@@ -38,8 +38,6 @@ final historyPagingControllerProvider =
     return controller;
   },
   dependencies: [
-    currentKidProvider,
-    currentKidProvider.future,
     eventRepositoryProvider,
   ],
 );
