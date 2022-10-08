@@ -1,6 +1,7 @@
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/ui/providers.dart';
 import 'package:bebe/src/ui/shared/forms/validators.dart';
+import 'package:bebe/src/utilities/extensions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -26,14 +27,14 @@ class DiaperEventModel {
   bool get isEdit => event != null;
   bool get canDelete => event != null;
 
-  Future<void> save() async {
+  Future<bool> save() async {
     if (!form.valid) {
       form.markAllAsTouched();
-      return;
+      return false;
     }
 
     final action = event != null ? _update : _create;
-    await action();
+    return await action();
   }
 
   Future<void> delete() async {
@@ -43,7 +44,7 @@ class DiaperEventModel {
     return result.unwrapOrThrow();
   }
 
-  Future<void> _update() async {
+  Future<bool> _update() async {
     final repo = ref.read(eventRepositoryProvider);
 
     final event = this.event!;
@@ -56,10 +57,17 @@ class DiaperEventModel {
     );
 
     final result = await repo.updateDiaperEvent(input);
-    return result.unwrapOrThrow();
+    return result.map(
+      success: (_) => true,
+      error: (e) => throw e,
+      validationError: (errors) {
+        form.setErrorsForControls(errors);
+        return false;
+      },
+    );
   }
 
-  Future<void> _create() async {
+  Future<bool> _create() async {
     final currentKid = await ref.read(currentKidProvider.future);
     final repo = ref.read(eventRepositoryProvider);
 
@@ -70,6 +78,13 @@ class DiaperEventModel {
     );
 
     final result = await repo.createDiaperEvent(input);
-    return result.unwrapOrThrow();
+    return result.map(
+      success: (_) => true,
+      error: (e) => throw e,
+      validationError: (errors) {
+        form.setErrorsForControls(errors);
+        return false;
+      },
+    );
   }
 }

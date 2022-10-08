@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:recase/recase.dart';
 
 class ApiResult<T> {
   ApiResult._();
@@ -26,7 +27,8 @@ class ApiResult<T> {
           final fieldErrors = value as List<Object?>;
           final firstError = fieldErrors.first as Map<String, Object?>;
           final errorSlug = firstError['error'] as String;
-          return MapEntry(key, errorSlug);
+          final convertedKey = key.camelCase;
+          return MapEntry(convertedKey, errorSlug);
         });
         return ApiResult.validationError(errors);
       }

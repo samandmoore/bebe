@@ -122,7 +122,7 @@ class DiaperEventScreen extends HookConsumerWidget {
                           ],
                         ),
                         child: ElevatedButton(
-                          onPressed: () async {
+                          onPressed: () {
                             showConfirmDialog.value = true;
                           },
                           style: ElevatedButton.styleFrom(
@@ -132,8 +132,8 @@ class DiaperEventScreen extends HookConsumerWidget {
                       ),
                     ElevatedButton(
                       onPressed: () async {
-                        await saveMutation.run();
-                        if (context.mounted) {
+                        final success = await saveMutation.run();
+                        if (success && context.mounted) {
                           context.pop();
                         }
                       },

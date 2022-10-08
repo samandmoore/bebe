@@ -22,7 +22,7 @@ Mutation<T> useMutation<T extends Object?>(
       final result = await action();
       asyncValue.value = AsyncValue.data(result);
       return result;
-    } on Exception catch (e, s) {
+    } catch (e, s) {
       if (isMounted()) {
         context.logErrorAndShowSnackbar(e, s);
       }

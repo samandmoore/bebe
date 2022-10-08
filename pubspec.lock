@@ -532,6 +532,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "14.1.0"
+  recase:
+    dependency: "direct main"
+    description:
+      name: recase
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.0"
   riverpod:
     dependency: transitive
     description:

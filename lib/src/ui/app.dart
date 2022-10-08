@@ -97,6 +97,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReactiveFormConfig(
       validationMessages: {
+        'inclusion': (_) => 'not in range',
         ValidationMessage.required: (_) => 'required',
         FormValidationMessage.dateLessThanNow: (_) =>
             FormValidationMessageDefaults.dateLessThanNow,

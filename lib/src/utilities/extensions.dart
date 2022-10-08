@@ -28,6 +28,7 @@ extension DialogExtensions on BuildContext {
       ..showSnackBar(
         const SnackBar(
           content: Text('An error occurred'),
+          behavior: SnackBarBehavior.floating,
         ),
       );
   }
@@ -42,7 +43,11 @@ extension FormGroupExtensions on FormGroup {
   /// }
   void setErrorsForControls(Map<String, String> errors) {
     errors.forEach((controlName, error) {
-      controls[controlName]?.setErrors(<String, Object>{error: true});
+      controls[controlName]
+        ?..setErrors(
+          <String, Object>{error: true},
+        )
+        ..markAsTouched();
     });
   }
 }
