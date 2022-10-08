@@ -7,15 +7,22 @@ import 'package:bebe/src/ui/shared/modal.dart';
 import 'package:bebe/src/ui/shared/spacing.dart';
 import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-final diaperEventModelProvider = Provider((ref) {
-  final event = ref.watch(editingDiaperEventProvider);
-  return DiaperEventModel(ref, event);
-});
+final diaperEventModelProvider = Provider(
+  (ref) {
+    final event = ref.watch(editingDiaperEventProvider);
+    return DiaperEventModel(ref, event);
+  },
+  dependencies: [
+    editingDiaperEventProvider,
+    eventRepositoryProvider,
+  ],
+);
 
 class DiaperEventScreen extends HookConsumerWidget {
   static const route = '/events/diapers/new';
@@ -24,6 +31,7 @@ class DiaperEventScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final showConfirmDialog = useState(false);
     final model = ref.watch(diaperEventModelProvider);
     final form = model.form;
     final canDelete = model.canDelete;
@@ -89,41 +97,38 @@ class DiaperEventScreen extends HookConsumerWidget {
                       child: const Text('Cancel'),
                     ),
                     if (canDelete)
-                      ElevatedButton(
-                        onPressed: () async {
-                          showDialog<bool>(
-                            context: context,
-                            builder: (dialogContext) {
-                              return AlertDialog(
-                                content: const Text(
-                                    'Are you sure you want to remove this event?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      dialogContext.closeDialog();
-                                    },
-                                    child: const Text('No'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      await deleteMutation.run();
-                                      if (dialogContext.mounted) {
-                                        dialogContext.closeDialog();
-                                      }
-                                      if (context.mounted) {
-                                        context.pop();
-                                      }
-                                    },
-                                    child: const Text('Yes'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red),
-                        child: const Text('Remove'),
+                      Modal(
+                        visible: showConfirmDialog.value,
+                        modal: AlertDialog(
+                          content: const Text(
+                              'Are you sure you want to remove this event?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                showConfirmDialog.value = false;
+                              },
+                              child: const Text('No'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                await deleteMutation.run();
+                                showConfirmDialog.value = false;
+                                if (context.mounted) {
+                                  context.pop();
+                                }
+                              },
+                              child: const Text('Yes'),
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            showConfirmDialog.value = true;
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red),
+                          child: const Text('Remove'),
+                        ),
                       ),
                     ElevatedButton(
                       onPressed: () async {
