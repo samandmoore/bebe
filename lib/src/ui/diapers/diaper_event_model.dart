@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 /// A model for the diaper event screen.
 /// (don't really know what to call this, but "model" seems okay)
 class DiaperEventModel {
-  final WidgetRef ref;
+  final Ref ref;
   final FormGroup form;
   final DiaperEvent? event;
 

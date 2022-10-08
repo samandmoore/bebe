@@ -6,13 +6,16 @@ import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:bebe/src/ui/shared/modal.dart';
 import 'package:bebe/src/ui/shared/spacing.dart';
 import 'package:bebe/src/utilities/extensions.dart';
-import 'package:bebe/src/utilities/jitter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+
+final diaperEventModelProvider = Provider((ref) {
+  final event = ref.watch(editingDiaperEventProvider);
+  return DiaperEventModel(ref, event);
+});
 
 class DiaperEventScreen extends HookConsumerWidget {
   static const route = '/events/diapers/new';
@@ -21,19 +24,13 @@ class DiaperEventScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final event = ref.watch(editingDiaperEventProvider);
-    final model = useMemoized(() => DiaperEventModel(ref, event));
+    final model = ref.watch(diaperEventModelProvider);
     final form = model.form;
     final canDelete = model.canDelete;
     final isEdit = model.isEdit;
 
     final deleteMutation = useMutation(model.delete);
-    final saveMutation = useMutation(() async {
-      // you can do whatever...
-      await jitter();
-      await model.save();
-      // ...you want in here.
-    });
+    final saveMutation = useMutation(model.save);
 
     return Scaffold(
       appBar: AppBar(),
