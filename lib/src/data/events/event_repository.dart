@@ -1,6 +1,5 @@
 import 'package:bebe/src/data/api_result.dart';
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/data/http_client.dart';
 import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
@@ -11,10 +10,10 @@ class EventRepository with ChangeNotifier {
   final AuthRepository _authRepository;
 
   EventRepository({
-    Dio? dio,
-    AuthRepository? authRepository,
-  })  : _dio = dio ?? buildDioClient(),
-        _authRepository = authRepository ?? AuthRepository();
+    required Dio httpClient,
+    required AuthRepository authRepository,
+  })  : _dio = httpClient,
+        _authRepository = authRepository;
 
   Future<Map<EventType, Event?>> getLatestByTypes(
     final String kidId,
@@ -43,7 +42,9 @@ class EventRepository with ChangeNotifier {
       final header = await _getAuthHeader();
       final response = await _dio.get<Object?>(
         '/api/mobile/v1/kids/$kidId/events',
-        queryParameters: <String, Object?>{'cursor': cursor},
+        queryParameters: <String, Object?>{
+          if (cursor != null) 'cursor': cursor
+        },
         options: Options(
           headers: <String, Object?>{
             'Authorization': header,

@@ -1,5 +1,6 @@
 import 'package:bebe/src/data/events/event.dart';
 import 'package:bebe/src/data/events/event_repository.dart';
+import 'package:bebe/src/data/http/http_client.dart';
 import 'package:bebe/src/data/liquid_unit.dart';
 import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:bebe/src/data/user/kid.dart';
@@ -7,17 +8,24 @@ import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:collection/collection.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+final httpClientProvider = Provider((ref) => buildDioClient());
+
 final authRepositoryProvider =
     ChangeNotifierProvider((ref) => AuthRepository());
 
 final userRepositoryProvider = ChangeNotifierProvider((ref) {
+  final httpClient = ref.watch(httpClientProvider);
   final authRepo = ref.watch(authRepositoryProvider);
-  return UserRepository(authRepository: authRepo);
+  return UserRepository(authRepository: authRepo, httpClient: httpClient);
 });
 
 final eventRepositoryProvider = ChangeNotifierProvider((ref) {
+  final httpClient = ref.watch(httpClientProvider);
   final authRepo = ref.watch(authRepositoryProvider);
-  final repo = EventRepository(authRepository: authRepo);
+  final repo = EventRepository(
+    authRepository: authRepo,
+    httpClient: httpClient,
+  );
   ref.onDispose(() {
     repo.dispose();
   });

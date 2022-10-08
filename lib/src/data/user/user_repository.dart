@@ -1,5 +1,4 @@
 import 'package:bebe/src/data/api_result.dart';
-import 'package:bebe/src/data/http_client.dart';
 import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/data/user/session.dart';
@@ -12,10 +11,10 @@ class UserRepository with ChangeNotifier {
   final AuthRepository _authRepository;
 
   UserRepository({
-    Dio? dio,
-    AuthRepository? authRepository,
-  })  : _dio = dio ?? buildDioClient(),
-        _authRepository = authRepository ?? AuthRepository();
+    required Dio httpClient,
+    required AuthRepository authRepository,
+  })  : _dio = httpClient,
+        _authRepository = authRepository;
 
   Future<ApiResult<User>> getUser() async {
     return ApiResult.from(() async {
