@@ -4,15 +4,14 @@ import 'package:bebe/src/ui/shared/forms/validators.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-enum DiaperEventResult { created, updated, deleted }
-
-class DiaperEventNotifier
-    extends StateNotifier<AsyncValue<DiaperEventResult?>> {
+/// A model for the diaper event screen.
+/// (don't really know what to call this, but "model" seems okay)
+class DiaperEventModel {
+  final WidgetRef ref;
   final FormGroup form;
-  final Ref ref;
   final DiaperEvent? event;
 
-  DiaperEventNotifier(this.ref, this.event)
+  DiaperEventModel(this.ref, this.event)
       : form = FormGroup({
           'diaperType': FormControl<DiaperType>(
             validators: [Validators.required],
@@ -22,11 +21,9 @@ class DiaperEventNotifier
             validators: [Validators.required, FormValidators.dateLessThanNow],
             value: event?.startedAt.toLocal() ?? DateTime.now(),
           ),
-        }),
-        super(const AsyncValue.data(null));
+        });
 
   bool get isEdit => event != null;
-
   bool get canDelete => event != null;
 
   Future<void> save() async {
@@ -35,28 +32,18 @@ class DiaperEventNotifier
       return;
     }
 
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final action = event != null ? _update : _create;
-      return await action();
-    });
+    final action = event != null ? _update : _create;
+    await action();
   }
 
   Future<void> delete() async {
     final repo = ref.read(eventRepositoryProvider);
 
-    state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final result = await repo.delete(event!.id);
-      return result.map(
-        success: (_) => DiaperEventResult.deleted,
-        error: (e) => throw e,
-        validationError: (e) => throw e,
-      );
-    });
+    final result = await repo.delete(event!.id);
+    return result.unwrapOrThrow();
   }
 
-  Future<DiaperEventResult> _update() async {
+  Future<void> _update() async {
     final repo = ref.read(eventRepositoryProvider);
 
     final event = this.event!;
@@ -69,15 +56,10 @@ class DiaperEventNotifier
     );
 
     final result = await repo.updateDiaperEvent(input);
-
-    return result.map(
-      success: (_) => DiaperEventResult.updated,
-      error: (e) => throw e,
-      validationError: (e) => throw e,
-    );
+    return result.unwrapOrThrow();
   }
 
-  Future<DiaperEventResult> _create() async {
+  Future<void> _create() async {
     final currentKid = await ref.read(currentKidProvider.future);
     final repo = ref.read(eventRepositoryProvider);
 
@@ -88,10 +70,6 @@ class DiaperEventNotifier
     );
 
     final result = await repo.createDiaperEvent(input);
-    return result.map(
-      success: (_) => DiaperEventResult.created,
-      error: (e) => throw e,
-      validationError: (e) => throw e,
-    );
+    return result.unwrapOrThrow();
   }
 }

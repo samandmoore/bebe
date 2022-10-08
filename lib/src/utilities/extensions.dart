@@ -54,3 +54,14 @@ extension RefreshProviderExtensions on Ref {
     onDispose(() => timer.cancel());
   }
 }
+
+extension MountedExtension on BuildContext {
+  bool get mounted {
+    try {
+      (this as Element).widget;
+      return true;
+    } on TypeError catch (_) {
+      return false;
+    }
+  }
+}
