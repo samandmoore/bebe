@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 extension MapExtensions<K, V> on Map<K, V> {
@@ -48,14 +48,16 @@ extension FormGroupExtensions on FormGroup {
 }
 
 extension RefreshProviderExtensions on Ref {
-  // When invoked refreshes provider after [duration]
+  /// When invoked refreshes provider after [duration]
   void refreshEvery(Duration duration) {
-    final timer = Timer(duration, () => invalidateSelf());
+    final timer = Timer(duration, invalidateSelf);
     onDispose(() => timer.cancel());
   }
 }
 
 extension MountedExtension on BuildContext {
+  /// Returns true if the widget is mounted
+  /// (will be replaced in a future version of Flutter)
   bool get mounted {
     try {
       (this as Element).widget;

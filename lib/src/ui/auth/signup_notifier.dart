@@ -1,7 +1,7 @@
 import 'package:bebe/src/data/user/user.dart';
 import 'package:bebe/src/ui/providers.dart';
 import 'package:bebe/src/utilities/extensions.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 enum SignupResult { success, failure }

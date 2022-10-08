@@ -5,8 +5,8 @@ import 'package:bebe/src/ui/shared/modal.dart';
 import 'package:bebe/src/ui/shared/spacing.dart';
 import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 

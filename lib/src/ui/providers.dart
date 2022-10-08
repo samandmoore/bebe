@@ -5,7 +5,7 @@ import 'package:bebe/src/data/user/auth_repository.dart';
 import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/data/user/user_repository.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final authRepositoryProvider =
     ChangeNotifierProvider((ref) => AuthRepository());

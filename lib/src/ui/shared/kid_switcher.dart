@@ -3,8 +3,8 @@ import 'package:bebe/src/ui/kids/manage_kid_screen.dart';
 import 'package:bebe/src/ui/providers.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class KidSwitcherSliverAppBar extends StatelessWidget {
   const KidSwitcherSliverAppBar({super.key});

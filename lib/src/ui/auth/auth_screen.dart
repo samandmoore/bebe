@@ -6,7 +6,7 @@ import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:bebe/src/ui/shared/modal.dart';
 import 'package:bebe/src/ui/shared/spacing.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 final loginProvider =

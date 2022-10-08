@@ -229,7 +229,7 @@ packages:
     source: hosted
     version: "1.1.1"
   flutter_riverpod:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_riverpod
       url: "https://pub.dartlang.org"
