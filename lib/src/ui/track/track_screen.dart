@@ -1,12 +1,9 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
 import 'package:bebe/src/ui/providers.dart';
-import 'package:bebe/src/ui/shared/error.dart';
 import 'package:bebe/src/ui/shared/kid_switcher.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:bebe/src/ui/shared/nav_drawer.dart';
-import 'package:bebe/src/ui/shared/no_kids_screen.dart';
 import 'package:bebe/src/ui/shared/time_ago.dart';
 import 'package:bebe/src/ui/track/track_action.dart';
 import 'package:bebe/src/utilities/extensions.dart';
@@ -34,32 +31,6 @@ class TrackScreen extends ConsumerWidget {
   static const route = '/track';
 
   const TrackScreen({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final kids = ref.watch(kidsProvider);
-
-    return kids.when(
-      loading: () => const LoadingScreen(),
-      error: (error, stackTrace) => ErrorScreen(
-        error: error,
-        stackTrace: stackTrace,
-        onRetry: () => ref.refresh(userProvider),
-      ),
-      data: (kids) {
-        if (kids.isEmpty) {
-          return const NoKidsScreen();
-        }
-        return _TrackScreen(kids: kids);
-      },
-    );
-  }
-}
-
-class _TrackScreen extends ConsumerWidget {
-  final List<Kid> kids;
-
-  const _TrackScreen({required this.kids});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

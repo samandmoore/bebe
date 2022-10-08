@@ -1,12 +1,9 @@
 import 'package:bebe/src/data/events/event.dart';
-import 'package:bebe/src/data/user/kid.dart';
 import 'package:bebe/src/ui/diapers/diaper_event_screen.dart';
 import 'package:bebe/src/ui/providers.dart';
-import 'package:bebe/src/ui/shared/error.dart';
 import 'package:bebe/src/ui/shared/kid_switcher.dart';
 import 'package:bebe/src/ui/shared/loading.dart';
 import 'package:bebe/src/ui/shared/nav_drawer.dart';
-import 'package:bebe/src/ui/shared/no_kids_screen.dart';
 import 'package:bebe/src/utilities/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -46,31 +43,6 @@ class HistoryScreen extends ConsumerWidget {
   static const route = '/history';
 
   const HistoryScreen({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final kids = ref.watch(kidsProvider);
-
-    return kids.when(
-      loading: () => const LoadingScreen(),
-      error: (error, stackTrace) =>
-          ErrorScreen(error: error, stackTrace: stackTrace),
-      data: (kids) {
-        if (kids.isEmpty) {
-          return const NoKidsScreen();
-        }
-        return _HistoryScreen(kids: kids);
-      },
-    );
-  }
-}
-
-class _HistoryScreen extends ConsumerWidget {
-  final List<Kid> kids;
-
-  const _HistoryScreen({
-    required this.kids,
-  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
